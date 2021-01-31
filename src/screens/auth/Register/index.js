@@ -7,6 +7,7 @@ import {
   IconLock,
   IconMail,
   IconEyeClosed,
+  IconPerson,
 } from '../../../../assets/icons';
 import {
   FONT_BOLD,
@@ -15,7 +16,7 @@ import {
   FONT_LIGHT,
 } from '../../../utils/constans';
 
-const Login = ({navigation}) => {
+const Register = ({navigation}) => {
   const [secureText, setSecureText] = useState(true);
   return (
     <>
@@ -23,14 +24,20 @@ const Login = ({navigation}) => {
         <Text style={styles.title}>Zwallet</Text>
       </View>
       <View style={styles.mainInput}>
-        <Text style={styles.login}>Login</Text>
+        <Text style={styles.login}>Sign Up</Text>
         <Text style={{...styles.textlogininfo, marginTop: 25}}>
-          Login to your existing account to access
+          Create your account to access Zwallet.
         </Text>
-        <Text style={{...styles.textlogininfo, marginTop: 5}}>
-          all the features in Zwallet.
-        </Text>
-        <View style={{...styles.form, marginTop: 10}}>
+        <View style={{...styles.form, marginTop: 20}}>
+          <IconPerson />
+          <TextInput
+            style={{
+              width: windowWidth * 0.73,
+              marginRight: 10,
+            }}
+          />
+        </View>
+        <View style={styles.form}>
           <IconMail />
           <TextInput
             style={{
@@ -55,23 +62,14 @@ const Login = ({navigation}) => {
           style={{
             alignItems: 'flex-end',
             width: windowWidth * 0.8,
-          }}>
-          <TouchableOpacity
-            style={{
-              alignItems: 'flex-end',
-              width: windowWidth * 0.34,
-              marginTop: 5,
-            }}>
-            <Text>Forgot password?</Text>
-          </TouchableOpacity>
-        </View>
+          }}></View>
         <TouchableOpacity style={styles.btnLogin}>
-          <Text style={{color: '#fff'}}>Login</Text>
+          <Text style={{color: '#fff', fontSize: 18}}>Sign Up</Text>
         </TouchableOpacity>
         <View style={{flexDirection: 'row'}}>
-          <Text>Don’t have an account? Let’s </Text>
-          <TouchableOpacity onPress={() => navigation.navigate('Register')}>
-            <Text style={{color: COLOR_MAIN}}>Sign Up</Text>
+          <Text>Already have an account? Let’s </Text>
+          <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+            <Text style={{color: COLOR_MAIN}}>Login</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -79,7 +77,7 @@ const Login = ({navigation}) => {
   );
 };
 
-export default Login;
+export default Register;
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -125,7 +123,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: COLOR_MAIN,
     width: windowWidth * 0.85,
-    marginTop: 30,
+    marginTop: 20,
   },
   btnLogin: {
     backgroundColor: COLOR_MAIN,
@@ -134,7 +132,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 12,
-    marginTop: 50,
+    marginTop: 55,
     marginBottom: 5,
   },
 });
