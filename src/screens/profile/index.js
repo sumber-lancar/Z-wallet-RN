@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import { View, Text, TouchableOpacity, Image, StyleSheet, Switch } from 'react-native'
 import { IconBack, IconNext, ImgProfile, Pencil } from '../../assets'
 
-const Profile = () => {
+const Profile = ({navigation}) => {
     const [isEnabled, setIsEnabled] = useState(false);
     const toggleSwitch = () => setIsEnabled(previousState => !previousState);
 
@@ -28,11 +28,11 @@ const Profile = () => {
                 <Text style={styles.fontBtn}>Personal Information</Text>
                 <Image source={IconNext}/>
             </TouchableOpacity>
-            <TouchableOpacity activeOpacity={0.5} style={styles.btn}>
+            <TouchableOpacity activeOpacity={0.5} style={styles.btn} onPress={() => navigation.navigate("ChangePass")}>
                 <Text style={styles.fontBtn}>Change Password</Text>
                 <Image source={IconNext}/>
             </TouchableOpacity>
-            <TouchableOpacity activeOpacity={0.5} style={styles.btn}>
+            <TouchableOpacity activeOpacity={0.5} style={styles.btn} onPress={() => navigation.navigate("ChangePin")}>
                 <Text style={styles.fontBtn}>Change PIN</Text>
                 <Image source={IconNext}/>
             </TouchableOpacity>
