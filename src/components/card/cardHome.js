@@ -13,7 +13,9 @@ const CardHome = (props) => {
     const [color, setcolor] = useState(txtcolor)
     
     return (
-        <TouchableOpacity style={styles.container}>
+        <TouchableOpacity style={styles.container} onPress={() => {
+            props.navigation.navigate("Success")
+        }}>
             <View style={{flexDirection: 'row'}}>
                 <View style={styles.containerImage}>
                     <Image style={styles.img}  source={props.iconImg}/>

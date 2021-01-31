@@ -13,6 +13,7 @@ import IconBack from './icons/back.png'
 import Pencil from './icons/pencil.png'
 import IconNext from './icons/iconNext.png'
 import IconBackWhite from './icons/back-white.png'
+import Checklist from './icons/checklist.png'
 
 
 
@@ -28,5 +29,6 @@ export {
     IconBack,
     Pencil,
     IconNext,
-    IconBackWhite
+    IconBackWhite,
+    Checklist
 }

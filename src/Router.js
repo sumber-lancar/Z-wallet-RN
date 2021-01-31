@@ -9,6 +9,7 @@ import Home from './screens/home';
 import Profile from './screens/profile';
 import Transfer from './screens/transfer'
 import TopUp from './screens/topup';
+import Success from './screens/success';
 
 const Stack = createStackNavigator();
 
@@ -55,6 +56,12 @@ const Router = () => {
                 <Stack.Screen 
                     name='TopUp' 
                     component={TopUp}
+                    options={{
+                    headerShown: false,
+                }}/>
+                 <Stack.Screen 
+                    name='Success' 
+                    component={Success}
                     options={{
                     headerShown: false,
                 }}/>

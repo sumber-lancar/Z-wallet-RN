@@ -59,11 +59,11 @@ const Home = ({navigation}) => {
                     <Text style={{color: '#6379F4', fontWeight: '600'}}>See all</Text>
                 </TouchableOpacity>
             </View>
-                <CardHome name="Samuel Suhi" iconImg={Card1} status="Transfer" price="149000"/>
-                <CardHome name="Netflix" iconImg={NetFlix} status="Subscription" price="-49000"/>
-                <CardHome name="Blanja" iconImg={Blanja} status="Payment" price="-350000"/>
-                <CardHome name="Spotify" iconImg={Spotify} status="Subscription" price="-49000"/>
-                <CardHome name="netflix" iconImg={NetFlix} status="Subscription" price="-49000"/>
+                <CardHome navigation={navigation} name="Samuel Suhi" iconImg={Card1} status="Transfer" price="149000"/>
+                <CardHome navigation={navigation} name="Netflix" iconImg={NetFlix} status="Subscription" price="-49000"/>
+                <CardHome navigation={navigation} name="Blanja" iconImg={Blanja} status="Payment" price="-350000"/>
+                <CardHome navigation={navigation} name="Spotify" iconImg={Spotify} status="Subscription" price="-49000"/>
+                <CardHome navigation={navigation} name="netflix" iconImg={NetFlix} status="Subscription" price="-49000"/>
         </ScrollView>
     )
 }
