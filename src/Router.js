@@ -5,7 +5,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import Splash from './screens/splash';
 import Login from './screens/auth/login';
 import SearchReceiver from "./screens/SearchReceiver";
-import TransactionHistory from "./screens/TransactionHistory";
+import Home from './screens/home';
 
 
 const Stack = createStackNavigator();
@@ -37,6 +37,12 @@ const Router = () => {
                     component={TransactionHistory}
                     options={{
                     title:'History',
+                }}/>
+                <Stack.Screen
+                    name='Home' 
+                    component={Home}
+                    options={{
+                    headerShown: false,
                 }}/>
             </Stack.Navigator>
         </NavigationContainer>
