@@ -9,9 +9,11 @@ import {
   Image,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/EvilIcons';
+import { Michi, Card1, ImgProfile } from "../../assets";
 import {FlatGrid} from 'react-native-super-grid';
+import CardSearchReceiver from "../../components/card/cardSearchReceiver";
 
-const SearchReceiver = () => {
+const SearchReceiver = ({navigation}) => {
   return (
     <ScrollView style={styles.container}>
       <View style={styles.formSearch}>
@@ -25,53 +27,7 @@ const SearchReceiver = () => {
         </TouchableOpacity>
         <TextInput style={{width: '100%'}} placeholder="Search receiver here" />
       </View>
-      <Text
-        style={{
-          color: '#4D4B57',
-          fontSize: 18,
-          fontWeight: '700',
-          marginVertical: 15,
-        }}>
-        Quick Access
-      </Text>
-      <ScrollView horizontal>
-        <TouchableOpacity style={styles.card}>
-          <Image
-            style={styles.img}
-            source={require('../../assets/images/michi.png')}
-          />
-
-          <Text style={styles.textContacts}>Michi</Text>
-          <Text style={styles.textPhone}>-9994</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.card}>
-          <Image
-            style={styles.img}
-            source={require('../../assets/images/michi.png')}
-          />
-
-          <Text style={styles.textContacts}>Michi</Text>
-          <Text style={styles.textPhone}>-9994</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.card}>
-          <Image
-            style={styles.img}
-            source={require('../../assets/images/michi.png')}
-          />
-
-          <Text style={styles.textContacts}>Michi</Text>
-          <Text style={styles.textPhone}>-9994</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.card}>
-          <Image
-            style={styles.img}
-            source={require('../../assets/images/michi.png')}
-          />
-
-          <Text style={styles.textContacts}>Michi</Text>
-          <Text style={styles.textPhone}>-9994</Text>
-        </TouchableOpacity>
-      </ScrollView>
+      
       <View style={{marginVertical: 20}}>
         <Text
           style={{
@@ -86,36 +42,12 @@ const SearchReceiver = () => {
           17 Contacts Founds
         </Text>
       </View>
-      <TouchableOpacity style={styles.allContacts}>
-        <Image
-          style={styles.imgContact}
-          source={require('../../assets/images/michi.png')}
-        />
-        <View style={{marginHorizontal: 15}}>
-          <Text style={styles.textContacts}>Samuel Suhi</Text>
-          <Text style={styles.textPhone}>+62 813-8492-9994</Text>
-        </View>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.allContacts}>
-        <Image
-          style={styles.imgContact}
-          source={require('../../assets/images/michi.png')}
-        />
-        <View style={{marginHorizontal: 15}}>
-          <Text style={styles.textContacts}>Samuel Suhi</Text>
-          <Text style={styles.textPhone}>+62 813-8492-9994</Text>
-        </View>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.allContacts}>
-        <Image
-          style={styles.imgContact}
-          source={require('../../assets/images/michi.png')}
-        />
-        <View style={{marginHorizontal: 15}}>
-          <Text style={styles.textContacts}>Samuel Suhi</Text>
-          <Text style={styles.textPhone}>+62 813-8492-9994</Text>
-        </View>
-      </TouchableOpacity>
+      <CardSearchReceiver navigation={navigation} iconImg={Michi} name="Michi Chan" phoneNumber="+62 896-7101-6784"/>
+      <CardSearchReceiver navigation={navigation} iconImg={Card1} name="Samuel Suhi" phoneNumber="+62 813-8492-9994"/>
+      <CardSearchReceiver navigation={navigation} iconImg={ImgProfile} name="Robert Chandler" phoneNumber="+62 838-8490-5678"/>
+      <CardSearchReceiver navigation={navigation} iconImg={Michi} name="Michi Chan" phoneNumber="+62 896-7101-6784"/>
+      <CardSearchReceiver navigation={navigation} iconImg={Card1} name="Samuel Suhi" phoneNumber="+62 813-8492-9994"/>
+      <CardSearchReceiver navigation={navigation} iconImg={ImgProfile} name="Robert Chandler" phoneNumber="+62 838-8490-5678"/>
     </ScrollView>
   );
 };
@@ -137,7 +69,7 @@ const styles = StyleSheet.create({
   },
   card: {
     width: 110,
-    marginHorizontal: 5,
+    marginRight: 20,
     marginVertical: 10,
     padding: 20,
     borderRadius: 20,
@@ -153,33 +85,5 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     overflow: 'hidden',
     marginBottom: 10,
-  },
-  imgContact: {
-    width: 70,
-    height: 70,
-    borderRadius: 15,
-    overflow: 'hidden',
-  },
-  textPhone: {
-    color: '#4D4B57',
-    fontSize: 13,
-    fontWeight: '400',
-  },
-  textContacts: {
-    color: '#4D4B57',
-    fontSize: 16,
-    fontWeight: '700',
-    marginBottom: 7,
-  },
-  allContacts: {
-    flexDirection: 'row',
-    marginHorizontal: 5,
-    marginVertical: 5,
-    backgroundColor: 'white',
-    padding: 10,
-    borderRadius: 20,
-    borderColor: 'black',
-    alignItems: 'center',
-    elevation: 5
   },
 });

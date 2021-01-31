@@ -5,8 +5,12 @@ import { createStackNavigator } from '@react-navigation/stack';
 import Splash from './screens/splash';
 import Login from './screens/auth/login';
 import SearchReceiver from "./screens/SearchReceiver";
+import TransactionHistory from "./screens/TransactionHistory";
 import Home from './screens/home';
-
+import Profile from './screens/profile';
+import Transfer from './screens/transfer'
+import TopUp from './screens/topup';
+import Success from './screens/success';
 
 const Stack = createStackNavigator();
 
@@ -41,6 +45,30 @@ const Router = () => {
                 <Stack.Screen
                     name='Home' 
                     component={Home}
+                    options={{
+                    headerShown: false,
+                }}/>
+                <Stack.Screen 
+                    name='Profile' 
+                    component={Profile}
+                    options={{
+                    headerShown: false,
+                }}/>
+                 <Stack.Screen 
+                    name='Transfer' 
+                    component={Transfer}
+                    options={{
+                    headerShown: false,
+                }}/>
+                <Stack.Screen 
+                    name='TopUp' 
+                    component={TopUp}
+                    options={{
+                    headerShown: false,
+                }}/>
+                 <Stack.Screen 
+                    name='Success' 
+                    component={Success}
                     options={{
                     headerShown: false,
                 }}/>

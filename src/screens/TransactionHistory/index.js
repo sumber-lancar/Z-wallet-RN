@@ -7,12 +7,23 @@ import {
   TouchableOpacity,
   Image,
 } from 'react-native';
+import {
+  ArrowUp,
+  Bell,
+  Blanja,
+  Card1,
+  NetFlix,
+  Plus,
+  ImgProfile,
+  Spotify,
+} from '../../assets';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import ActionSheet from 'react-native-actions-sheet';
 import CalendarPicker from 'react-native-calendar-picker';
+import CardHome from '../../components/card/cardHome';
 
 const actionSheetRef = createRef();
-const TransactionHistory = () => {
+const TransactionHistory = ({navigation}) => {
   let actionSheet;
   const [startDate, setStartDate] = useState();
   const [endDate, setEndDate] = useState();
@@ -20,57 +31,69 @@ const TransactionHistory = () => {
   console.log(startDate);
 
   const selectDate = (date, type) => {
-    if (type === 'END_DATE' ) {
-      setEndDate(date)
+    if (type === 'END_DATE') {
+      setEndDate(date);
     } else {
-      setStartDate(date),
-      setEndDate(null)
+      setStartDate(date), setEndDate(null);
     }
-  }
+  };
 
-  const startDatePick  =  startDate ? startDate.toString() : '';
-    const endDatePick = endDate ? endDate.toString() : '';
-    // const minDate = new Date(); // Today
-    // const maxDate = new Date(2017, 6, 3);
+  const startDatePick = startDate ? startDate.toString() : '';
+  const endDatePick = endDate ? endDate.toString() : '';
+  // const minDate = new Date(); // Today
+  // const maxDate = new Date(2017, 6, 3);
 
-    console.log("start date", startDatePick);
-    console.log("end date", endDatePick);
+  console.log('start date', startDatePick);
+  console.log('end date', endDatePick);
 
-    console.log("start date type",typeof startDatePick);
-
-
+  console.log('start date type', typeof startDatePick);
 
   return (
     <View style={styles.container}>
       <ScrollView>
-        <Text>This Week</Text>
-        <TouchableOpacity style={styles.allContacts}>
-          <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <Image
-              style={styles.imgContact}
-              source={require('../../assets/images/michi.png')}
-            />
-            <View style={{marginHorizontal: 15}}>
-              <Text style={styles.textContacts}>Samuel Suhi</Text>
-              <Text style={styles.textPhone}>Transfer</Text>
-            </View>
-          </View>
-          <Text style={{color: '#1EC15F'}}>+Rp.50.000</Text>
-        </TouchableOpacity>
-        <Text>This Month</Text>
-        <TouchableOpacity style={styles.allContacts}>
-          <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <Image
-              style={styles.imgContact}
-              source={require('../../assets/images/michi.png')}
-            />
-            <View style={{marginHorizontal: 15}}>
-              <Text style={styles.textContacts}>Samuel Suhi</Text>
-              <Text style={styles.textPhone}>Transfer</Text>
-            </View>
-          </View>
-          <Text style={{color: '#FF5B37'}}>-Rp.150.000</Text>
-        </TouchableOpacity>
+        <Text style={styles.textThis}>This Week</Text>
+        <CardHome
+          navigation={navigation}
+          name="Samuel Suhi"
+          iconImg={Card1}
+          status="Transfer"
+          price="149000"
+          style={styles.card}
+        />
+        <CardHome
+          navigation={navigation}
+          name="Spotify"
+          iconImg={Spotify}
+          status="Subscription"
+          price="-49000"
+          style={styles.card}
+        />
+
+        <Text style={styles.textThis}>This Month</Text>
+        <CardHome
+          navigation={navigation}
+          name="Netflix"
+          iconImg={NetFlix}
+          status="Subscription"
+          price="-49000"
+          style={styles.card}
+        />
+        <CardHome
+          navigation={navigation}
+          name="Blanja"
+          iconImg={Blanja}
+          status="Payment"
+          price="-350000"
+          style={styles.card}
+        />
+        <CardHome
+          navigation={navigation}
+          name="netflix"
+          iconImg={NetFlix}
+          status="Subscription"
+          price="-49000"
+          style={styles.card}
+        />
       </ScrollView>
       <View style={styles.filter}>
         <View style={{flexDirection: 'row'}}>
@@ -104,12 +127,17 @@ const TransactionHistory = () => {
         <View style={styles.containerCalendar}>
           <Text style={{marginVertical: 10}}>Filter By date</Text>
           <CalendarPicker
-          selectedDayColor='#6379F4'
-          selectedDayTextColor='white'
-          allowRangeSelection={true}
-          onDateChange={selectDate}
+            selectedDayColor="#6379F4"
+            selectedDayTextColor="white"
+            allowRangeSelection={true}
+            onDateChange={selectDate}
           />
-          <View style={{flexDirection: 'row', justifyContent:  'space-between', width: '100%'}}>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              width: '100%',
+            }}>
             <View style={{margin: 10, width: '40%'}}>
               <Text>From</Text>
               <Text>{startDatePick}</Text>
@@ -119,7 +147,9 @@ const TransactionHistory = () => {
               <Text>{endDatePick}</Text>
             </View>
           </View>
-          <TouchableOpacity style={styles.applyBtn} onPress={() => actionSheetRef.current?.hide()}>
+          <TouchableOpacity
+            style={styles.applyBtn}
+            onPress={() => actionSheetRef.current?.hide()}>
             <Text style={{color: 'white', fontSize: 16}}>Apply</Text>
           </TouchableOpacity>
         </View>
@@ -134,8 +164,15 @@ const styles = StyleSheet.create({
   container: {
     height: '100%',
     width: '100%',
-    paddingHorizontal: 15,
+    // paddingHorizontal: 15,
     paddingVertical: 15,
+  },
+  textThis: {
+    marginVertical: 10,
+    marginHorizontal: 10,
+  },
+  card: {
+    borderRadius: 10,
   },
   btn: {
     padding: 15,
@@ -148,6 +185,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     alignItems: 'center',
     bottom: 0,
+    marginTop: 10
   },
   filterByDate: {
     paddingVertical: 20,
@@ -196,6 +234,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 20,
     borderRadius: 10,
-    marginVertical: 10
+    marginVertical: 10,
   },
 });

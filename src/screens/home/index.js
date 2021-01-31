@@ -1,16 +1,20 @@
 import React from 'react'
 import { View, Text, StyleSheet,Image } from 'react-native'
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler'
-import { ArrowUp, Bell, Blanja, Card1, NetFlix, Plus, Profile, Spotify } from '../../assets'
+import { ArrowUp, Bell, Blanja, Card1, NetFlix, Plus, ImgProfile, Spotify } from '../../assets'
 import CardHome from '../../components/card/cardHome'
 
-const Home = () => {
+const Home = ({navigation}) => {
     return (
-        <View>
+        <ScrollView>
             {/* header */}
             <View style={styles.containerHeader}>
-                <View style={{flexDirection: 'row'}}>
-                    <Image style={styles.imageProfile} source={Profile} />
+                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                    <TouchableOpacity onPress={() => {
+                        navigation.navigate("Profile")
+                    }}>
+                        <Image style={styles.imageProfile} source={ImgProfile} />
+                    </TouchableOpacity>
                     <View style={{marginLeft: 20, height: '100%', justifyContent: 'space-around' }} >
                         <Text>Hello,</Text>
                         <Text style={{fontSize: 18, fontWeight: 'bold'}}>Fachri Ghiffary</Text>
@@ -25,14 +29,16 @@ const Home = () => {
             <View style={styles.containerBalance}>
                 <View style={styles.balanceSection}>
                     <Text style={styles.txtBalance}>Balance</Text>
-                    <Text style={styles.txtmoney}>Rp120.000</Text>
+                    <Text style={styles.txtmoney}>149.000</Text>
                     <Text style={styles.txtBalance}>+62 813-9387-7946</Text>
                 </View>
             </View>
 
             {/* transfer & topup */}
             <View style={styles.TrfTop}>
-                <TouchableOpacity activeOpacity={0.5} style={styles.btn}>
+                <TouchableOpacity activeOpacity={0.5} style={styles.btn} onPress={() => {
+                    navigation.navigate('Search')
+                }}>
                     <View style={styles.containerTopup}>
                         <Image source={ArrowUp} />
                         <Text>Transfer</Text>
@@ -46,23 +52,19 @@ const Home = () => {
                 </TouchableOpacity>
             </View>
 
+            {/* Transaction history */}
             <View style={styles.sectionTrans}>
                 <Text  style={{fontSize: 18, fontWeight: 'bold'}}>Transaction History</Text>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={() => navigation.navigate("Transaction History")}>
                     <Text style={{color: '#6379F4', fontWeight: '600'}}>See all</Text>
                 </TouchableOpacity>
             </View>
-
-            <ScrollView style={{height: 320, width: '100%', marginTop: 25, alignSelf: 'center'}}>
-                <CardHome name="Samuel Suhi" iconImg={Card1} status="Subscription" price="-Rp. 149.000"/>
-                <CardHome name="Netflix" iconImg={NetFlix} status="Subscription" price="-Rp. 149.000"/>
-                <CardHome name="Blanja" iconImg={Blanja} status="Subscription" price="-Rp. 350.000"/>
-                <CardHome name="Spotify" iconImg={Spotify} status="Subscription" price="-Rp. 200.000"/>
-                <CardHome name="netflix" iconImg={NetFlix} status="Subscription" price="-Rp. 149.000"/>
-                <CardHome name="netflix" iconImg={NetFlix} status="Subscription" price="-Rp. 149.000"/>
-            </ScrollView>
-
-        </View>
+                <CardHome navigation={navigation} name="Samuel Suhi" iconImg={Card1} status="Transfer" price="149000"/>
+                <CardHome navigation={navigation} name="Netflix" iconImg={NetFlix} status="Subscription" price="-49000"/>
+                <CardHome navigation={navigation} name="Blanja" iconImg={Blanja} status="Payment" price="-350000"/>
+                <CardHome navigation={navigation} name="Spotify" iconImg={Spotify} status="Subscription" price="-49000"/>
+                <CardHome navigation={navigation} name="netflix" iconImg={NetFlix} status="Subscription" price="-49000"/>
+        </ScrollView>
     )
 }
 
@@ -135,7 +137,8 @@ const styles = StyleSheet.create({
         width: 343, 
         alignSelf: 'center', 
         marginTop: 40, 
-        alignItems: 'center'
+        alignItems: 'center',
+        marginBottom: 20
     }
 })
 
