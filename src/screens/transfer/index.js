@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, Image, TextInput, KeyboardAvoidingView } from '
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler'
 import { IconBackWhite, ImgProfile, Pencil } from '../../assets'
 
-const Transfer = () => {
+const Transfer = ({navigation}) => {
     return (
         <ScrollView>
             <View style={styles.header}>
@@ -32,7 +32,7 @@ const Transfer = () => {
                 </View>
                 <View style={{height:1, width: 343, backgroundColor:'#A9A9A9'}} />
             </View>
-            <TouchableOpacity style={styles.btnNext}>
+            <TouchableOpacity style={styles.btnNext} onPress={() => navigation.navigate('Confirmation')}>
                 <Text style={{fontSize: 20, color: 'white'}}>Next</Text>
             </TouchableOpacity>
         </ScrollView>
