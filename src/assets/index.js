@@ -3,6 +3,7 @@ import Card1 from './images/card1.png'
 import NetFlix from './images/netflix.png'
 import Spotify from './images/spotify.png'
 import Blanja from './images/blanja.png'
+import Michi from "./images/michi.png";
 
 
 //icon
@@ -30,5 +31,6 @@ export {
     Pencil,
     IconNext,
     IconBackWhite,
-    Checklist
+    Checklist,
+    Michi
 }

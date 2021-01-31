@@ -55,7 +55,7 @@ const Home = ({navigation}) => {
             {/* Transaction history */}
             <View style={styles.sectionTrans}>
                 <Text  style={{fontSize: 18, fontWeight: 'bold'}}>Transaction History</Text>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={() => navigation.navigate("Transaction History")}>
                     <Text style={{color: '#6379F4', fontWeight: '600'}}>See all</Text>
                 </TouchableOpacity>
             </View>
