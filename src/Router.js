@@ -7,6 +7,8 @@ import Login from './screens/auth/Login';
 import Register from './screens/auth/Register';
 import Pin from './screens/auth/Pin';
 import PinSuccess from './screens/auth/PinSuccess';
+import ForgotPass from './screens/auth/ForgotPass';
+import ResetPass from './screens/auth/ResetPass';
 
 const Stack = createStackNavigator();
 
@@ -45,6 +47,20 @@ const Router = () => {
         <Stack.Screen
           name="PinSuccess"
           component={PinSuccess}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="ForgotPass"
+          component={ForgotPass}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="ResetPass"
+          component={ResetPass}
           options={{
             headerShown: false,
           }}

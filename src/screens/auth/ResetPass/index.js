@@ -1,59 +1,33 @@
-import {Icon} from 'native-base';
 import React, {useState} from 'react';
 import {Dimensions, StyleSheet, Text, View} from 'react-native';
 import {TextInput, TouchableOpacity} from 'react-native-gesture-handler';
 import {
+  IconEyeClosed,
   IconEyeOpen,
   IconLock,
   IconMail,
-  IconEyeClosed,
 } from '../../../../assets/icons';
-import {
-  FONT_BOLD,
-  COLOR_MAIN,
-  FONT_REG,
-  FONT_LIGHT,
-  FONT_SEMIBOLD,
-} from '../../../utils/constans';
+import {FONT_BOLD, COLOR_MAIN, FONT_REG} from '../../../utils/constans';
 
-const Login = ({navigation}) => {
+const ResetPass = ({navigation}) => {
   const [secureText, setSecureText] = useState(true);
-  const [fail, setFail] = useState(false);
   return (
     <>
       <View style={styles.container}>
         <Text style={styles.title}>Zwallet</Text>
       </View>
       <View style={styles.mainInput}>
-        <Text style={styles.login}>Login</Text>
-        <Text style={{...styles.textlogininfo, marginTop: 25}}>
-          Login to your existing account to access
+        <Text style={styles.login}>Reset Password</Text>
+        <Text
+          style={{...styles.textlogininfo, marginTop: 25, textAlign: 'center'}}>
+          Create and confirm your new password so you can login to Zwallet.
         </Text>
-        <Text style={{...styles.textlogininfo, marginTop: 5}}>
-          all the features in Zwallet.
-        </Text>
-        <View
-          style={
-            fail ? {...styles.form, borderBottomColor: '#FF5B37'} : styles.form
-          }>
-          <IconMail />
-          <TextInput
-            style={{
-              width: windowWidth * 0.73,
-              marginRight: 10,
-            }}
-            placeholder="Enter your e-mail"
-          />
-        </View>
-        <View
-          style={
-            fail ? {...styles.form, borderBottomColor: '#FF5B37'} : styles.form
-          }>
+        <View style={styles.form}>
           <IconLock />
           <TextInput
             secureTextEntry={secureText}
             style={{width: windowWidth * 0.65}}
-            placeholder="Enter your password"
+            placeholder="Create new password"
           />
           {secureText ? (
             <IconEyeClosed onPress={() => setSecureText(false)} />
@@ -61,49 +35,32 @@ const Login = ({navigation}) => {
             <IconEyeOpen onPress={() => setSecureText(true)} />
           )}
         </View>
-        <View
-          style={{
-            alignItems: 'flex-end',
-            width: windowWidth * 0.8,
-          }}>
-          <TouchableOpacity
-            style={{
-              alignItems: 'flex-end',
-              width: windowWidth * 0.34,
-              marginTop: 5,
-            }}
-            onPress={() => navigation.navigate('ForgotPass')}>
-            <Text>Forgot password?</Text>
-          </TouchableOpacity>
+        <View style={styles.form}>
+          <IconLock />
+          <TextInput
+            secureTextEntry={secureText}
+            style={{width: windowWidth * 0.65}}
+            placeholder="Confirm new password"
+          />
+          {secureText ? (
+            <IconEyeClosed onPress={() => setSecureText(false)} />
+          ) : (
+            <IconEyeOpen onPress={() => setSecureText(true)} />
+          )}
         </View>
-
-        <Text
-          style={{
-            color: '#FF5B37',
-            fontFamily: FONT_SEMIBOLD,
-            marginTop: 20,
-            fontSize: 16,
-          }}>
-          {fail ? 'Email or Password Invalid' : ''}
-        </Text>
-
         <TouchableOpacity
           style={styles.btnLogin}
-          onPress={() => setFail(!fail)}>
-          <Text style={{color: '#fff', fontSize: 18}}>Login</Text>
+          onPress={() => {
+            console.log('Pressed');
+          }}>
+          <Text style={{color: '#fff', fontSize: 18}}>Reset Password</Text>
         </TouchableOpacity>
-        <View style={{flexDirection: 'row'}}>
-          <Text>Don’t have an account? Let’s </Text>
-          <TouchableOpacity onPress={() => navigation.navigate('Register')}>
-            <Text style={{color: COLOR_MAIN}}>Sign Up</Text>
-          </TouchableOpacity>
-        </View>
       </View>
     </>
   );
 };
 
-export default Login;
+export default ResetPass;
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -158,7 +115,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 12,
-    marginTop: 40,
+    marginTop: windowHeight * 0.15,
     marginBottom: 5,
   },
 });
