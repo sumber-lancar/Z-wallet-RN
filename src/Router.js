@@ -8,6 +8,7 @@ import SearchReceiver from "./screens/SearchReceiver";
 import Home from './screens/home';
 import Profile from './screens/profile';
 import Transfer from './screens/transfer'
+import TopUp from './screens/topup';
 
 const Stack = createStackNavigator();
 
@@ -48,6 +49,12 @@ const Router = () => {
                  <Stack.Screen 
                     name='Transfer' 
                     component={Transfer}
+                    options={{
+                    headerShown: false,
+                }}/>
+                <Stack.Screen 
+                    name='TopUp' 
+                    component={TopUp}
                     options={{
                     headerShown: false,
                 }}/>
