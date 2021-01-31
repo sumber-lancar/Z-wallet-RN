@@ -12,11 +12,11 @@ const Login = ({navigation}) => {
                 <Text style={{color: '#6379F4'}}>Transfer</Text>
             </TouchableOpacity>
 
-            {/* <TouchableOpacity style={{marginVertical: 10}} onPress={
+            <TouchableOpacity style={{marginVertical: 10}} onPress={
                 () => navigation.navigate('Transaction History')
             }>
                 <Text style={{color: '#6379F4'}}>See all</Text>
-            </TouchableOpacity> */}
+            </TouchableOpacity>
         </View>
     )
 }

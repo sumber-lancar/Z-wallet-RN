@@ -32,12 +32,12 @@ const Router = () => {
                     options={{
                     title:'Find Receiver',
                 }}/>
-                {/* <Stack.Screen 
+                <Stack.Screen 
                     name='Transaction History' 
                     component={TransactionHistory}
                     options={{
                     title:'History',
-                }}/> */}
+                }}/>
             </Stack.Navigator>
         </NavigationContainer>
     )
