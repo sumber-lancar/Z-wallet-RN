@@ -30,9 +30,14 @@ const Login = () => {
         <Text style={{...styles.textlogininfo, marginTop: 5}}>
           all the features in Zwallet.
         </Text>
-        <View style={styles.form}>
+        <View style={{...styles.form, marginTop: 10}}>
           <IconMail />
-          <TextInput style={{width: windowWidth * 0.65}} />
+          <TextInput
+            style={{
+              width: windowWidth * 0.73,
+              marginRight: 10,
+            }}
+          />
         </View>
         <View style={styles.form}>
           <IconLock />
@@ -55,6 +60,7 @@ const Login = () => {
             style={{
               alignItems: 'flex-end',
               width: windowWidth * 0.34,
+              marginTop: 5,
             }}>
             <Text>Forgot password?</Text>
           </TouchableOpacity>
@@ -119,6 +125,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: COLOR_MAIN,
     width: windowWidth * 0.85,
+    marginTop: 30,
   },
   btnLogin: {
     backgroundColor: COLOR_MAIN,
@@ -127,5 +134,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 12,
+    marginTop: 50,
+    marginBottom: 5,
   },
 });
