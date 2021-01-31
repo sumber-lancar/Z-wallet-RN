@@ -37,6 +37,7 @@ const Login = ({navigation}) => {
               width: windowWidth * 0.73,
               marginRight: 10,
             }}
+            placeholder="Enter your e-mail"
           />
         </View>
         <View style={styles.form}>
@@ -44,6 +45,7 @@ const Login = ({navigation}) => {
           <TextInput
             secureTextEntry={secureText}
             style={{width: windowWidth * 0.65}}
+            placeholder="Enter your password"
           />
           {secureText ? (
             <IconEyeClosed onPress={() => setSecureText(false)} />

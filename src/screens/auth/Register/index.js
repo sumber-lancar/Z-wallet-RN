@@ -25,16 +25,27 @@ const Register = ({navigation}) => {
       </View>
       <View style={styles.mainInput}>
         <Text style={styles.login}>Sign Up</Text>
-        <Text style={{...styles.textlogininfo, marginTop: 25}}>
+        <Text style={{...styles.textlogininfo, marginTop: 15}}>
           Create your account to access Zwallet.
         </Text>
-        <View style={{...styles.form, marginTop: 20}}>
+        <View style={{...styles.form, marginTop: 15}}>
           <IconPerson />
           <TextInput
             style={{
               width: windowWidth * 0.73,
               marginRight: 10,
             }}
+            placeholder="Enter your First Name"
+          />
+        </View>
+        <View style={styles.form}>
+          <IconPerson />
+          <TextInput
+            style={{
+              width: windowWidth * 0.73,
+              marginRight: 10,
+            }}
+            placeholder="Enter your Last Name"
           />
         </View>
         <View style={styles.form}>
@@ -44,6 +55,7 @@ const Register = ({navigation}) => {
               width: windowWidth * 0.73,
               marginRight: 10,
             }}
+            placeholder="Enter your e-mail"
           />
         </View>
         <View style={styles.form}>
@@ -51,6 +63,7 @@ const Register = ({navigation}) => {
           <TextInput
             secureTextEntry={secureText}
             style={{width: windowWidth * 0.65}}
+            placeholder="Create your password"
           />
           {secureText ? (
             <IconEyeClosed onPress={() => setSecureText(false)} />
@@ -127,7 +140,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: COLOR_MAIN,
     width: windowWidth * 0.85,
-    marginTop: 20,
+    marginTop: 10,
   },
   btnLogin: {
     backgroundColor: COLOR_MAIN,

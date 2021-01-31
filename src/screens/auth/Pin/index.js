@@ -57,7 +57,10 @@ const Pin = ({navigation}) => {
 
         <TouchableOpacity
           style={styles.btnLogin}
-          onPress={() => console.log(code)}>
+          onPress={() => {
+            console.log(code);
+            navigation.navigate('PinSuccess');
+          }}>
           <Text style={{color: '#fff', fontSize: 18}}>Confirm</Text>
         </TouchableOpacity>
       </View>
