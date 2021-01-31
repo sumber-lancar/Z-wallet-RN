@@ -7,7 +7,7 @@ import Login from './screens/auth/login';
 import SearchReceiver from "./screens/SearchReceiver";
 import Home from './screens/home';
 import Profile from './screens/profile';
-
+import Transfer from './screens/transfer'
 
 const Stack = createStackNavigator();
 
@@ -42,6 +42,12 @@ const Router = () => {
                 <Stack.Screen 
                     name='Profile' 
                     component={Profile}
+                    options={{
+                    headerShown: false,
+                }}/>
+                 <Stack.Screen 
+                    name='Transfer' 
+                    component={Transfer}
                     options={{
                     headerShown: false,
                 }}/>
