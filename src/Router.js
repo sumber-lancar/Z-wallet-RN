@@ -5,7 +5,6 @@ import { createStackNavigator } from '@react-navigation/stack';
 import Splash from './screens/splash';
 import Login from './screens/auth/login';
 import SearchReceiver from "./screens/SearchReceiver";
-import TransactionHistory from "./screens/TransactionHistory";
 
 
 const Stack = createStackNavigator();
@@ -32,12 +31,6 @@ const Router = () => {
                     options={{
                     title:'Find Receiver',
                 }}/>
-                {/* <Stack.Screen 
-                    name='Transaction History' 
-                    component={TransactionHistory}
-                    options={{
-                    title:'History',
-                }}/> */}
             </Stack.Navigator>
         </NavigationContainer>
     )
