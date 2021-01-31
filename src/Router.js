@@ -8,6 +8,13 @@ import SearchReceiver from './screens/SearchReceiver';
 import Home from './screens/home';
 import Profile from './screens/profile';
 import ChangePass from './screens/changePass';
+import TransactionHistory from './screens/TransactionHistory';
+import Home from './screens/home';
+import Profile from './screens/profile';
+import Transfer from './screens/transfer';
+import TopUp from './screens/topup';
+import Success from './screens/success';
+import Confirmation from './screens/confirmation';
 
 const Stack = createStackNavigator();
 
@@ -34,6 +41,14 @@ const Router = () => {
           component={SearchReceiver}
           options={{
             title: 'Find Receiver',
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="Transaction History"
+          component={TransactionHistory}
+          options={{
+            title: 'History',
           }}
         />
         <Stack.Screen
@@ -54,6 +69,34 @@ const Router = () => {
           name="ChangePass"
           component={ChangePass}
           options={{headerShown: false}}
+         />
+        <Stack.Screen   
+          name="Transfer"
+          component={Transfer}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="TopUp"
+          component={TopUp}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="Success"
+          component={Success}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="Confirmation"
+          component={Confirmation}
+          options={{
+            title: 'Confirmation',
+          }}
         />
       </Stack.Navigator>
     </NavigationContainer>
