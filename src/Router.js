@@ -5,6 +5,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import Splash from './screens/splash';
 import Login from './screens/auth/login';
 import SearchReceiver from "./screens/SearchReceiver";
+import Home from './screens/home';
 
 
 const Stack = createStackNavigator();
@@ -30,6 +31,12 @@ const Router = () => {
                     component={SearchReceiver}
                     options={{
                     title:'Find Receiver',
+                }}/>
+                <Stack.Screen 
+                    name='Home' 
+                    component={Home}
+                    options={{
+                    headerShown: false,
                 }}/>
             </Stack.Navigator>
         </NavigationContainer>
