@@ -63,7 +63,11 @@ const Register = ({navigation}) => {
             alignItems: 'flex-end',
             width: windowWidth * 0.8,
           }}></View>
-        <TouchableOpacity style={styles.btnLogin}>
+        <TouchableOpacity
+          style={styles.btnLogin}
+          onPress={() => {
+            navigation.navigate('Pin');
+          }}>
           <Text style={{color: '#fff', fontSize: 18}}>Sign Up</Text>
         </TouchableOpacity>
         <View style={{flexDirection: 'row'}}>

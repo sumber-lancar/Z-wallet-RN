@@ -1,7 +1,8 @@
 import {Icon} from 'native-base';
-import React, {useState} from 'react';
+import React, {useState, useRef} from 'react';
 import {Dimensions, StyleSheet, Text, View} from 'react-native';
 import {TextInput, TouchableOpacity} from 'react-native-gesture-handler';
+import SmoothPinCodeInput from 'react-native-smooth-pincode-input';
 import {
   IconEyeOpen,
   IconLock,
@@ -15,71 +16,56 @@ import {
   FONT_LIGHT,
 } from '../../../utils/constans';
 
-const Login = ({navigation}) => {
-  const [secureText, setSecureText] = useState(true);
+const Pin = ({navigation}) => {
+  const [code, setCode] = useState('');
+  const pinInput = useRef();
+  const checkCode = (code) => {
+    if (code != '1234') {
+      console.log('pin wrong');
+    } else {
+      console.log('pin success');
+    }
+  };
   return (
     <>
       <View style={styles.container}>
         <Text style={styles.title}>Zwallet</Text>
       </View>
       <View style={styles.mainInput}>
-        <Text style={styles.login}>Login</Text>
+        <Text style={styles.login}>Create Security PIN</Text>
         <Text style={{...styles.textlogininfo, marginTop: 25}}>
-          Login to your existing account to access
+          Create a PIN that’s contain 6 digits number for
         </Text>
-        <Text style={{...styles.textlogininfo, marginTop: 5}}>
-          all the features in Zwallet.
+        <Text style={{...styles.textlogininfo, marginTop: 5, marginBottom: 20}}>
+          security purpose in Zwallet.
         </Text>
-        <View style={{...styles.form, marginTop: 10}}>
-          <IconMail />
-          <TextInput
-            style={{
-              width: windowWidth * 0.73,
-              marginRight: 10,
-            }}
-          />
-        </View>
-        <View style={styles.form}>
-          <IconLock />
-          <TextInput
-            secureTextEntry={secureText}
-            style={{width: windowWidth * 0.65}}
-          />
-          {secureText ? (
-            <IconEyeClosed onPress={() => setSecureText(false)} />
-          ) : (
-            <IconEyeOpen onPress={() => setSecureText(true)} />
-          )}
-        </View>
-        <View
-          style={{
-            alignItems: 'flex-end',
-            width: windowWidth * 0.8,
-          }}>
-          <TouchableOpacity
-            style={{
-              alignItems: 'flex-end',
-              width: windowWidth * 0.34,
-              marginTop: 5,
-            }}>
-            <Text>Forgot password?</Text>
-          </TouchableOpacity>
-        </View>
-        <TouchableOpacity style={styles.btnLogin}>
-          <Text style={{color: '#fff', fontSize: 18}}>Login</Text>
+
+        <SmoothPinCodeInput
+          ref={pinInput}
+          codeLength={6}
+          cellStyle={{
+            borderWidth: 1,
+            borderRadius: 5,
+            marginHorizontal: 2,
+            borderColor: COLOR_MAIN,
+          }}
+          value={code}
+          onTextChange={(code) => setCode(code)}
+          onFulfill={checkCode}
+          onBackspace={() => console.log('No more back.')}
+        />
+
+        <TouchableOpacity
+          style={styles.btnLogin}
+          onPress={() => console.log(code)}>
+          <Text style={{color: '#fff', fontSize: 18}}>Confirm</Text>
         </TouchableOpacity>
-        <View style={{flexDirection: 'row'}}>
-          <Text>Don’t have an account? Let’s </Text>
-          <TouchableOpacity onPress={() => navigation.navigate('Register')}>
-            <Text style={{color: COLOR_MAIN}}>Sign Up</Text>
-          </TouchableOpacity>
-        </View>
       </View>
     </>
   );
 };
 
-export default Login;
+export default Pin;
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -134,7 +120,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 12,
-    marginTop: 50,
+    marginTop: 200,
     marginBottom: 5,
   },
 });
