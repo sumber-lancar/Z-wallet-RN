@@ -34,7 +34,7 @@ const SearchReceiver = () => {
         }}>
         Quick Access
       </Text>
-      <ScrollView horizontal>
+      <ScrollView horizontal showsHorizontalScrollIndicator={false}>
         <TouchableOpacity style={styles.card}>
           <Image
             style={styles.img}
@@ -137,7 +137,7 @@ const styles = StyleSheet.create({
   },
   card: {
     width: 110,
-    marginHorizontal: 5,
+    marginRight: 20,
     marginVertical: 10,
     padding: 20,
     borderRadius: 20,

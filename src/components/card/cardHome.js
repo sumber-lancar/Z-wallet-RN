@@ -1,8 +1,17 @@
-import React from 'react'
+import React,{useEffect, useState} from 'react'
 import { View, Text, Image, StyleSheet } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 
 const CardHome = (props) => {
+    let txtcolor = Number(props.price)
+    if(txtcolor >= 0){
+       txtcolor = 'green'
+    }else{
+        txtcolor = 'red'
+    }
+
+    const [color, setcolor] = useState(txtcolor)
+    
     return (
         <TouchableOpacity style={styles.container}>
             <View style={{flexDirection: 'row'}}>
@@ -15,7 +24,7 @@ const CardHome = (props) => {
                 </View>
             </View>
             <View>
-                <Text style={styles.price}>{props.price}</Text>
+                <Text style={{...styles.price, color}}>{props.price}</Text>
             </View>
         </TouchableOpacity>
     )
@@ -58,8 +67,7 @@ const styles = StyleSheet.create({
     status: {
         color: '#7A7886'
     },
-    price: {
-        color: '#1EC15F', 
+    price: { 
         fontSize: 18, 
         fontWeight: 'bold'
     }
