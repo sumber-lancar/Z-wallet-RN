@@ -3,7 +3,6 @@ import 'react-native-gesture-handler';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import Splash from './screens/splash';
-import Login from './screens/auth/login';
 import SearchReceiver from './screens/SearchReceiver';
 import Home from './screens/home';
 import Profile from './screens/profile';
@@ -46,17 +45,18 @@ const Router = () => {
           name="Search"
           component={SearchReceiver}
           options={{
-            title: 'Find Receiver',}}
+            headerShown: false,
+          }}
         />
 
         <Stack.Screen
-        name="Register"
-        component={Register}
-        options={{
-          headerShown: false,
-        }}
+          name="Register"
+          component={Register}
+          options={{
+            headerShown: false,
+          }}
         />
-        
+
         <Stack.Screen
           name="Transaction History"
           component={TransactionHistory}
@@ -70,7 +70,6 @@ const Router = () => {
           options={{
             headerShown: false,
           }}
-          
         />
         <Stack.Screen
           name="Pin"
@@ -97,20 +96,20 @@ const Router = () => {
           name="ChangePass"
           component={ChangePass}
           options={{headerShown: false}}
-         />
-         <Stack.Screen
+        />
+        <Stack.Screen
           name="ChangePin"
           component={ChangePin}
           options={{headerShown: false}}
-         />
-        <Stack.Screen   
+        />
+        <Stack.Screen
           name="ForgotPass"
           component={ForgotPass}
           options={{
             headerShown: false,
           }}
         />
-        <Stack.Screen   
+        <Stack.Screen
           name="Transfer"
           component={Transfer}
           options={{
