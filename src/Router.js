@@ -5,13 +5,16 @@ import {createStackNavigator} from '@react-navigation/stack';
 import Splash from './screens/splash';
 import Login from './screens/auth/login';
 import SearchReceiver from './screens/SearchReceiver';
-import TransactionHistory from './screens/TransactionHistory';
 import Home from './screens/home';
 import Profile from './screens/profile';
+import ChangePass from './screens/changePass';
+import ChangePin from './screens/ChangePin';
+import TransactionHistory from './screens/TransactionHistory';
 import Transfer from './screens/transfer';
 import TopUp from './screens/topup';
 import Success from './screens/success';
 import Confirmation from './screens/confirmation';
+
 
 const Stack = createStackNavigator();
 
@@ -37,6 +40,7 @@ const Router = () => {
           name="Search"
           component={SearchReceiver}
           options={{
+            title: 'Find Receiver',
             headerShown: false,
           }}
         />
@@ -62,6 +66,16 @@ const Router = () => {
           }}
         />
         <Stack.Screen
+          name="ChangePass"
+          component={ChangePass}
+          options={{headerShown: false}}
+         />
+         <Stack.Screen
+          name="ChangePin"
+          component={ChangePin}
+          options={{headerShown: false}}
+         />
+        <Stack.Screen   
           name="Transfer"
           component={Transfer}
           options={{
