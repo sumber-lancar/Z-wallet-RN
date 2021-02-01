@@ -13,6 +13,7 @@ import Transfer from './screens/transfer';
 import TopUp from './screens/topup';
 import Success from './screens/success';
 import Confirmation from './screens/confirmation';
+import PersonalInformation from "./screens/personalInformation";
 
 import Login from './screens/auth/Login';
 import Register from './screens/auth/Register';
@@ -142,6 +143,13 @@ const Router = () => {
           component={Confirmation}
           options={{
             title: 'Confirmation',
+          }}
+        />
+        <Stack.Screen
+          name="Personal Information"
+          component={PersonalInformation}
+          options={{
+            title: 'Personal Information',
           }}
         />
       </Stack.Navigator>
