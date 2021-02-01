@@ -28,8 +28,11 @@ const PersonalInformation = ({navigation}) => {
             <Text style={styles.dataInfo}>+62 813-9387-7946</Text>
           </View>
           <View>
-            <TouchableOpacity>
-              <Text style={{fontSize: 14, fontWeight: '600', color: '#6379F4'}}>Manage</Text>
+            <TouchableOpacity
+              onPress={() => navigation.navigate('Manage Phone Number')}>
+              <Text style={{fontSize: 14, fontWeight: '600', color: '#6379F4'}}>
+                Manage
+              </Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -47,25 +50,25 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     paddingVertical: 10,
   },
-  card:{
-      width: '100%',
-      backgroundColor: 'white',
-      padding: 10,
-      borderRadius: 10,
-      marginVertical: 10,
-      elevation: 5
-  },
-  cardPhone:{
+  card: {
     width: '100%',
     backgroundColor: 'white',
     padding: 10,
     borderRadius: 10,
     marginVertical: 10,
     elevation: 5,
-    width: '100%', 
-    flexDirection: 'row', 
-    alignItems: 'center', 
-    justifyContent: 'space-between'
+  },
+  cardPhone: {
+    width: '100%',
+    backgroundColor: 'white',
+    padding: 10,
+    borderRadius: 10,
+    marginVertical: 10,
+    elevation: 5,
+    width: '100%',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
   textInfo: {
     fontSize: 16,
@@ -74,13 +77,12 @@ const styles = StyleSheet.create({
     marginVertical: 15,
   },
   label: {
-      fontSize: 16,
-      fontWeight: '400',
-      color: '#7A7886'
+    fontSize: 16,
+    fontWeight: '400',
+    color: '#7A7886',
   },
   dataInfo: {
-      fontSize: 22,
-      fontWeight: '700',
-  }
-
+    fontSize: 22,
+    fontWeight: '700',
+  },
 });
