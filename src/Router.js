@@ -8,13 +8,13 @@ import SearchReceiver from './screens/SearchReceiver';
 import Home from './screens/home';
 import Profile from './screens/profile';
 import ChangePass from './screens/changePass';
+import ChangePin from './screens/ChangePin';
 import TransactionHistory from './screens/TransactionHistory';
-import Home from './screens/home';
-import Profile from './screens/profile';
 import Transfer from './screens/transfer';
 import TopUp from './screens/topup';
 import Success from './screens/success';
 import Confirmation from './screens/confirmation';
+
 
 const Stack = createStackNavigator();
 
@@ -68,6 +68,11 @@ const Router = () => {
         <Stack.Screen
           name="ChangePass"
           component={ChangePass}
+          options={{headerShown: false}}
+         />
+         <Stack.Screen
+          name="ChangePin"
+          component={ChangePin}
           options={{headerShown: false}}
          />
         <Stack.Screen   
