@@ -13,6 +13,9 @@ import Transfer from './screens/transfer';
 import TopUp from './screens/topup';
 import Success from './screens/success';
 import Confirmation from './screens/confirmation';
+import PersonalInformation from "./screens/personalInformation";
+import AddPhoneNumber from "./screens/addPhoneNumber";
+import ManagePhoneNumber from "./screens/managePhoneNumber";
 
 import Login from './screens/auth/Login';
 import Register from './screens/auth/Register';
@@ -142,6 +145,27 @@ const Router = () => {
           component={Confirmation}
           options={{
             title: 'Confirmation',
+          }}
+        />
+        <Stack.Screen
+          name="Personal Information"
+          component={PersonalInformation}
+          options={{
+            title: 'Personal Information',
+          }}
+        />
+        <Stack.Screen
+          name="Add Phone Number"
+          component={AddPhoneNumber}
+          options={{
+            title: 'Add Phone Number',
+          }}
+        />
+        <Stack.Screen
+          name="Manage Phone Number"
+          component={ManagePhoneNumber}
+          options={{
+            title: 'Manage Phone Number',
           }}
         />
       </Stack.Navigator>

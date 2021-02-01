@@ -30,7 +30,7 @@ const Profile = ({navigation}) => {
             </View>
 
             {/* btn navigation */}
-            <TouchableOpacity activeOpacity={0.5} style={styles.btn}>
+            <TouchableOpacity activeOpacity={0.5} style={styles.btn} onPress={() => navigation.navigate("Personal Information")}>
                 <Text style={styles.fontBtn}>Personal Information</Text>
                 <Image source={IconNext}/>
             </TouchableOpacity>
