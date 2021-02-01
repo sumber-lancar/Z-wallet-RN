@@ -15,6 +15,12 @@ import TopUp from './screens/topup';
 import Success from './screens/success';
 import Confirmation from './screens/confirmation';
 
+import Login from './screens/auth/Login';
+import Register from './screens/auth/Register';
+import Pin from './screens/auth/Pin';
+import PinSuccess from './screens/auth/PinSuccess';
+import ForgotPass from './screens/auth/ForgotPass';
+import ResetPass from './screens/auth/ResetPass';
 
 const Stack = createStackNavigator();
 
@@ -40,10 +46,17 @@ const Router = () => {
           name="Search"
           component={SearchReceiver}
           options={{
-            title: 'Find Receiver',
-            headerShown: false,
-          }}
+            title: 'Find Receiver',}}
         />
+
+        <Stack.Screen
+        name="Register"
+        component={Register}
+        options={{
+          headerShown: false,
+        }}
+        />
+        
         <Stack.Screen
           name="Transaction History"
           component={TransactionHistory}
@@ -54,6 +67,21 @@ const Router = () => {
         <Stack.Screen
           name="Home"
           component={Home}
+          options={{
+            headerShown: false,
+          }}
+          
+        />
+        <Stack.Screen
+          name="Pin"
+          component={Pin}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="PinSuccess"
+          component={PinSuccess}
           options={{
             headerShown: false,
           }}
@@ -76,6 +104,13 @@ const Router = () => {
           options={{headerShown: false}}
          />
         <Stack.Screen   
+          name="ForgotPass"
+          component={ForgotPass}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen   
           name="Transfer"
           component={Transfer}
           options={{
@@ -85,6 +120,13 @@ const Router = () => {
         <Stack.Screen
           name="TopUp"
           component={TopUp}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="ResetPass"
+          component={ResetPass}
           options={{
             headerShown: false,
           }}

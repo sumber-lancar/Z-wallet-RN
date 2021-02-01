@@ -1,3 +1,4 @@
+import {Icon} from 'native-base';
 import React, {useState} from 'react';
 import {Dimensions, StyleSheet, Text, View} from 'react-native';
 import {TextInput, TouchableOpacity} from 'react-native-gesture-handler';
@@ -6,35 +7,48 @@ import {
   IconLock,
   IconMail,
   IconEyeClosed,
+  IconPerson,
 } from '../../../../assets/icons';
 import {
   FONT_BOLD,
   COLOR_MAIN,
   FONT_REG,
   FONT_LIGHT,
-  FONT_SEMIBOLD,
 } from '../../../utils/constans';
 
-const Login = ({navigation}) => {
+const Register = ({navigation}) => {
   const [secureText, setSecureText] = useState(true);
-  const [fail, setFail] = useState(false);
   return (
     <>
       <View style={styles.container}>
         <Text style={styles.title}>Zwallet</Text>
       </View>
       <View style={styles.mainInput}>
-        <Text style={styles.login}>Login</Text>
-        <Text style={{...styles.textlogininfo, marginTop: 25}}>
-          Login to your existing account to access
+        <Text style={styles.login}>Sign Up</Text>
+        <Text style={{...styles.textlogininfo, marginTop: 15}}>
+          Create your account to access Zwallet.
         </Text>
-        <Text style={{...styles.textlogininfo, marginTop: 5}}>
-          all the features in Zwallet.
-        </Text>
-        <View
-          style={
-            fail ? {...styles.form, borderBottomColor: '#FF5B37'} : styles.form
-          }>
+        <View style={{...styles.form, marginTop: 15}}>
+          <IconPerson />
+          <TextInput
+            style={{
+              width: windowWidth * 0.73,
+              marginRight: 10,
+            }}
+            placeholder="Enter your First Name"
+          />
+        </View>
+        <View style={styles.form}>
+          <IconPerson />
+          <TextInput
+            style={{
+              width: windowWidth * 0.73,
+              marginRight: 10,
+            }}
+            placeholder="Enter your Last Name"
+          />
+        </View>
+        <View style={styles.form}>
           <IconMail />
           <TextInput
             style={{
@@ -44,15 +58,12 @@ const Login = ({navigation}) => {
             placeholder="Enter your e-mail"
           />
         </View>
-        <View
-          style={
-            fail ? {...styles.form, borderBottomColor: '#FF5B37'} : styles.form
-          }>
+        <View style={styles.form}>
           <IconLock />
           <TextInput
             secureTextEntry={secureText}
             style={{width: windowWidth * 0.65}}
-            placeholder="Enter your password"
+            placeholder="Create your password"
           />
           {secureText ? (
             <IconEyeClosed onPress={() => setSecureText(false)} />
@@ -64,37 +75,18 @@ const Login = ({navigation}) => {
           style={{
             alignItems: 'flex-end',
             width: windowWidth * 0.8,
-          }}>
-          <TouchableOpacity
-            style={{
-              alignItems: 'flex-end',
-              width: windowWidth * 0.34,
-              marginTop: 5,
-            }}
-            onPress={() => navigation.navigate('ForgotPass')}>
-            <Text>Forgot password?</Text>
-          </TouchableOpacity>
-        </View>
-
-        <Text
-          style={{
-            color: '#FF5B37',
-            fontFamily: FONT_SEMIBOLD,
-            marginTop: 20,
-            fontSize: 16,
-          }}>
-          {fail ? 'Email or Password Invalid' : ''}
-        </Text>
-
+          }}></View>
         <TouchableOpacity
           style={styles.btnLogin}
-          onPress={() => setFail(!fail)}>
-          <Text style={{color: '#fff', fontSize: 18}}>Login</Text>
+          onPress={() => {
+            navigation.navigate('Pin');
+          }}>
+          <Text style={{color: '#fff', fontSize: 18}}>Sign Up</Text>
         </TouchableOpacity>
         <View style={{flexDirection: 'row'}}>
-          <Text>Don’t have an account? Let’s </Text>
-          <TouchableOpacity onPress={() => navigation.navigate('Register')}>
-            <Text style={{color: COLOR_MAIN}}>Sign Up</Text>
+          <Text>Already have an account? Let’s </Text>
+          <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+            <Text style={{color: COLOR_MAIN}}>Login</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -102,7 +94,7 @@ const Login = ({navigation}) => {
   );
 };
 
-export default Login;
+export default Register;
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -148,7 +140,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: COLOR_MAIN,
     width: windowWidth * 0.85,
-    marginTop: 30,
+    marginTop: 10,
   },
   btnLogin: {
     backgroundColor: COLOR_MAIN,
@@ -157,7 +149,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 12,
-    marginTop: 40,
+    marginTop: 55,
     marginBottom: 5,
   },
 });
