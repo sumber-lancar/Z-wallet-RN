@@ -45,7 +45,7 @@ const Router = () => {
           name="Search"
           component={SearchReceiver}
           options={{
-            title: 'Find Receiver',
+            headerShown: false,
           }}
         />
 

@@ -88,7 +88,10 @@ const Login = ({navigation}) => {
 
         <TouchableOpacity
           style={styles.btnLogin}
-          onPress={() => setFail(!fail)}>
+          onPress={() => {
+            setFail(!fail);
+            navigation.navigate('Home');
+          }}>
           <Text style={{color: '#fff', fontSize: 18}}>Login</Text>
         </TouchableOpacity>
         <View style={{flexDirection: 'row'}}>
