@@ -90,7 +90,7 @@ const Login = ({navigation}) => {
           style={styles.btnLogin}
           onPress={() => {
             setFail(!fail);
-            navigation.navigate('Home');
+            navigation.replace('Home');
           }}>
           <Text style={{color: '#fff', fontSize: 18}}>Login</Text>
         </TouchableOpacity>
