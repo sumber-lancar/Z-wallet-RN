@@ -24,7 +24,9 @@ const SearchReceiver = ({navigation}) => {
       />
       <View style={styles.header}>
         <View style={styles.sectionHeader}>
-          <Image source={IconBackWhite} />
+          <TouchableOpacity onPress={() => navigation.goBack()}>
+            <Image source={IconBackWhite} />
+          </TouchableOpacity>
           <Text style={{fontSize: 20, marginLeft: 15, color: 'white', fontWeight: '400'}}>
             Find Receiver
           </Text>
@@ -111,14 +113,14 @@ const styles = StyleSheet.create({
     paddingBottom: 15,
   },
   header: {
-    // height: 260,
+    height: 218,
     width: '100%',
     backgroundColor: '#6379F4',
     borderBottomLeftRadius: 20,
     borderBottomRightRadius: 20,
   },
   sectionHeader: {
-    marginTop: 30,
+    marginTop: 50,
     flexDirection: 'row',
     alignItems: 'center',
     marginHorizontal: 15,
@@ -132,7 +134,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: 'white',
     borderRadius: 10,
-    marginBottom: 25
+    marginBottom: 25,
+    marginTop: 40
   },
   card: {
     width: 110,

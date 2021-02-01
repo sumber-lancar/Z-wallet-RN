@@ -3,12 +3,16 @@ import { View, Text, StyleSheet, Image, TextInput, KeyboardAvoidingView } from '
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler'
 import { IconBackWhite, ImgProfile, Pencil, Plus } from '../../assets'
 
-const TopUp = () => {
+const TopUp = ({navigation}) => {
     return (
         <ScrollView>
             <View style={styles.header}>
                 <View style={styles.sectionHeader}>
-                    <Image source={IconBackWhite} />
+                    <TouchableOpacity onPress={() => {
+                        navigation.goBack()
+                    }}>
+                        <Image source={IconBackWhite}/>
+                    </TouchableOpacity>
                     <Text style={{fontSize: 20, color: 'white', fontWeight: '700'}}>Transfer</Text>
                 </View>
                 <View style={styles.card}>
