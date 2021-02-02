@@ -14,17 +14,28 @@ import {
 } from '../../assets';
 import CardHome from '../../components/card/cardHome';
 import {useSelector} from 'react-redux';
-import {API_URL} from '@env'; 
+import {API_URL} from '@env';
+
+//context
+import {useSocket} from '../../utils/Context/SocketProvider';
 
 const Home = ({navigation}) => {
+  const socket = useSocket();
   const balance = useSelector((state) => state.balance.balance);
   const phone = useSelector((state) => state.auth.phone);
-  const token_user = useSelector((state) => state.auth.token)
-  const name = useSelector((state) => state.auth.name_user)
-  const photo_user = useSelector((state) => state.auth.photo_user)
-  let httpImage = { uri : API_URL + photo_user}
-
-  const [history, setHistory] = useState([])
+  const token_user = useSelector((state) => state.auth.token);
+  const name = useSelector((state) => state.auth.name_user);
+  const photo_user = useSelector((state) => state.auth.photo_user);
+  let httpImage = {uri: API_URL + photo_user};
+  const [history, setHistory] = useState([]);
+  useEffect(() => {
+    socket.on('transfer', (msg) => {
+      console.log('hai ', msg);
+    });
+    return () => {
+      socket.off('transfer');
+    };
+  }, []);
 
   const getData = () => {
     const config = {
@@ -32,20 +43,19 @@ const Home = ({navigation}) => {
         'x-access-token': 'Bearer ' + token_user,
       },
     };
-    axios.get(API_URL + '/transaction/getAllInvoice', config)
-    .then((res) => {
-      setHistory(res.data.data)
-    })
-    .catch((err) => {
-      console.log(err)
-    })
-  }
+    axios
+      .get(API_URL + '/transaction/getAllInvoice', config)
+      .then((res) => {
+        setHistory(res.data.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   useEffect(() => {
     getData();
-  }, [])
-
-
+  }, []);
 
   return (
     <ScrollView>
