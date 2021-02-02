@@ -23,20 +23,16 @@ const regexEmail = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\")
 //redux
 import {connect} from 'react-redux';
 import {login} from '../../../utils/redux/action/authAction';
+import {setBalance} from '../../../utils/redux/action/balanceAction';
 import {useSelector} from 'react-redux';
 
-const Login = ({navigation, loginRedux}) => {
+const Login = ({navigation, loginRedux, setBalance}) => {
   const [secureText, setSecureText] = useState(true);
   const [fail, setFail] = useState(false);
   const [errorFrom, setErrorForm] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const user_name = useSelector((state) => state.auth.name_user);
-  useEffect(() => {
-    return function cleanup() {
-      login();
-    };
-  }, []);
   const login = () => {
     setErrorForm('');
     setFail(false);
@@ -61,8 +57,11 @@ const Login = ({navigation, loginRedux}) => {
         const name = res.data.data.fullname;
         const email = res.data.data.email;
         const photo = res.data.data.photo;
-        console.log(token, id, name, email, photo);
-        loginRedux(token, id, name, email, photo);
+        const phone = res.data.data.phone;
+        const balance = res.data.data.balance;
+        //console.log(token, id, name, email, photo);
+        loginRedux(token, id, name, email, photo, phone);
+        setBalance(balance);
         navigation.replace('Home');
       })
       .catch((err) => {
@@ -150,11 +149,7 @@ const Login = ({navigation, loginRedux}) => {
           {fail ? 'Email or Password Invalid' : ''}
         </Text>
 
-        <TouchableOpacity
-          style={styles.btnLogin}
-          onPress={() => {
-            login();
-          }}>
+        <TouchableOpacity style={styles.btnLogin} onPress={login}>
           <Text style={{color: '#fff', fontSize: 18}}>Login</Text>
         </TouchableOpacity>
         <View style={{flexDirection: 'row'}}>
@@ -170,8 +165,9 @@ const Login = ({navigation, loginRedux}) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    loginRedux: (token, id, name, email, photo) =>
-      dispatch(login(token, id, name, email, photo)),
+    loginRedux: (token, id, name, email, photo, phone) =>
+      dispatch(login(token, id, name, email, photo, phone)),
+    setBalance: (balance) => dispatch(setBalance(balance)),
   };
 };
 

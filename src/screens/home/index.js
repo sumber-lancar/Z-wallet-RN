@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import axios from 'axios'
+import axios from 'axios';
 import {View, Text, StyleSheet, Image} from 'react-native';
 import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
 import {
@@ -13,20 +13,18 @@ import {
   Spotify,
 } from '../../assets';
 import CardHome from '../../components/card/cardHome';
-import {useSelector} from 'react-redux'
-import {API_URL} from "@env"
-
-
+import {useSelector} from 'react-redux';
+import {API_URL} from '@env'; 
 
 const Home = ({navigation}) => {
-
+  const balance = useSelector((state) => state.balance.balance);
+  const phone = useSelector((state) => state.auth.phone);
   const token_user = useSelector((state) => state.auth.token)
   const name = useSelector((state) => state.auth.name_user)
   const photo_user = useSelector((state) => state.auth.photo_user)
-  console.log(photo_user)
+  let httpImage = { uri : API_URL + photo_user}
 
   const [history, setHistory] = useState([])
-  let httpImage = { uri : API_URL + photo_user}
 
   const getData = () => {
     const config = {
@@ -45,7 +43,7 @@ const Home = ({navigation}) => {
 
   useEffect(() => {
     getData();
-  }, [history])
+  }, [])
 
 
 
@@ -67,9 +65,7 @@ const Home = ({navigation}) => {
               justifyContent: 'space-around',
             }}>
             <Text>Hello,</Text>
-            <Text style={{fontSize: 18, fontWeight: 'bold'}}>
-              {name}
-            </Text>
+            <Text style={{fontSize: 18, fontWeight: 'bold'}}>{name}</Text>
           </View>
         </View>
         <TouchableOpacity
@@ -84,8 +80,8 @@ const Home = ({navigation}) => {
       <View style={styles.containerBalance}>
         <View style={styles.balanceSection}>
           <Text style={styles.txtBalance}>Balance</Text>
-          <Text style={styles.txtmoney}>149.000</Text>
-          <Text style={styles.txtBalance}>+62 813-9387-7946</Text>
+          <Text style={styles.txtmoney}>{balance}</Text>
+          <Text style={styles.txtBalance}>{phone}</Text>
         </View>
       </View>
 
@@ -123,23 +119,22 @@ const Home = ({navigation}) => {
           <Text style={{color: '#6379F4', fontWeight: '600'}}>See all</Text>
         </TouchableOpacity>
       </View>
-        {history && history.map(({sender, receiver, photo, amount, type, id, notes}) => {
-           let httpImage = { uri : API_URL + photo}
-          return(
+      {history &&
+        history.map(({sender, receiver, photo, amount, type, id, notes}) => {
+          return (
             <CardHome
-            key={id}
-            id={id}
-            navigation={navigation}
-            receiver={receiver}
-            photo={httpImage}
-            notes={notes}
-            amount={amount}
-            type={type}
-            sender={sender}
-          />
-          )
+              key={id}
+              id={id}
+              navigation={navigation}
+              receiver={receiver}
+              photo={photo}
+              notes={notes}
+              amount={amount}
+              type={type}
+              sender={sender}
+            />
+          );
         })}
-     
     </ScrollView>
   );
 };
@@ -159,7 +154,6 @@ const styles = StyleSheet.create({
     width: 52,
     borderRadius: 10,
     alignSelf: 'center',
-    backgroundColor: 'lightgrey'
   },
   containerBalance: {
     height: 141,
