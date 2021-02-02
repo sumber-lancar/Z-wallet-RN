@@ -15,6 +15,7 @@ import {IconBack, IconNext, ImgProfile, Pencil} from '../../assets';
 //redux
 import {connect} from 'react-redux';
 import {logout} from '../../utils/redux/action/authAction';
+import { ScrollView } from 'react-native-gesture-handler';
 
 const Profile = ({navigation, logoutRedux}) => {
   const [isEnabled, setIsEnabled] = useState(false);
@@ -25,7 +26,7 @@ const Profile = ({navigation, logoutRedux}) => {
     logoutRedux();
   };
   return (
-    <View>
+    <ScrollView>
       <TouchableOpacity
         style={{width: 40, marginTop: 30, marginLeft: 20}}
         onPress={() => {
@@ -73,7 +74,9 @@ const Profile = ({navigation, logoutRedux}) => {
       </View>
 
       {/* btn navigation */}
-      <TouchableOpacity activeOpacity={0.5} style={styles.btn}>
+      <TouchableOpacity activeOpacity={0.5} style={styles.btn} onPress={() => {
+        navigation.navigate("Personal Information")
+      }}>
         <Text style={styles.fontBtn}>Personal Information</Text>
         <Image source={IconNext} />
       </TouchableOpacity>
@@ -141,7 +144,7 @@ const Profile = ({navigation, logoutRedux}) => {
           </View>
         </View>
       </Modal>
-    </View>
+    </ScrollView>
   );
 };
 
