@@ -2,6 +2,7 @@ import React,{useEffect, useState} from 'react'
 import { View, Text, Image, StyleSheet } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import {useSelector} from 'react-redux'
+import {API_URL} from "@env"
 
 const CardHome = (props) => {
     const name = useSelector((state) => state.auth.name_user)
@@ -30,15 +31,15 @@ const CardHome = (props) => {
     const [symbol, setSymbol] = useState(txtSymbol)
     const [penerima, setPenerima] = useState(recvr)
     const [status, setStatus] = useState(stts)
+
    
-    
     return (
         <TouchableOpacity style={styles.container} onPress={() => {
             props.navigation.navigate("Success")
         }}>
             <View style={{flexDirection: 'row'}}>
                 <View style={styles.containerImage}>
-                    <Image style={styles.img}  source={props.photo}/>
+                    <Image style={styles.img}  source={{uri: API_URL + props.photo, height: 56, width: 56}}/>
                 </View>
                 <View style={styles.txtContainer}>
                     <Text style={styles.txtName}>{penerima}</Text>
