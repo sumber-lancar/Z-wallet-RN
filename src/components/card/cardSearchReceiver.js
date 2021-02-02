@@ -1,18 +1,18 @@
 import React from 'react';
 import {StyleSheet, Text, View, TouchableOpacity, Image} from 'react-native';
 import Icon from 'react-native-vector-icons/EvilIcons';
-
+import {API_URL} from '@env';
 const CardSearchReceiver = (props) => {
   return (
     <View>
       <TouchableOpacity style={styles.allContacts} onPress={() => props.navigation.navigate("Transfer")}>
         <Image
           style={styles.imgContact}
-          source={props.iconImg}
+          source={{uri: API_URL + props.photo, width:50, height:50}}
         />
         <View style={{marginHorizontal: 15}}>
           <Text style={styles.textContacts}>{props.name}</Text>
-          <Text style={styles.textPhone}>{props.phoneNumber}</Text>
+          <Text style={styles.textPhone}>{props.phone}</Text>
         </View>
       </TouchableOpacity>
     </View>
