@@ -11,6 +11,7 @@ import ChangePin from './screens/ChangePin';
 import TransactionHistory from './screens/TransactionHistory';
 import Transfer from './screens/transfer';
 import TopUp from './screens/topup';
+import pinConfirm from './screens/pinConfirm'
 import Success from './screens/success';
 import Confirmation from './screens/confirmation';
 import Notification from './screens/notification';
@@ -165,6 +166,13 @@ const Router = () => {
           options={{
             title: 'Confirmation',
           }}
+        />
+        <Stack.Screen
+        name="pinConfirm"
+        component={pinConfirm}
+        options={{
+          headerShown: false,
+        }}
         />
         <Stack.Screen
           name="Notification"
