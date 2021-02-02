@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Dimensions, StyleSheet, Text, View} from 'react-native';
 import {TextInput, TouchableOpacity} from 'react-native-gesture-handler';
 import {
@@ -14,10 +14,46 @@ import {
   FONT_LIGHT,
   FONT_SEMIBOLD,
 } from '../../../utils/constans';
+import axios from 'axios';
+
+import {API_URL} from '@env';
+
+const regexEmail = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
 
 const Login = ({navigation}) => {
   const [secureText, setSecureText] = useState(true);
   const [fail, setFail] = useState(false);
+  const [errorFrom, setErrorForm] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  useEffect(() => {
+    return function cleanup() {
+      login();
+    };
+  }, []);
+  const login = () => {
+    setErrorForm('');
+    setFail(false);
+    if (email === '' || password === '') {
+      return setErrorForm('kosong');
+    } else if (!regexEmail.test(email)) {
+      return setErrorForm('errormail');
+    }
+    const data = {
+      email: email,
+      password: password,
+    };
+    axios
+      .post(`${API_URL}/auth/login`, data)
+      .then((res) => {
+        console.log(res.data);
+        navigation.replace('Home');
+      })
+      .catch((err) => {
+        console.log(err);
+        setFail(true);
+      });
+  };
   return (
     <>
       <View style={styles.container}>
@@ -25,6 +61,13 @@ const Login = ({navigation}) => {
       </View>
       <View style={styles.mainInput}>
         <Text style={styles.login}>Login</Text>
+        <Text style={{color: 'red'}}>
+          {errorFrom == 'kosong'
+            ? 'Fill All Form Input'
+            : errorFrom == 'errormail'
+            ? 'Please enter email correctly'
+            : ''}
+        </Text>
         <Text style={{...styles.textlogininfo, marginTop: 25}}>
           Login to your existing account to access
         </Text>
@@ -42,6 +85,8 @@ const Login = ({navigation}) => {
               marginRight: 10,
             }}
             placeholder="Enter your e-mail"
+            defaultValue={email}
+            onChangeText={(email) => setEmail(email)}
           />
         </View>
         <View
@@ -53,6 +98,8 @@ const Login = ({navigation}) => {
             secureTextEntry={secureText}
             style={{width: windowWidth * 0.65}}
             placeholder="Enter your password"
+            defaultValue={password}
+            onChangeText={(password) => setPassword(password)}
           />
           {secureText ? (
             <IconEyeClosed onPress={() => setSecureText(false)} />
@@ -89,8 +136,7 @@ const Login = ({navigation}) => {
         <TouchableOpacity
           style={styles.btnLogin}
           onPress={() => {
-            setFail(!fail);
-            navigation.replace('Home');
+            login();
           }}>
           <Text style={{color: '#fff', fontSize: 18}}>Login</Text>
         </TouchableOpacity>
