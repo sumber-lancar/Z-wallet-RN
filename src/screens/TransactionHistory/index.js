@@ -1,4 +1,4 @@
-import React, {createRef, useState} from 'react';
+import React, {createRef, useEffect, useState} from 'react';
 import {
   StyleSheet,
   Text,
@@ -21,14 +21,86 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import ActionSheet from 'react-native-actions-sheet';
 import CalendarPicker from 'react-native-calendar-picker';
 import CardHome from '../../components/card/cardHome';
+import axios from 'axios'
+import {API_URL} from "@env"
+import {useSelector} from 'react-redux';
 
 const actionSheetRef = createRef();
+
 const TransactionHistory = ({navigation}) => {
-  let actionSheet;
+  useEffect(() => {
+    getHistoryToday();
+    getHistoryWeek();
+  }, [historyToday, historyWeek])
+
+  const toPrice = (x) => {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  }
+
   const [startDate, setStartDate] = useState();
   const [endDate, setEndDate] = useState();
+  const [historyToday, setHistoryToday] = useState([])
+  const [historyWeek, setHistoryWeek] = useState([])
+  const [urlToday, setUrlToday] = useState('/transaction/getAllInvoice?today=true')
+  const [urlWeek, setUrlWeek] = useState('/transaction/getAllInvoice?thisWeek=true')
+  const token_user = useSelector((state) => state.auth.token);
 
-  console.log(startDate);
+  // Start date
+  const startday = startDate && startDate._i.day
+  const startMonth = startDate && startDate._i.month
+  const startYear = startDate && startDate._i.year
+  // End date
+  const endDay = endDate && endDate._i.day
+  const endMonth = endDate && endDate._i.month
+  const endYear = endDate && endDate._i.year
+
+  const strtDate = `${startYear}-${startMonth}-${startday}`
+  const endDatee = `${endYear}-${endMonth}-${endDay}`
+
+  // console.log(strtDate)
+  // console.log(endDatee)
+  // console.log(urlToday)
+  // console.log(urlWeek)
+  
+ 
+
+  const getHistoryToday = () => {
+    const config = {
+      headers: {
+        'x-access-token': 'Bearer ' + token_user,
+      },
+    };
+    axios.get(API_URL + urlToday , config)
+    .then((res) => {
+      console.log('this day',res.data.data)
+      setHistoryToday(res.data.data)
+    })
+    .catch((err) => {
+      console.log(err)
+    })
+  }
+
+  const getHistoryWeek = () => {
+    const config = {
+      headers: {
+        'x-access-token': 'Bearer ' + token_user,
+      },
+    };
+    axios.get(API_URL + urlWeek , config)
+    .then((res) => {
+      console.log('this week', res.data.data)
+      setHistoryWeek(res.data.data)
+    })
+    .catch((err) => {
+      console.log(err)
+    })
+  }
+
+  const refresh = () => {
+    getHistoryToday();
+    getHistoryWeek();
+  }
+
 
   const selectDate = (date, type) => {
     if (type === 'END_DATE') {
@@ -40,64 +112,51 @@ const TransactionHistory = ({navigation}) => {
 
   const startDatePick = startDate ? startDate.toString() : '';
   const endDatePick = endDate ? endDate.toString() : '';
-  // const minDate = new Date(); // Today
-  // const maxDate = new Date(2017, 6, 3);
-
-  console.log('start date', startDatePick);
-  console.log('end date', endDatePick);
-
-  console.log('start date type', typeof startDatePick);
 
   return (
     <View style={styles.container}>
       <ScrollView>
         <Text style={styles.textThis}>This Week</Text>
-        <CardHome
-          navigation={navigation}
-          name="Samuel Suhi"
-          iconImg={Card1}
-          status="Transfer"
-          price="149000"
-          style={styles.card}
-        />
-        <CardHome
-          navigation={navigation}
-          name="Spotify"
-          iconImg={Spotify}
-          status="Subscription"
-          price="-49000"
-          style={styles.card}
-        />
+        {historyToday && historyToday.map(({sender, receiver, photo, amount, notes, type, id}) => {
+          return(
+              <CardHome
+                key={id}
+                id={id}
+                navigation={navigation}
+                receiver={receiver}
+                photo={photo}
+                notes={notes}
+                amount={toPrice(amount)}
+                type={type}
+                sender={sender}
+              />
+          )
+        })}
 
-        <Text style={styles.textThis}>This Month</Text>
-        <CardHome
-          navigation={navigation}
-          name="Netflix"
-          iconImg={NetFlix}
-          status="Subscription"
-          price="-49000"
-          style={styles.card}
-        />
-        <CardHome
-          navigation={navigation}
-          name="Blanja"
-          iconImg={Blanja}
-          status="Payment"
-          price="-350000"
-          style={styles.card}
-        />
-        <CardHome
-          navigation={navigation}
-          name="netflix"
-          iconImg={NetFlix}
-          status="Subscription"
-          price="-49000"
-          style={styles.card}
-        />
+        <Text style={styles.textThis}>This Week</Text>
+        {historyWeek && historyWeek.map(({sender, receiver, photo, amount, notes, type,id}) => {
+          return(
+              <CardHome
+                key={id}
+                id={id}
+                navigation={navigation}
+                receiver={receiver}
+                photo={photo}
+                notes={notes}
+                amount={toPrice(amount)}
+                type={type}
+                sender={sender}
+              />
+          )
+        })}
       </ScrollView>
       <View style={styles.filter}>
         <View style={{flexDirection: 'row'}}>
-          <TouchableOpacity style={styles.btn}>
+          <TouchableOpacity style={styles.btn} onPress={() => {
+            setUrlToday('/transaction/getInvoice?today=true&flow=out')
+            setUrlWeek('/transaction/getInvoice?flow=out&thisWeek=true')
+            refresh()
+          }}>
             <Icon
               name="arrow-up"
               size={30}
@@ -105,7 +164,11 @@ const TransactionHistory = ({navigation}) => {
               style={{marginHorizontal: 5}}
             />
           </TouchableOpacity>
-          <TouchableOpacity underlayColor="#6379F4" style={styles.btn}>
+          <TouchableOpacity underlayColor="#6379F4" style={styles.btn} onPress={() => {
+             setUrlToday('/transaction/getInvoice?today=true&flow=in')
+             setUrlWeek('/transaction/getInvoice?flow=in&thisWeek=true')
+             refresh()
+          }}>
             <Icon
               name="arrow-down"
               size={30}

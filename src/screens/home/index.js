@@ -20,6 +20,9 @@ import {API_URL} from '@env';
 import {useSocket} from '../../utils/Context/SocketProvider';
 
 const Home = ({navigation}) => {
+  const toPrice = (x) => {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  }
   const socket = useSocket();
   const balance = useSelector((state) => state.balance.balance);
   const phone = useSelector((state) => state.auth.phone);
@@ -90,7 +93,7 @@ const Home = ({navigation}) => {
       <View style={styles.containerBalance}>
         <View style={styles.balanceSection}>
           <Text style={styles.txtBalance}>Balance</Text>
-          <Text style={styles.txtmoney}>{balance}</Text>
+          <Text style={styles.txtmoney}>Rp. {toPrice(balance)}</Text>
           <Text style={styles.txtBalance}>{phone}</Text>
         </View>
       </View>
@@ -139,7 +142,7 @@ const Home = ({navigation}) => {
               receiver={receiver}
               photo={photo}
               notes={notes}
-              amount={amount}
+              amount={toPrice(amount)}
               type={type}
               sender={sender}
             />
@@ -177,7 +180,7 @@ const styles = StyleSheet.create({
   },
   balanceSection: {
     height: 91,
-    width: 134,
+    width: 200,
     justifyContent: 'space-between',
   },
   txtBalance: {
