@@ -16,15 +16,25 @@ import CardHome from '../../components/card/cardHome';
 import {useSelector} from 'react-redux';
 import {API_URL} from '@env';
 
-import {useSelector} from 'react-redux';
+//context
+import {useSocket} from '../../utils/Context/SocketProvider';
 
 const Home = ({navigation}) => {
+  const socket = useSocket();
   const balance = useSelector((state) => state.balance.balance);
-  const phone = useSelector((state) => state.auth.phone);
+  const phone = useSelector((state) => state.auth.phone_user);
 
   const token_user = useSelector((state) => state.auth.token);
   const name = useSelector((state) => state.auth.name_user);
   const [history, setHistory] = useState([]);
+  useEffect(() => {
+    socket.on('transfer', (msg) => {
+      console.log('hai ', msg);
+    });
+    return () => {
+      socket.off('transfer');
+    };
+  }, []);
 
   const getData = () => {
     const config = {
