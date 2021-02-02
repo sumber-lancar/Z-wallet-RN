@@ -1,8 +1,31 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
+import { useSelector, connect } from "react-redux";
 
 const PersonalInformation = ({navigation}) => {
+  const[firstName, setFirstName]=useState('');
+  const[lastName, setLastName]=useState('');
+  const[email, setEmail]=useState('');
+
+  const user_name = useSelector((state) => state.auth.name_user).split(" ");
+  const email_user = useSelector((state) => state.auth.email_user);
+
+  const getFirstName = () => {
+    setFirstName(user_name[0])
+  }
+  const getLastName = () => {
+    setLastName(user_name[1])
+  }
+  const getEmail = () => {
+    setEmail(email_user)
+  }
+  useEffect(() => {
+    getFirstName()
+    getLastName()
+    getEmail()
+  },[])
+
   return (
     <View style={styles.container}>
       <Text style={styles.textInfo}>
@@ -12,15 +35,15 @@ const PersonalInformation = ({navigation}) => {
       <View style={{marginVertical: 20}}>
         <View style={styles.card}>
           <Text style={styles.label}>First Name</Text>
-          <Text style={styles.dataInfo}>Robert</Text>
+          <Text style={styles.dataInfo}>{firstName}</Text>
         </View>
         <View style={styles.card}>
           <Text style={styles.label}>Last Name</Text>
-          <Text style={styles.dataInfo}>Chandler</Text>
+          <Text style={styles.dataInfo}>{lastName}</Text>
         </View>
         <View style={styles.card}>
           <Text style={styles.label}>Verified E-mail</Text>
-          <Text style={styles.dataInfo}>pewdiepie1@gmail.com</Text>
+          <Text style={styles.dataInfo}>{email}</Text>
         </View>
         <View style={styles.cardPhone}>
           <View>
@@ -41,7 +64,15 @@ const PersonalInformation = ({navigation}) => {
   );
 };
 
-export default PersonalInformation;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    login: (token, name_user, email_user) => 
+      dispatch(login(token, name_user, email_user)),
+    
+  }
+}
+
+export default connect(null, mapDispatchToProps)(PersonalInformation);
 
 const styles = StyleSheet.create({
   container: {
