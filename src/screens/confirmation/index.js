@@ -48,7 +48,7 @@ const Confirmation = ({navigation}) => {
       </ScrollView>
       <View style={{bottom: 0, justifyContent: 'center', alignItems: 'center', marginBottom: 30, marginTop: 10}}>
       <TouchableOpacity style={styles.btnContinue} onPress={() => {
-        navigation.navigate('Success')
+        navigation.navigate('pinConfirm')
       }}>
           <Text style={{fontSize: 16, color: 'white'}}>Continue</Text>
       </TouchableOpacity>

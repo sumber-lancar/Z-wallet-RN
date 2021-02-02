@@ -19,10 +19,12 @@ import {API_URL} from '@env';
 const Home = ({navigation}) => {
   const balance = useSelector((state) => state.balance.balance);
   const phone = useSelector((state) => state.auth.phone);
+  const token_user = useSelector((state) => state.auth.token)
+  const name = useSelector((state) => state.auth.name_user)
+  const photo_user = useSelector((state) => state.auth.photo_user)
+  let httpImage = { uri : API_URL + photo_user}
 
-  const token_user = useSelector((state) => state.auth.token);
-  const name = useSelector((state) => state.auth.name_user);
-  const [history, setHistory] = useState([]);
+  const [history, setHistory] = useState([])
 
   const getData = () => {
     const config = {
@@ -30,20 +32,20 @@ const Home = ({navigation}) => {
         'x-access-token': 'Bearer ' + token_user,
       },
     };
-    axios
-      .get(API_URL + '/transaction/getAllInvoice', config)
-      .then((res) => {
-        console.log(res.data.data);
-        setHistory(res.data.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
+    axios.get(API_URL + '/transaction/getAllInvoice', config)
+    .then((res) => {
+      setHistory(res.data.data)
+    })
+    .catch((err) => {
+      console.log(err)
+    })
+  }
 
   useEffect(() => {
     getData();
-  }, []);
+  }, [])
+
+
 
   return (
     <ScrollView>
@@ -54,7 +56,7 @@ const Home = ({navigation}) => {
             onPress={() => {
               navigation.navigate('Profile');
             }}>
-            <Image style={styles.imageProfile} source={ImgProfile} />
+            <Image style={styles.imageProfile} source={httpImage} />
           </TouchableOpacity>
           <View
             style={{
@@ -119,14 +121,13 @@ const Home = ({navigation}) => {
       </View>
       {history &&
         history.map(({sender, receiver, photo, amount, type, id, notes}) => {
-          let httpImage = {uri: API_URL + photo};
           return (
             <CardHome
               key={id}
               id={id}
               navigation={navigation}
               receiver={receiver}
-              photo={httpImage}
+              photo={photo}
               notes={notes}
               amount={amount}
               type={type}
