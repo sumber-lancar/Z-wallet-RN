@@ -1,4 +1,3 @@
-import {Icon} from 'native-base';
 import React, {useState} from 'react';
 import {Dimensions, StyleSheet, Text, View} from 'react-native';
 import {TextInput, TouchableOpacity} from 'react-native-gesture-handler';
@@ -9,15 +8,61 @@ import {
   IconEyeClosed,
   IconPerson,
 } from '../../../../assets/icons';
-import {
-  FONT_BOLD,
-  COLOR_MAIN,
-  FONT_REG,
-  FONT_LIGHT,
-} from '../../../utils/constans';
+import {FONT_BOLD, COLOR_MAIN, FONT_REG} from '../../../utils/constans';
+import axios from 'axios';
+
+import {API_URL} from '@env';
+
+const regexEmail = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
 
 const Register = ({navigation}) => {
   const [secureText, setSecureText] = useState(true);
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [errorFrom, setErrorForm] = useState('');
+
+  const register = () => {
+    //validation//
+    setErrorForm('');
+    if (
+      firstName === '' ||
+      lastName === '' ||
+      email === '' ||
+      password === ''
+    ) {
+      return setErrorForm('kosong');
+    } else if (
+      firstName.length < 3 ||
+      firstName.length > 10 ||
+      lastName.length < 3 ||
+      lastName.length > 10
+    ) {
+      return setErrorForm('errorname');
+    } else if (!regexEmail.test(email)) {
+      return setErrorForm('errormail');
+    } else if (password.length < 4 || password.length > 12) {
+      return setErrorForm('errorpass');
+    }
+    //validation//
+    const data = {
+      firstname: firstName,
+      lastname: lastName,
+      email: email,
+      password: password,
+    };
+    axios
+      .post(`${API_URL}/auth/signup`, data)
+      .then((res) => {
+        console.log(res);
+        navigation.navigate('AccountActivation', {email});
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   return (
     <>
       <View style={styles.container}>
@@ -25,6 +70,17 @@ const Register = ({navigation}) => {
       </View>
       <View style={styles.mainInput}>
         <Text style={styles.login}>Sign Up</Text>
+        <Text style={{color: 'red'}}>
+          {errorFrom == 'kosong'
+            ? 'Fill All Form Input'
+            : errorFrom == 'errorname'
+            ? 'Name Character Min 3 and Max 10'
+            : errorFrom == 'errormail'
+            ? 'Please enter email correctly'
+            : errorFrom == 'errorpass'
+            ? 'Enter Password Min 4 and Max 12'
+            : ''}
+        </Text>
         <Text style={{...styles.textlogininfo, marginTop: 15}}>
           Create your account to access Zwallet.
         </Text>
@@ -36,6 +92,8 @@ const Register = ({navigation}) => {
               marginRight: 10,
             }}
             placeholder="Enter your First Name"
+            defaultValue={firstName}
+            onChangeText={(firstName) => setFirstName(firstName)}
           />
         </View>
         <View style={styles.form}>
@@ -46,6 +104,8 @@ const Register = ({navigation}) => {
               marginRight: 10,
             }}
             placeholder="Enter your Last Name"
+            defaultValue={lastName}
+            onChangeText={(lastName) => setLastName(lastName)}
           />
         </View>
         <View style={styles.form}>
@@ -56,6 +116,8 @@ const Register = ({navigation}) => {
               marginRight: 10,
             }}
             placeholder="Enter your e-mail"
+            defaultValue={email}
+            onChangeText={(email) => setEmail(email)}
           />
         </View>
         <View style={styles.form}>
@@ -64,6 +126,8 @@ const Register = ({navigation}) => {
             secureTextEntry={secureText}
             style={{width: windowWidth * 0.65}}
             placeholder="Create your password"
+            defaultValue={password}
+            onChangeText={(password) => setPassword(password)}
           />
           {secureText ? (
             <IconEyeClosed onPress={() => setSecureText(false)} />
@@ -79,7 +143,7 @@ const Register = ({navigation}) => {
         <TouchableOpacity
           style={styles.btnLogin}
           onPress={() => {
-            navigation.navigate('Pin');
+            register();
           }}>
           <Text style={{color: '#fff', fontSize: 18}}>Sign Up</Text>
         </TouchableOpacity>
@@ -149,7 +213,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 12,
-    marginTop: 55,
+    marginTop: 40,
     marginBottom: 5,
   },
 });

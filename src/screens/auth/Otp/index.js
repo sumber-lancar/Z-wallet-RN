@@ -1,37 +1,29 @@
-import React, {useState} from 'react';
+import React, {useState, useRef} from 'react';
 import {Dimensions, StyleSheet, Text, ToastAndroid, View} from 'react-native';
-import {TextInput, TouchableOpacity} from 'react-native-gesture-handler';
-import {IconMail} from '../../../../assets/icons';
-import {FONT_BOLD, COLOR_MAIN, FONT_REG} from '../../../utils/constans';
+import {TouchableOpacity} from 'react-native-gesture-handler';
+import SmoothPinCodeInput from 'react-native-smooth-pincode-input';
 import axios from 'axios';
+
 import {API_URL} from '@env';
 
-const regexEmail = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+import {FONT_BOLD, COLOR_MAIN, FONT_REG} from '../../../utils/constans';
 
-const ForgotPass = ({navigation}) => {
-  const [email, setEmail] = useState('');
-  const [errorFrom, setErrorForm] = useState('');
-  const forgotpass = () => {
-    setErrorForm('');
-    if (email === '') {
-      return setErrorForm('kosong');
-    } else if (!regexEmail.test(email)) {
-      return setErrorForm('errormail');
-    }
-    const data = {
-      email,
-    };
-    console.log('here');
+const Otp = ({navigation, route}) => {
+  const {email} = route.params;
+  const [code, setCode] = useState('');
+  const pinInput = useRef();
+
+  const activation = () => {
     axios
-      .post(`${API_URL}/auth/forgot-password`, data)
+      .get(`${API_URL}/auth/check-otp/${email}/${code}`)
       .then((res) => {
-        console.log(res);
         ToastAndroid.showWithGravity(
-          'OTP Sent to your email',
+          'OTP Valid',
           ToastAndroid.SHORT,
           ToastAndroid.BOTTOM,
         );
-        navigation.navigate('Otp', {email});
+        console.log(res);
+        navigation.navigate('ResetPass', {email});
       })
       .catch((err) => {
         console.log(err);
@@ -43,36 +35,37 @@ const ForgotPass = ({navigation}) => {
         <Text style={styles.title}>Zwallet</Text>
       </View>
       <View style={styles.mainInput}>
-        <Text style={styles.login}>Reset Password</Text>
-        <Text style={{color: 'red'}}>
-          {errorFrom == 'kosong'
-            ? 'Please Enter Your Email'
-            : errorFrom == 'errormail'
-            ? 'Enter Email Properly'
-            : ''}
-        </Text>
+        <Text style={styles.login}>OTP Code</Text>
         <Text
-          style={{...styles.textlogininfo, marginTop: 25, textAlign: 'center'}}>
-          Enter your Zwallet e-mail so we can send you a password reset link.
+          style={{
+            ...styles.textlogininfo,
+            marginTop: 25,
+            textAlign: 'center',
+            marginBottom: 20,
+          }}>
+          Please enter OTP Code has sent to your email
         </Text>
-        <View style={{...styles.form, marginTop: 10}}>
-          <IconMail />
-          <TextInput
-            style={{
-              width: windowWidth * 0.73,
-              marginRight: 10,
-            }}
-            placeholder="Enter your e-mail"
-            defaultValue={email}
-            onChangeText={(email) => setEmail(email)}
-          />
-        </View>
+
+        <SmoothPinCodeInput
+          ref={pinInput}
+          codeLength={6}
+          cellStyle={{
+            borderWidth: 1,
+            borderRadius: 5,
+            marginHorizontal: 2,
+            borderColor: COLOR_MAIN,
+          }}
+          value={code}
+          onTextChange={(code) => setCode(code)}
+          onBackspace={() => console.log('No more back.')}
+          keyboardType="default"
+        />
+
         <TouchableOpacity
           style={styles.btnLogin}
           onPress={() => {
-            console.log('Pressed');
-            forgotpass();
-            //navigation.navigate('Otp');
+            //console.log(code);
+            activation();
           }}>
           <Text style={{color: '#fff', fontSize: 18}}>Confirm</Text>
         </TouchableOpacity>
@@ -81,7 +74,7 @@ const ForgotPass = ({navigation}) => {
   );
 };
 
-export default ForgotPass;
+export default Otp;
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -136,7 +129,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 12,
-    marginTop: windowHeight * 0.3,
+    marginTop: 200,
     marginBottom: 5,
   },
 });

@@ -9,8 +9,42 @@ import {
 } from '../../../../assets/icons';
 import {FONT_BOLD, COLOR_MAIN, FONT_REG} from '../../../utils/constans';
 
-const ResetPass = ({navigation}) => {
+import axios from 'axios';
+
+import {API_URL} from '@env';
+
+const ResetPass = ({navigation, route}) => {
+  //const [email, setEmail] = useState('');
+  //route && route.params && setEmail(route.params.email);
+  const {email} = route.params;
   const [secureText, setSecureText] = useState(true);
+  const [newpass, setNewPass] = useState('');
+  const [confirm, setConfirm] = useState('');
+  const [errorFrom, setErrorForm] = useState('');
+
+  const resetpass = () => {
+    setErrorForm('');
+    if (newpass == '' || confirm == '') {
+      return setErrorForm('kosong');
+    } else if (newpass.length < 4 || newpass.length > 12) {
+      return setErrorForm('errorpass');
+    } else if (newpass !== confirm) {
+      return setErrorForm('errorconfirm');
+    }
+    const data = {
+      email: email,
+      newPassword: newpass,
+    };
+    axios
+      .patch(`${API_URL}/auth/reset-password`, data)
+      .then((res) => {
+        console.log(res);
+        navigation.navigate('Login');
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   return (
     <>
       <View style={styles.container}>
@@ -18,6 +52,15 @@ const ResetPass = ({navigation}) => {
       </View>
       <View style={styles.mainInput}>
         <Text style={styles.login}>Reset Password</Text>
+        <Text style={{color: 'red'}}>
+          {errorFrom == 'kosong'
+            ? 'Please enter new password'
+            : errorFrom == 'errorpass'
+            ? 'Enter Password Min 4 and Max 12'
+            : errorFrom == 'errorconfirm'
+            ? `Password didn't match`
+            : ''}
+        </Text>
         <Text
           style={{...styles.textlogininfo, marginTop: 25, textAlign: 'center'}}>
           Create and confirm your new password so you can login to Zwallet.
@@ -28,6 +71,8 @@ const ResetPass = ({navigation}) => {
             secureTextEntry={secureText}
             style={{width: windowWidth * 0.65}}
             placeholder="Create new password"
+            defaultValue={newpass}
+            onChangeText={(newpass) => setNewPass(newpass)}
           />
           {secureText ? (
             <IconEyeClosed onPress={() => setSecureText(false)} />
@@ -41,6 +86,8 @@ const ResetPass = ({navigation}) => {
             secureTextEntry={secureText}
             style={{width: windowWidth * 0.65}}
             placeholder="Confirm new password"
+            defaultValue={confirm}
+            onChangeText={(confirm) => setConfirm(confirm)}
           />
           {secureText ? (
             <IconEyeClosed onPress={() => setSecureText(false)} />
@@ -52,6 +99,7 @@ const ResetPass = ({navigation}) => {
           style={styles.btnLogin}
           onPress={() => {
             console.log('Pressed');
+            resetpass();
           }}>
           <Text style={{color: '#fff', fontSize: 18}}>Reset Password</Text>
         </TouchableOpacity>
