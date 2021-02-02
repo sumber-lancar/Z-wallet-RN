@@ -20,12 +20,18 @@ import {API_URL} from '@env';
 
 const regexEmail = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
 
-const Login = ({navigation}) => {
+//redux
+import {connect} from 'react-redux';
+import {login} from '../../../utils/redux/action/authAction';
+import {useSelector} from 'react-redux';
+
+const Login = ({navigation, loginRedux}) => {
   const [secureText, setSecureText] = useState(true);
   const [fail, setFail] = useState(false);
   const [errorFrom, setErrorForm] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const user_name = useSelector((state) => state.auth.name_user);
   useEffect(() => {
     return function cleanup() {
       login();
@@ -46,8 +52,15 @@ const Login = ({navigation}) => {
     axios
       .post(`${API_URL}/auth/login`, data)
       .then((res) => {
-        console.log(res.data);
-        navigation.replace('Home');
+        //console.log(res.data.data);
+        const token = res.data.data.token;
+        const id = res.data.data.id;
+        const name = res.data.data.fullname;
+        const email = res.data.data.email;
+        const photo = res.data.data.photo;
+        console.log(token, id, name, email, photo);
+        loginRedux(token, id, name, email, photo);
+        //navigation.replace('Home');
       })
       .catch((err) => {
         console.log(err);
@@ -58,6 +71,7 @@ const Login = ({navigation}) => {
     <>
       <View style={styles.container}>
         <Text style={styles.title}>Zwallet</Text>
+        <Text>{user_name}</Text>
       </View>
       <View style={styles.mainInput}>
         <Text style={styles.login}>Login</Text>
@@ -151,7 +165,14 @@ const Login = ({navigation}) => {
   );
 };
 
-export default Login;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    loginRedux: (token, id, name, email, photo) =>
+      dispatch(login(token, id, name, email, photo)),
+  };
+};
+
+export default connect(null, mapDispatchToProps)(Login);
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
