@@ -22,7 +22,11 @@ const Home = ({navigation}) => {
 
   const token_user = useSelector((state) => state.auth.token)
   const name = useSelector((state) => state.auth.name_user)
+  const photo_user = useSelector((state) => state.auth.photo_user)
+  console.log(photo_user)
+
   const [history, setHistory] = useState([])
+  let httpImage = { uri : API_URL + photo_user}
 
   const getData = () => {
     const config = {
@@ -32,7 +36,6 @@ const Home = ({navigation}) => {
     };
     axios.get(API_URL + '/transaction/getAllInvoice', config)
     .then((res) => {
-      console.log(res.data.data)
       setHistory(res.data.data)
     })
     .catch((err) => {
@@ -42,7 +45,7 @@ const Home = ({navigation}) => {
 
   useEffect(() => {
     getData();
-  }, [])
+  }, [history])
 
 
 
@@ -55,7 +58,7 @@ const Home = ({navigation}) => {
             onPress={() => {
               navigation.navigate('Profile');
             }}>
-            <Image style={styles.imageProfile} source={ImgProfile} />
+            <Image style={styles.imageProfile} source={httpImage} />
           </TouchableOpacity>
           <View
             style={{
@@ -156,6 +159,7 @@ const styles = StyleSheet.create({
     width: 52,
     borderRadius: 10,
     alignSelf: 'center',
+    backgroundColor: 'lightgrey'
   },
   containerBalance: {
     height: 141,
