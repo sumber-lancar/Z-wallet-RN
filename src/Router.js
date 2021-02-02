@@ -24,6 +24,8 @@ import Pin from './screens/auth/Pin';
 import PinSuccess from './screens/auth/PinSuccess';
 import ForgotPass from './screens/auth/ForgotPass';
 import ResetPass from './screens/auth/ResetPass';
+import AccountActivation from './screens/auth/AccountActivation';
+import Otp from './screens/auth/Otp';
 
 const Stack = createStackNavigator();
 
@@ -56,6 +58,22 @@ const Router = () => {
         <Stack.Screen
           name="Register"
           component={Register}
+          options={{
+            headerShown: false,
+          }}
+        />
+
+        <Stack.Screen
+          name="AccountActivation"
+          component={AccountActivation}
+          options={{
+            headerShown: false,
+          }}
+        />
+
+        <Stack.Screen
+          name="Otp"
+          component={Otp}
           options={{
             headerShown: false,
           }}

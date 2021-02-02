@@ -1,11 +1,14 @@
 import {Spinner} from 'native-base';
 import React, {useEffect} from 'react';
 import {View, Text, StyleSheet, StatusBar} from 'react-native';
+//redux
+import {useSelector} from 'react-redux';
 
 const Splash = ({navigation}) => {
+  const token = useSelector((state) => state.auth.token);
   useEffect(() => {
     setTimeout(() => {
-      navigation.replace('Login');
+      token != null ? navigation.replace('Home') : navigation.replace('Login');
     }, 3000);
   });
   return (

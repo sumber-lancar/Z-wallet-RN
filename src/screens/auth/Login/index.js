@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Dimensions, StyleSheet, Text, View} from 'react-native';
 import {TextInput, TouchableOpacity} from 'react-native-gesture-handler';
 import {
@@ -14,17 +14,74 @@ import {
   FONT_LIGHT,
   FONT_SEMIBOLD,
 } from '../../../utils/constans';
+import axios from 'axios';
 
-const Login = ({navigation}) => {
+import {API_URL} from '@env';
+
+const regexEmail = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+
+//redux
+import {connect} from 'react-redux';
+import {login} from '../../../utils/redux/action/authAction';
+import {useSelector} from 'react-redux';
+
+const Login = ({navigation, loginRedux}) => {
   const [secureText, setSecureText] = useState(true);
   const [fail, setFail] = useState(false);
+  const [errorFrom, setErrorForm] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const user_name = useSelector((state) => state.auth.name_user);
+  useEffect(() => {
+    return function cleanup() {
+      login();
+    };
+  }, []);
+  const login = () => {
+    setErrorForm('');
+    setFail(false);
+    if (email === '' || password === '') {
+      return setErrorForm('kosong');
+    } else if (!regexEmail.test(email)) {
+      return setErrorForm('errormail');
+    }
+    const data = {
+      email: email,
+      password: password,
+    };
+    axios
+      .post(`${API_URL}/auth/login`, data)
+      .then((res) => {
+        //console.log(res.data.data);
+        const token = res.data.data.token;
+        const id = res.data.data.id;
+        const name = res.data.data.fullname;
+        const email = res.data.data.email;
+        const photo = res.data.data.photo;
+        console.log(token, id, name, email, photo);
+        loginRedux(token, id, name, email, photo);
+        navigation.replace('Home');
+      })
+      .catch((err) => {
+        console.log(err);
+        setFail(true);
+      });
+  };
   return (
     <>
       <View style={styles.container}>
         <Text style={styles.title}>Zwallet</Text>
+        <Text>{user_name}</Text>
       </View>
       <View style={styles.mainInput}>
         <Text style={styles.login}>Login</Text>
+        <Text style={{color: 'red'}}>
+          {errorFrom == 'kosong'
+            ? 'Fill All Form Input'
+            : errorFrom == 'errormail'
+            ? 'Please enter email correctly'
+            : ''}
+        </Text>
         <Text style={{...styles.textlogininfo, marginTop: 25}}>
           Login to your existing account to access
         </Text>
@@ -42,6 +99,8 @@ const Login = ({navigation}) => {
               marginRight: 10,
             }}
             placeholder="Enter your e-mail"
+            defaultValue={email}
+            onChangeText={(email) => setEmail(email)}
           />
         </View>
         <View
@@ -53,6 +112,8 @@ const Login = ({navigation}) => {
             secureTextEntry={secureText}
             style={{width: windowWidth * 0.65}}
             placeholder="Enter your password"
+            defaultValue={password}
+            onChangeText={(password) => setPassword(password)}
           />
           {secureText ? (
             <IconEyeClosed onPress={() => setSecureText(false)} />
@@ -89,8 +150,7 @@ const Login = ({navigation}) => {
         <TouchableOpacity
           style={styles.btnLogin}
           onPress={() => {
-            setFail(!fail);
-            navigation.replace('Home');
+            login();
           }}>
           <Text style={{color: '#fff', fontSize: 18}}>Login</Text>
         </TouchableOpacity>
@@ -105,7 +165,14 @@ const Login = ({navigation}) => {
   );
 };
 
-export default Login;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    loginRedux: (token, id, name, email, photo) =>
+      dispatch(login(token, id, name, email, photo)),
+  };
+};
+
+export default connect(null, mapDispatchToProps)(Login);
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
