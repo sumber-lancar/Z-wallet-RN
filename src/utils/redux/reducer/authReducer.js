@@ -7,6 +7,7 @@ const INITIAL_STATE = {
   name_user: null,
   email_user: null,
   photo_user: null,
+  phone_user: null,
 };
 
 const authReducer = (state = INITIAL_STATE, action) => {
@@ -20,6 +21,7 @@ const authReducer = (state = INITIAL_STATE, action) => {
         name_user: action.payload.nameUser,
         email_user: action.payload.email,
         photo_user: action.payload.photo,
+        phone_user: action.payload.phone,
       };
     case actionTypes.LOGOUT:
       return {
@@ -30,6 +32,7 @@ const authReducer = (state = INITIAL_STATE, action) => {
         name_user: null,
         email_user: null,
         photo_user: null,
+        phone_user: null,
       };
     default:
       return state;

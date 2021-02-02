@@ -13,7 +13,11 @@ import {
 } from '../../assets';
 import CardHome from '../../components/card/cardHome';
 
+import {useSelector} from 'react-redux';
+
 const Home = ({navigation}) => {
+  const balance = useSelector((state) => state.balance.balance);
+  console.log(balance);
   return (
     <ScrollView>
       {/* header */}
