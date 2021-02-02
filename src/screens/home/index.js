@@ -20,7 +20,7 @@ const Home = ({navigation}) => {
                         <Text style={{fontSize: 18, fontWeight: 'bold'}}>Fachri Ghiffary</Text>
                     </View>
                 </View>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={() => navigation.navigate("Notification")}>
                     <Image source={Bell} />
                 </TouchableOpacity>
             </View>

@@ -14,6 +14,7 @@ import Transfer from './screens/transfer';
 import TopUp from './screens/topup';
 import Success from './screens/success';
 import Confirmation from './screens/confirmation';
+import Notification from './screens/notification';
 
 
 const Stack = createStackNavigator();
@@ -103,6 +104,11 @@ const Router = () => {
             title: 'Confirmation',
           }}
         />
+        <Stack.Screen
+          name="Notification"
+          component={Notification}
+          options={{headerShown: false}}
+         />
       </Stack.Navigator>
     </NavigationContainer>
   );
