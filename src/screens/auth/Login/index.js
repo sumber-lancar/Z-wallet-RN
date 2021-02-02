@@ -54,6 +54,9 @@ const Login = ({navigation, loginRedux}) => {
       .then((res) => {
         //console.log(res.data.data);
         const token = res.data.data.token;
+        if (res.data.status == 206) {
+          return navigation.replace('Pin', {token});
+        }
         const id = res.data.data.id;
         const name = res.data.data.fullname;
         const email = res.data.data.email;

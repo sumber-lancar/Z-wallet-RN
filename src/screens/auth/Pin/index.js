@@ -1,3 +1,4 @@
+import axios from 'axios';
 import {Icon} from 'native-base';
 import React, {useState, useRef} from 'react';
 import {Dimensions, StyleSheet, Text, View} from 'react-native';
@@ -16,7 +17,10 @@ import {
   FONT_LIGHT,
 } from '../../../utils/constans';
 
-const Pin = ({navigation}) => {
+import {API_URL} from '@env';
+
+const Pin = ({navigation, route}) => {
+  const {token} = route.params;
   const [code, setCode] = useState('');
   const pinInput = useRef();
   const checkCode = (code) => {
@@ -25,6 +29,25 @@ const Pin = ({navigation}) => {
     } else {
       console.log('pin success');
     }
+  };
+  const postPin = () => {
+    const config = {
+      headers: {
+        'x-access-token': 'bearer ' + token,
+      },
+    };
+    const data = {
+      PIN: code,
+    };
+    axios
+      .patch(`${API_URL}/auth/setPIN`, data, config)
+      .then((res) => {
+        console.log(res);
+        navigation.navigate('PinSuccess');
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   return (
     <>
@@ -59,7 +82,7 @@ const Pin = ({navigation}) => {
           style={styles.btnLogin}
           onPress={() => {
             console.log(code);
-            navigation.navigate('PinSuccess');
+            postPin();
           }}>
           <Text style={{color: '#fff', fontSize: 18}}>Confirm</Text>
         </TouchableOpacity>
