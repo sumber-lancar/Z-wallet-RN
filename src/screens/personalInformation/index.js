@@ -7,9 +7,12 @@ const PersonalInformation = ({navigation}) => {
   const[firstName, setFirstName]=useState('');
   const[lastName, setLastName]=useState('');
   const[email, setEmail]=useState('');
+  const[phoneNumber, setPhoneNumber]=useState('');
+
 
   const user_name = useSelector((state) => state.auth.name_user).split(" ");
   const email_user = useSelector((state) => state.auth.email_user);
+  const phone = useSelector((state) => state.auth.phone);
 
   const getFirstName = () => {
     setFirstName(user_name[0])
@@ -19,6 +22,9 @@ const PersonalInformation = ({navigation}) => {
   }
   const getEmail = () => {
     setEmail(email_user)
+  }
+  const getPhone = () => {
+    setPhone(phone)
   }
   useEffect(() => {
     getFirstName()
@@ -48,7 +54,7 @@ const PersonalInformation = ({navigation}) => {
         <View style={styles.cardPhone}>
           <View>
             <Text style={styles.label}>Phone Number</Text>
-            <Text style={styles.dataInfo}>+62 813-9387-7946</Text>
+            <Text style={styles.dataInfo}>{phoneNumber}</Text>
           </View>
           <View>
             <TouchableOpacity

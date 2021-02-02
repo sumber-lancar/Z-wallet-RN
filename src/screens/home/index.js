@@ -16,8 +16,6 @@ import CardHome from '../../components/card/cardHome';
 import {useSelector} from 'react-redux';
 import {API_URL} from '@env';
 
-import {useSelector} from 'react-redux';
-
 const Home = ({navigation}) => {
   const balance = useSelector((state) => state.balance.balance);
   const phone = useSelector((state) => state.auth.phone);
