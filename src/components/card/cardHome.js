@@ -1,16 +1,36 @@
 import React,{useEffect, useState} from 'react'
 import { View, Text, Image, StyleSheet } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
+import {useSelector} from 'react-redux'
 
 const CardHome = (props) => {
-    let txtcolor = Number(props.price)
-    if(txtcolor >= 0){
-       txtcolor = 'green'
+    const name = useSelector((state) => state.auth.name_user)
+    let txtcolor = props.type
+    let txtSymbol
+    let recvr 
+    let stts
+
+    if(props.receiver === name){
+        recvr = props.sender
     }else{
-        txtcolor = 'red'
+        recvr = props.receiver
     }
 
-    const [color, setcolor] = useState(txtcolor)
+    if(txtcolor === 'in'){
+       txtcolor = 'green'
+       txtSymbol = '+'
+       stts = 'Income'
+    }else{
+        txtcolor = 'red'
+        txtSymbol = '-'
+        stts = 'Expense'
+    }
+
+    const [color, setColor] = useState(txtcolor)
+    const [symbol, setSymbol] = useState(txtSymbol)
+    const [penerima, setPenerima] = useState(recvr)
+    const [status, setStatus] = useState(stts)
+   
     
     return (
         <TouchableOpacity style={styles.container} onPress={() => {
@@ -18,15 +38,15 @@ const CardHome = (props) => {
         }}>
             <View style={{flexDirection: 'row'}}>
                 <View style={styles.containerImage}>
-                    <Image style={styles.img}  source={props.iconImg}/>
+                    <Image style={styles.img}  source={props.photo}/>
                 </View>
                 <View style={styles.txtContainer}>
-                    <Text style={styles.txtName}>{props.name}</Text>
-                    <Text style={styles.status}>{props.status}</Text>
+                    <Text style={styles.txtName}>{penerima}</Text>
+                    <Text style={styles.status}>{status}</Text>
                 </View>
             </View>
             <View>
-                <Text style={{...styles.price, color}}>{props.price}</Text>
+                <Text style={{...styles.price, color}}>{symbol}{props.amount}</Text>
             </View>
         </TouchableOpacity>
     )
