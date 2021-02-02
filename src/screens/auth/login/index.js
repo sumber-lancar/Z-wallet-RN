@@ -60,7 +60,7 @@ const Login = ({navigation, loginRedux}) => {
         const photo = res.data.data.photo;
         console.log(token, id, name, email, photo);
         loginRedux(token, id, name, email, photo);
-        //navigation.replace('Home');
+        navigation.replace('Home');
       })
       .catch((err) => {
         console.log(err);
