@@ -20,28 +20,37 @@ export default StyleSheet.create({
         left: 25,
         fontSize: 26,
         color: color.input,
-        marginBottom: '70%'
     },
     textPhone: {
-        color: '#4D4B57',
-        fontSize: 13,
+        color: color.dark,
+        fontSize: 20,
         fontWeight: '400',
       },
       textContacts: {
-        color: '#4D4B57',
-        fontSize: 16,
+        color: color.disabled,
+        fontSize: 15,
         fontWeight: '700',
         marginBottom: 7,
       },
       allContacts: {
         flexDirection: 'row',
-        marginHorizontal: 5,
+        marginTop: 20,
+        marginBottom: 10,
+        marginHorizontal: 25,
         marginVertical: 5,
         backgroundColor: 'white',
-        padding: 10,
+        padding: 15,
         borderRadius: 20,
         borderColor: 'black',
         alignItems: 'center',
         elevation: 5
       },
+      icon: {
+        fontSize: 25,
+        color: color.success,
+      },
+      icona: {
+        fontSize: 25,
+        color: 'red',
+      }
 })

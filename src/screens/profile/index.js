@@ -1,14 +1,20 @@
+import { Button } from 'native-base';
 import React, {useState} from 'react'
-import { View, Text, TouchableOpacity, Image, StyleSheet, Switch } from 'react-native'
+import { View, Text, TouchableOpacity, Image, StyleSheet, Switch, Modal, Alert } from 'react-native'
 import { IconBack, IconNext, ImgProfile, Pencil } from '../../assets'
 
 const Profile = ({navigation}) => {
     const [isEnabled, setIsEnabled] = useState(false);
     const toggleSwitch = () => setIsEnabled(previousState => !previousState);
-
+    const [modalVisible, setModalVisible] = useState(false);
+    const handleLogout = () => {
+        navigation.navigate("Login")
+    }
     return (
         <View>
-            <TouchableOpacity style={{width: 40, marginTop: 30, marginLeft: 20}}>
+            <TouchableOpacity style={{width: 40, marginTop: 30, marginLeft: 20}} onPress={() => {
+                navigation.goBack()
+            }}>
                 <Image source={IconBack} />
             </TouchableOpacity>
             <View style={{alignSelf: 'center', marginTop: 15, justifyContent: 'center', alignItems: 'center'}}>
@@ -24,7 +30,7 @@ const Profile = ({navigation}) => {
             </View>
 
             {/* btn navigation */}
-            <TouchableOpacity activeOpacity={0.5} style={styles.btn}>
+            <TouchableOpacity activeOpacity={0.5} style={styles.btn} onPress={() => navigation.navigate("Personal Information")}>
                 <Text style={styles.fontBtn}>Personal Information</Text>
                 <Image source={IconNext}/>
             </TouchableOpacity>
@@ -46,10 +52,43 @@ const Profile = ({navigation}) => {
                     value={isEnabled}
                 />
             </TouchableOpacity>
-            <TouchableOpacity activeOpacity={0.5} style={styles.btn}>
+            <TouchableOpacity activeOpacity={0.5} style={styles.btn} onPress={ () => {
+                 setModalVisible(true);
+            }}>
                 <Text style={styles.fontBtn}>Logout</Text>
                 <Image source={IconNext}/>
             </TouchableOpacity>
+
+            <Modal
+                animationType="fade"
+                transparent={true}
+                visible={modalVisible}
+            >
+                <View style={styles.centeredView}>
+                <View style={styles.modalView}>
+                    <Text style={styles.modalText}>Are you sure want to logout?</Text>
+                    <View style={{marginTop: 20, flexDirection: 'row', width: 250, justifyContent: 'space-between'}}>
+                        <Button
+                        style={{...styles.closeButton, backgroundColor: 'lightgrey'}}
+                        onPress={() => {
+                            setModalVisible(!modalVisible);
+                        }}
+                        >
+                        <Text style={{...styles.textStyle, color: 'black'}}>No</Text>
+                        </Button>
+                        <Button
+                        style={styles.closeButton}
+                        onPress={() => {
+                            handleLogout()
+                        }}
+                        >
+                        <Text style={styles.textStyle}>Yes</Text>
+                        </Button>
+                    </View>
+                </View>
+                </View>
+            </Modal>
+
         </View>
     )
 }
@@ -72,6 +111,49 @@ const styles = StyleSheet.create({
         fontWeight: 'bold', 
         color: '#4D4B57'
     },
+    centeredView: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        marginTop: 22
+      },
+      modalView: {
+        height: 200,
+        width: 300,
+        margin: 20,
+        backgroundColor: "white",
+        borderRadius: 20,
+        padding: 35,
+        alignItems: "center",
+        shadowColor: "#000",
+        shadowOffset: {
+          width: 0,
+          height: 2
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5
+      },
+      closeButton: { 
+        backgroundColor: "#6379F4" ,
+        height: 40, 
+        width: 100,
+        borderRadius: 20,
+        padding: 10,
+        elevation: 2,
+        justifyContent: 'center',
+        alignItems: 'center'
+      },
+      textStyle: {
+        color: "white",
+        fontWeight: "bold",
+        textAlign: "center"
+      },
+      modalText: {
+        marginBottom: 15,
+        textAlign: "center",
+        fontSize: 25
+      }
 })
 
 export default Profile

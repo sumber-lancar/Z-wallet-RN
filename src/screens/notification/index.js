@@ -23,19 +23,66 @@ const Notification = ({navigation}) => {
         <View style={{...style.textContainer}}>
           <Text style={{...style.textHeader}}>Today</Text>
           <View>
-            <TouchableOpacity
-              style={{...style.allContacts}}
-    >
-              <Iconn name="arrow-down-alt" />
+            <TouchableOpacity style={{...style.allContacts}}>
+              <Iconn name="arrow-down" style={{...style.icon}} />
               <View style={{marginHorizontal: 15}}>
-                <Text style={{...style.textContacts}}>Transfer</Text>
-                <Text style={{...style.textPhone}}>Rp.2500000</Text>
+                <Text style={{...style.textContacts}}>
+                  Transfered from Joshua Lee
+                </Text>
+                <Text style={{...style.textPhone}}>Rp.220.000</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+          <View>
+            <TouchableOpacity style={{...style.allContacts}}>
+              <Iconn name="arrow-up" style={{...style.icona}} />
+              <View style={{marginHorizontal: 15}}>
+                <Text style={{...style.textContacts}}>
+                  Netflix Subscription
+                </Text>
+                <Text style={{...style.textPhone}}>Rp.149.000</Text>
               </View>
             </TouchableOpacity>
           </View>
         </View>
+   
+   
         <View style={{...style.textContainer}}>
           <Text style={{...style.textHeader}}>This Week</Text>
+          <View>
+            <TouchableOpacity style={{...style.allContacts}}>
+              <Iconn name="arrow-up" style={{...style.icona}} />
+              <View style={{marginHorizontal: 15}}>
+                <Text style={{...style.textContacts}}>
+                  Transfered to Jesica Lee
+                </Text>
+                <Text style={{...style.textPhone}}>Rp.100.000</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+          <View>
+            <TouchableOpacity style={{...style.allContacts}}>
+              <Iconn name="arrow-down" style={{...style.icon}} />
+              <View style={{marginHorizontal: 15}}>
+                <Text style={{...style.textContacts}}>
+                  Top up from E-Banking
+                </Text>
+                <Text style={{...style.textPhone}}>Rp.300.000</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+          <View>
+            <TouchableOpacity style={{...style.allContacts}}>
+              <Iconn name="arrow-up" style={{...style.icona}} />
+              <View style={{marginHorizontal: 15}}>
+                <Text style={{...style.textContacts}}>
+                  Transfered to Mamamia
+                </Text>
+                <Text style={{...style.textPhone}}>Rp.50.000</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+
         </View>
       </ScrollView>
     </View>

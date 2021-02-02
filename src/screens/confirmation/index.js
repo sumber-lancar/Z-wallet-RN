@@ -2,7 +2,7 @@ import React from 'react';
 import {StyleSheet, Text, View, Image, ScrollView, TouchableOpacity, StatusBar} from 'react-native';
 import {Card1} from '../../assets';
 
-const Confirmation = () => {
+const Confirmation = ({navigation}) => {
   return (
     <View style={styles.container}>
       <StatusBar
@@ -47,7 +47,9 @@ const Confirmation = () => {
         </View>
       </ScrollView>
       <View style={{bottom: 0, justifyContent: 'center', alignItems: 'center', marginBottom: 30, marginTop: 10}}>
-      <TouchableOpacity style={styles.btnContinue}>
+      <TouchableOpacity style={styles.btnContinue} onPress={() => {
+        navigation.navigate('Success')
+      }}>
           <Text style={{fontSize: 16, color: 'white'}}>Continue</Text>
       </TouchableOpacity>
 

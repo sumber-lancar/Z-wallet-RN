@@ -3,7 +3,6 @@ import 'react-native-gesture-handler';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import Splash from './screens/splash';
-import Login from './screens/auth/login';
 import SearchReceiver from './screens/SearchReceiver';
 import Home from './screens/home';
 import Profile from './screens/profile';
@@ -15,7 +14,16 @@ import TopUp from './screens/topup';
 import Success from './screens/success';
 import Confirmation from './screens/confirmation';
 import Notification from './screens/notification';
+import PersonalInformation from "./screens/personalInformation";
+import AddPhoneNumber from "./screens/addPhoneNumber";
+import ManagePhoneNumber from "./screens/managePhoneNumber";
 
+import Login from './screens/auth/Login';
+import Register from './screens/auth/Register';
+import Pin from './screens/auth/Pin';
+import PinSuccess from './screens/auth/PinSuccess';
+import ForgotPass from './screens/auth/ForgotPass';
+import ResetPass from './screens/auth/ResetPass';
 
 const Stack = createStackNavigator();
 
@@ -41,10 +49,18 @@ const Router = () => {
           name="Search"
           component={SearchReceiver}
           options={{
-            title: 'Find Receiver',
             headerShown: false,
           }}
         />
+
+        <Stack.Screen
+          name="Register"
+          component={Register}
+          options={{
+            headerShown: false,
+          }}
+        />
+
         <Stack.Screen
           name="Transaction History"
           component={TransactionHistory}
@@ -60,6 +76,20 @@ const Router = () => {
           }}
         />
         <Stack.Screen
+          name="Pin"
+          component={Pin}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="PinSuccess"
+          component={PinSuccess}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
           name="Profile"
           component={Profile}
           options={{
@@ -70,13 +100,20 @@ const Router = () => {
           name="ChangePass"
           component={ChangePass}
           options={{headerShown: false}}
-         />
-         <Stack.Screen
+        />
+        <Stack.Screen
           name="ChangePin"
           component={ChangePin}
           options={{headerShown: false}}
-         />
-        <Stack.Screen   
+        />
+        <Stack.Screen
+          name="ForgotPass"
+          component={ForgotPass}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
           name="Transfer"
           component={Transfer}
           options={{
@@ -86,6 +123,13 @@ const Router = () => {
         <Stack.Screen
           name="TopUp"
           component={TopUp}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="ResetPass"
+          component={ResetPass}
           options={{
             headerShown: false,
           }}
@@ -109,6 +153,27 @@ const Router = () => {
           component={Notification}
           options={{headerShown: false}}
          />
+        <Stack.Screen 
+          name="Personal Information"
+          component={PersonalInformation}
+          options={{
+            title: 'Personal Information',
+          }}
+        />
+        <Stack.Screen
+          name="Add Phone Number"
+          component={AddPhoneNumber}
+          options={{
+            title: 'Add Phone Number',
+          }}
+        />
+        <Stack.Screen
+          name="Manage Phone Number"
+          component={ManagePhoneNumber}
+          options={{
+            title: 'Manage Phone Number',
+          }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -8,7 +8,11 @@ const Transfer = ({navigation}) => {
         <ScrollView>
             <View style={styles.header}>
                 <View style={styles.sectionHeader}>
-                    <Image source={IconBackWhite} />
+                    <TouchableOpacity onPress={() => {
+                        navigation.goBack()
+                    }}>
+                        <Image source={IconBackWhite} />
+                    </TouchableOpacity>
                     <Text style={{fontSize: 20, color: 'white', fontWeight: '700'}}>Transfer</Text>
                 </View>
                 <View style={styles.card}>
