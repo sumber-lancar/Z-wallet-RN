@@ -1,4 +1,5 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
+import axios from 'axios';
 import {View, Text, StyleSheet, Image} from 'react-native';
 import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
 import {
@@ -12,8 +13,50 @@ import {
   Spotify,
 } from '../../assets';
 import CardHome from '../../components/card/cardHome';
+import {useSelector} from 'react-redux';
+import {API_URL} from '@env';
+
+//context
+import {useSocket} from '../../utils/Context/SocketProvider';
 
 const Home = ({navigation}) => {
+  const socket = useSocket();
+  const balance = useSelector((state) => state.balance.balance);
+  const phone = useSelector((state) => state.auth.phone);
+  const token_user = useSelector((state) => state.auth.token);
+  const name = useSelector((state) => state.auth.name_user);
+  const photo_user = useSelector((state) => state.auth.photo_user);
+  let httpImage = {uri: API_URL + photo_user};
+  const [history, setHistory] = useState([]);
+  useEffect(() => {
+    socket.on('transfer', (msg) => {
+      console.log('hai ', msg);
+    });
+    return () => {
+      socket.off('transfer');
+    };
+  }, []);
+
+  const getData = () => {
+    const config = {
+      headers: {
+        'x-access-token': 'Bearer ' + token_user,
+      },
+    };
+    axios
+      .get(API_URL + '/transaction/getAllInvoice', config)
+      .then((res) => {
+        setHistory(res.data.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  useEffect(() => {
+    getData();
+  }, []);
+
   return (
     <ScrollView>
       {/* header */}
@@ -23,7 +66,7 @@ const Home = ({navigation}) => {
             onPress={() => {
               navigation.navigate('Profile');
             }}>
-            <Image style={styles.imageProfile} source={ImgProfile} />
+            <Image style={styles.imageProfile} source={httpImage} />
           </TouchableOpacity>
           <View
             style={{
@@ -32,9 +75,7 @@ const Home = ({navigation}) => {
               justifyContent: 'space-around',
             }}>
             <Text>Hello,</Text>
-            <Text style={{fontSize: 18, fontWeight: 'bold'}}>
-              Fachri Ghiffary
-            </Text>
+            <Text style={{fontSize: 18, fontWeight: 'bold'}}>{name}</Text>
           </View>
         </View>
         <TouchableOpacity
@@ -49,8 +90,8 @@ const Home = ({navigation}) => {
       <View style={styles.containerBalance}>
         <View style={styles.balanceSection}>
           <Text style={styles.txtBalance}>Balance</Text>
-          <Text style={styles.txtmoney}>149.000</Text>
-          <Text style={styles.txtBalance}>+62 813-9387-7946</Text>
+          <Text style={styles.txtmoney}>{balance}</Text>
+          <Text style={styles.txtBalance}>{phone}</Text>
         </View>
       </View>
 
@@ -88,41 +129,22 @@ const Home = ({navigation}) => {
           <Text style={{color: '#6379F4', fontWeight: '600'}}>See all</Text>
         </TouchableOpacity>
       </View>
-      <CardHome
-        navigation={navigation}
-        name="Samuel Suhi"
-        iconImg={Card1}
-        status="Transfer"
-        price="149000"
-      />
-      <CardHome
-        navigation={navigation}
-        name="Netflix"
-        iconImg={NetFlix}
-        status="Subscription"
-        price="-49000"
-      />
-      <CardHome
-        navigation={navigation}
-        name="Blanja"
-        iconImg={Blanja}
-        status="Payment"
-        price="-350000"
-      />
-      <CardHome
-        navigation={navigation}
-        name="Spotify"
-        iconImg={Spotify}
-        status="Subscription"
-        price="-49000"
-      />
-      <CardHome
-        navigation={navigation}
-        name="netflix"
-        iconImg={NetFlix}
-        status="Subscription"
-        price="-49000"
-      />
+      {history &&
+        history.map(({sender, receiver, photo, amount, type, id, notes}) => {
+          return (
+            <CardHome
+              key={id}
+              id={id}
+              navigation={navigation}
+              receiver={receiver}
+              photo={photo}
+              notes={notes}
+              amount={amount}
+              type={type}
+              sender={sender}
+            />
+          );
+        })}
     </ScrollView>
   );
 };
