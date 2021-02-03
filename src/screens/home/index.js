@@ -58,7 +58,7 @@ const Home = ({navigation}) => {
 
   useEffect(() => {
     getData();
-  }, []);
+  }, [history]);
 
   return (
     <ScrollView>

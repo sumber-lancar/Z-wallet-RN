@@ -45,23 +45,8 @@ const TransactionHistory = ({navigation}) => {
   const [urlWeek, setUrlWeek] = useState('/transaction/getAllInvoice?thisWeek=true')
   const token_user = useSelector((state) => state.auth.token);
 
-  // Start date
-  const startday = startDate && startDate._i.day
-  const startMonth = startDate && startDate._i.month
-  const startYear = startDate && startDate._i.year
-  // End date
-  const endDay = endDate && endDate._i.day
-  const endMonth = endDate && endDate._i.month
-  const endYear = endDate && endDate._i.year
 
-  const strtDate = `${startYear}-${startMonth}-${startday}`
-  const endDatee = `${endYear}-${endMonth}-${endDay}`
-
-  // console.log(strtDate)
-  // console.log(endDatee)
-  // console.log(urlToday)
-  // console.log(urlWeek)
-  
+ 
  
 
   const getHistoryToday = () => {
@@ -101,6 +86,36 @@ const TransactionHistory = ({navigation}) => {
     getHistoryWeek();
   }
 
+  const handleFilter = () => {
+    const config = {
+      headers: {
+        'x-access-token': 'Bearer ' + token_user,
+      },
+    };
+    // Start date
+    const startday = startDate ?  '0' + startDate._i.day : ''
+    const startMonth = startDate ?  '0' + (startDate._i.month + 1) : ''
+    const startYear = startDate ? startDate._i.year : ''
+    // End date
+    const endDay = endDate ? '0' + endDate._i.day : ''
+    const endMonth = endDate ? '0' + (endDate._i.month + 1) : ''
+    const endYear = endDate ? endDate._i.year : ''
+  
+    const strtDate = `${startYear}-${startMonth}-${startday}`
+    const endDatee = `${endYear}-${endMonth}-${endDay}`
+    console.log('ini start date', strtDate)
+    console.log('Ini end Date', endDatee)
+
+    axios.get(API_URL + `/transaction/getAllInvoice?from=${strtDate}&to=${endDatee}`, config)
+    .then((res) => {
+      console.log('ini filter date',res)
+    })
+    .catch((err) => {
+      console.log(err)
+    })
+
+  }
+
 
   const selectDate = (date, type) => {
     if (type === 'END_DATE') {
@@ -110,13 +125,16 @@ const TransactionHistory = ({navigation}) => {
     }
   };
 
-  const startDatePick = startDate ? startDate.toString() : '';
-  const endDatePick = endDate ? endDate.toString() : '';
 
-  return (
-    <View style={styles.container}>
-      <ScrollView>
-        <Text style={styles.textThis}>This Week</Text>
+  const startDatePick = startDate ? startDate.toString().split(' ').slice(1,4).join(' - ') : '';
+  const endDatePick = endDate ? endDate.toString().split(' ').slice(1,4).join(' - ') : '';
+
+  let historyTodays
+  let historyWeeks
+  if(historyToday.length > 0){
+    historyTodays = 
+    <>
+    <Text style={styles.textThis}>Today</Text>
         {historyToday && historyToday.map(({sender, receiver, photo, amount, notes, type, id}) => {
           return(
               <CardHome
@@ -132,8 +150,14 @@ const TransactionHistory = ({navigation}) => {
               />
           )
         })}
-
-        <Text style={styles.textThis}>This Week</Text>
+    </>
+  }else{
+    historyTodays = <></>
+  }
+  if(historyWeek.length > 0){
+    historyWeeks = 
+    <>
+    <Text style={styles.textThis}>This Week</Text>
         {historyWeek && historyWeek.map(({sender, receiver, photo, amount, notes, type,id}) => {
           return(
               <CardHome
@@ -149,6 +173,18 @@ const TransactionHistory = ({navigation}) => {
               />
           )
         })}
+    </>
+  }else{
+    <></>
+  }
+
+  return (
+    <View style={styles.container}>
+      <ScrollView>
+        {historyTodays}
+        {historyWeeks}
+
+        
       </ScrollView>
       <View style={styles.filter}>
         <View style={{flexDirection: 'row'}}>
@@ -180,6 +216,7 @@ const TransactionHistory = ({navigation}) => {
         <TouchableOpacity
           style={styles.filterByDate}
           onPress={() => {
+            handleFilter()
             actionSheetRef.current?.setModalVisible();
           }}>
           <Text>Filter By Date</Text>
@@ -212,7 +249,10 @@ const TransactionHistory = ({navigation}) => {
           </View>
           <TouchableOpacity
             style={styles.applyBtn}
-            onPress={() => actionSheetRef.current?.hide()}>
+            onPress={() => {
+              handleFilter()
+              actionSheetRef.current?.hide()
+              }}>
             <Text style={{color: 'white', fontSize: 16}}>Apply</Text>
           </TouchableOpacity>
         </View>
