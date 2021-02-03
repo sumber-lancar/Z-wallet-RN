@@ -19,3 +19,10 @@ export const logout = () => {
     type: actionTypes.LOGOUT,
   };
 };
+
+export const updatePhoto = (data) => {
+  return {
+    type: actionTypes.SET_PHOTO,
+    payload: data
+  }
+}
