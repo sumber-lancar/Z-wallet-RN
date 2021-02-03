@@ -260,7 +260,7 @@ const Profile = ({ navigation, logoutRedux, updatePhoto }) => {
               </Button>
             </View>
             <View style={styles.editWrapper}>
-              <TouchableOpacity style={{marginRight:10}}>
+              <TouchableOpacity style={{marginRight:10}} onPress={() => {setEditVisible(!editVisible)}}>
                 <Text style={{ fontSize: 18, fontWeight: 'bold' }}>Cancel</Text>
               </TouchableOpacity>
               <TouchableOpacity style={{marginLeft:10}} onPress={uploadPicture}>
