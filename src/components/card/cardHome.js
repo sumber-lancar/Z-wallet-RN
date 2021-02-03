@@ -47,7 +47,7 @@ const CardHome = (props) => {
                 </View>
             </View>
             <View>
-                <Text style={{...styles.price, color}}>{symbol}{props.amount}</Text>
+                <Text style={{...styles.price, color}}>{symbol} Rp.{props.amount}</Text>
             </View>
         </TouchableOpacity>
     )

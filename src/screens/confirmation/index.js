@@ -15,6 +15,9 @@ import {API_URL} from '@env';
 import {useSelector} from 'react-redux';
 
 const Confirmation = ({navigation, route}) => {
+  const toPrice = (x) => {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  }
   const {amount, notes} = route.params;
   const receiver = useSelector((state) => state.receiver);
   const balance = useSelector((state) => state.balance.balance);
@@ -39,13 +42,13 @@ const Confirmation = ({navigation, route}) => {
         <View style={styles.card}>
           <Text style={{fontSize: 16, color: '#7A7886'}}>Amount</Text>
           <Text style={{fontSize: 22, fontWeight: 'bold', color: '#514F5B'}}>
-            Rp{amount}
+            Rp.{toPrice(amount)}
           </Text>
         </View>
         <View style={styles.card}>
           <Text style={{fontSize: 16, color: '#7A7886'}}>Balance Left</Text>
           <Text style={{fontSize: 22, fontWeight: 'bold', color: '#514F5B'}}>
-            Rp{balance - Number(amount)}
+            Rp.{toPrice(balance - Number(amount))}
           </Text>
         </View>
         <View style={styles.card}>

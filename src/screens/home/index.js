@@ -22,9 +22,12 @@ import {connect} from 'react-redux';
 import {addBalance} from '../../../src/utils/redux/action/balanceAction';
 
 const Home = ({navigation, addBalance}) => {
+  const toPrice = (x) => {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  }
   const socket = useSocket();
   const balance = useSelector((state) => state.balance.balance);
-  console.log(typeof balance);
+  // console.log(typeof balance);
   const phone = useSelector((state) => state.auth.phone_user);
   const token_user = useSelector((state) => state.auth.token);
   const name = useSelector((state) => state.auth.name_user);
@@ -46,7 +49,7 @@ const Home = ({navigation, addBalance}) => {
     socket.on('transfer in', (msg, amount) => {
       console.log('Transfer here: ', msg);
       const numAmount = Number(amount);
-      console.log(typeof numAmount);
+      // console.log(typeof numAmount);
       addBalance(numAmount);
       getData();
     });
@@ -74,7 +77,7 @@ const Home = ({navigation, addBalance}) => {
 
   useEffect(() => {
     getData();
-  }, []);
+  }, [history]);
 
   return (
     <ScrollView>
@@ -109,7 +112,7 @@ const Home = ({navigation, addBalance}) => {
       <View style={styles.containerBalance}>
         <View style={styles.balanceSection}>
           <Text style={styles.txtBalance}>Balance</Text>
-          <Text style={styles.txtmoney}>{balance}</Text>
+          <Text style={styles.txtmoney}>Rp. {toPrice(balance)}</Text>
           <Text style={styles.txtBalance}>{phone}</Text>
         </View>
       </View>
@@ -158,7 +161,7 @@ const Home = ({navigation, addBalance}) => {
               receiver={receiver}
               photo={photo}
               notes={notes}
-              amount={amount}
+              amount={toPrice(amount)}
               type={type}
               sender={sender}
             />
@@ -196,7 +199,7 @@ const styles = StyleSheet.create({
   },
   balanceSection: {
     height: 91,
-    width: 134,
+    width: 200,
     justifyContent: 'space-between',
   },
   txtBalance: {

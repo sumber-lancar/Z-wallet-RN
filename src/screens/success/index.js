@@ -12,6 +12,9 @@ const Success = ({navigation, route}) => {
   const balance = useSelector((state) => state.balance.balance);
   const receiver = useSelector((state) => state.receiver);
   const date = Date().split(' ');
+  const toPrice = (x) => {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  }
   return (
     <ScrollView>
       <View style={{marginTop: 50}}>
@@ -25,13 +28,13 @@ const Success = ({navigation, route}) => {
         <View style={styles.card}>
           <Text style={{fontSize: 16, color: '#7A7886'}}>Amount</Text>
           <Text style={{fontSize: 22, fontWeight: 'bold', color: '#514F5B'}}>
-            Rp.{amount}
+            Rp.{toPrice(amount)}
           </Text>
         </View>
         <View style={styles.card}>
           <Text style={{fontSize: 16, color: '#7A7886'}}>Balance Left</Text>
           <Text style={{fontSize: 22, fontWeight: 'bold', color: '#514F5B'}}>
-            Rp{balance - amount}
+            Rp.{toPrice(balance - amount)}
           </Text>
         </View>
         <View style={styles.card}>

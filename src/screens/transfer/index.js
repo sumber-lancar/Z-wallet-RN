@@ -18,6 +18,9 @@ import {useSocket} from '../../utils/Context/SocketProvider';
 import {useSelector} from 'react-redux';
 
 const Transfer = ({navigation}) => {
+  const toPrice = (x) => {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  }
   const [amount, setAmount] = useState('');
   const [notes, setNotes] = useState('');
   //const socket = useSocket();
@@ -60,13 +63,13 @@ const Transfer = ({navigation}) => {
       <View style={styles.inputSection}>
         <TextInput
           keyboardType="number-pad"
-          style={{fontSize: 42, fontWeight: 'bold', color: '#6379F4'}}
+          style={{ textAlign: 'center',fontSize: 42, width: 230, fontWeight: 'bold', color: '#6379F4'}}
           placeholder="0.00"
           defaultValue={amount}
           onChangeText={(amount) => setAmount(amount)}
         />
         <Text style={{fontSize: 16, color: '#7C7895', marginTop: 20}}>
-          Rp.{balance} Available
+          Rp.{toPrice(balance)} Available
         </Text>
       </View>
       <View style={styles.noteSection}>
