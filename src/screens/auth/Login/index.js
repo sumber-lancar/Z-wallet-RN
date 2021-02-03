@@ -1,5 +1,11 @@
 import React, {useEffect, useState} from 'react';
-import {ActivityIndicator, Dimensions, StyleSheet, Text, View} from 'react-native';
+import {
+  ActivityIndicator,
+  Dimensions,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import {TextInput, TouchableOpacity} from 'react-native-gesture-handler';
 import {
   IconEyeOpen,
@@ -32,21 +38,15 @@ const Login = ({navigation, loginRedux, setBalance}) => {
   const [errorFrom, setErrorForm] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
   const user_name = useSelector((state) => state.auth.name_user);
   const login = () => {
     setErrorForm('');
     setFail(false);
     if (email === '' || password === '') {
-      return (
-        setErrorForm('kosong'),
-        setLoading(false)
-        );
+      return setErrorForm('kosong'), setLoading(false);
     } else if (!regexEmail.test(email)) {
-      return (
-        setErrorForm('errormail'),
-        setLoading(false)
-        );
+      return setErrorForm('errormail'), setLoading(false);
     }
     const data = {
       email: email,
@@ -66,23 +66,22 @@ const Login = ({navigation, loginRedux, setBalance}) => {
         const photo = res.data.data.photo;
         const phone = res.data.data.phone;
         const balance = res.data.data.balance;
-        console.log(token, id, name, email, photo,"ini telepon", phone);
+        console.log(token, id, name, email, photo, 'ini telepon', phone);
         loginRedux(token, id, name, email, photo, phone);
         setBalance(balance);
-        setLoading(true)
+        setLoading(true);
         navigation.replace('Home');
       })
       .catch((err) => {
         console.log(err);
         setFail(true);
-        setLoading(false)
+        setLoading(false);
       });
   };
   return (
     <>
       <View style={styles.container}>
         <Text style={styles.title}>Zwallet</Text>
-        <Text>{user_name}</Text>
       </View>
       <View style={styles.mainInput}>
         <Text style={styles.login}>Login</Text>
@@ -158,15 +157,17 @@ const Login = ({navigation, loginRedux, setBalance}) => {
           {fail ? 'Email or Password Invalid' : ''}
         </Text>
         {!loading ? (
-           <TouchableOpacity style={styles.btnLogin} onPress={() => {
-            setLoading(true)
-            login()
+          <TouchableOpacity
+            style={styles.btnLogin}
+            onPress={() => {
+              setLoading(true);
+              login();
             }}>
             <Text style={{color: '#fff', fontSize: 18}}>Login</Text>
           </TouchableOpacity>
-       ):(
-        <View style={styles.btnLogin}>
-              <ActivityIndicator size="large" color="white" />
+        ) : (
+          <View style={styles.btnLogin}>
+            <ActivityIndicator size="large" color="white" />
           </View>
         )}
         <View style={{flexDirection: 'row'}}>
@@ -198,13 +199,13 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     backgroundColor: '#f2f2f2',
     height: windowHeight * 0.3,
+    alignItems: 'center',
   },
   title: {
     fontSize: 26,
     fontFamily: FONT_BOLD,
     color: COLOR_MAIN,
     marginTop: windowHeight * 0.11,
-    marginHorizontal: windowWidth * 0.38,
   },
   mainInput: {
     height: windowHeight * 0.7,
