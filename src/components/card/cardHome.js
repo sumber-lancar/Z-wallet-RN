@@ -4,56 +4,6 @@ import {TouchableOpacity} from 'react-native-gesture-handler';
 import {useSelector} from 'react-redux';
 import {API_URL} from '@env';
 
-<<<<<<< HEAD
-const CardHome = (props) => {
-    const name = useSelector((state) => state.auth.name_user)
-    let txtcolor = props.type
-    let txtSymbol
-    let recvr 
-    let stts
-
-    if(props.receiver === name){
-        recvr = props.sender
-    }else{
-        recvr = props.receiver
-    }
-
-    if(txtcolor === 'in'){
-       txtcolor = 'green'
-       txtSymbol = '+'
-       stts = 'Income'
-    }else{
-        txtcolor = 'red'
-        txtSymbol = '-'
-        stts = 'Expense'
-    }
-
-    const [color, setColor] = useState(txtcolor)
-    const [symbol, setSymbol] = useState(txtSymbol)
-    const [penerima, setPenerima] = useState(recvr)
-    const [status, setStatus] = useState(stts)
-
-   
-    return (
-        <TouchableOpacity style={styles.container} onPress={() => {
-            props.navigation.navigate("Success")
-        }}>
-            <View style={{flexDirection: 'row'}}>
-                <View style={styles.containerImage}>
-                    <Image style={styles.img}  source={{uri: API_URL + props.photo, height: 56, width: 56}}/>
-                </View>
-                <View style={styles.txtContainer}>
-                    <Text style={styles.txtName}>{penerima}</Text>
-                    <Text style={styles.status}>{status}</Text>
-                </View>
-            </View>
-            <View>
-                <Text style={{...styles.price, color}}>{symbol}Rp.{props.amount}</Text>
-            </View>
-        </TouchableOpacity>
-    )
-}
-=======
 const CardHome = ({
   id,
   name,
@@ -130,7 +80,6 @@ const CardHome = ({
     </TouchableOpacity>
   );
 };
->>>>>>> 914d405bdd73365c501533a432f4d376ad3a9d2c
 
 const styles = StyleSheet.create({
   container: {
