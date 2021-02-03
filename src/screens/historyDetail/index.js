@@ -8,7 +8,7 @@ import {API_URL} from '@env';
 import {useSelector} from 'react-redux';
 
 const HistoryDetail = ({navigation, route}) => {
-  const {amount, notes, type, receiver, sender, photo} = route.params;
+  const {amount, notes, type, receiver, sender, photo, fulldate} = route.params;
   const balance = useSelector((state) => state.balance.balance);
   const name = useSelector((state) => state.auth.name_user);
   const date = Date().split(' ');
@@ -35,7 +35,7 @@ const HistoryDetail = ({navigation, route}) => {
         <View style={styles.card}>
           <Text style={{fontSize: 16, color: '#7A7886'}}>Date & Time</Text>
           <Text style={{fontSize: 22, fontWeight: 'bold', color: '#514F5B'}}>
-            {date[1]} {date[2]}, {date[3]} - {date[4].substring(0, 5)}
+            {fulldate}
           </Text>
         </View>
         <View style={styles.card}>
