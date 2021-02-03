@@ -55,17 +55,17 @@ const Home = ({navigation, addBalance}) => {
   };
   const socket = useSocket();
   const balance = useSelector((state) => state.balance.balance);
-  console.log(typeof balance);
+  // console.log('here + ' + typeof balance);
   const phone = useSelector((state) => state.auth.phone_user);
   const token_user = useSelector((state) => state.auth.token);
   const name = useSelector((state) => state.auth.name_user);
   const photo_user = useSelector((state) => state.auth.photo_user);
   let httpImage = {uri: API_URL + photo_user};
   const [history, setHistory] = useState([]);
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
     socket.on('transfer out', (msg) => {
-      console.log('BARUUUUUUUUUUUUUUUUU');
+      // console.log('BARUUUUUUUUUUUUUUUUU');
       console.log('Transfer here: ', msg);
       showNotification('Notification', msg, channel);
       getData();
@@ -81,7 +81,7 @@ const Home = ({navigation, addBalance}) => {
       console.log('Transfer here: ', msg);
       showNotification('Notification', msg, channel);
       const numAmount = Number(amount);
-      //console.log(typeof numAmount);
+      // console.log('here 2 ' + typeof numAmount);
       addBalance(numAmount);
       getData();
     });
@@ -100,7 +100,7 @@ const Home = ({navigation, addBalance}) => {
     axios
       .get(API_URL + '/transaction/getAllInvoice', config)
       .then((res) => {
-        setLoading(true)
+        setLoading(true);
         setHistory(res.data.data);
       })
       .catch((err) => {
@@ -181,31 +181,42 @@ const Home = ({navigation, addBalance}) => {
         </TouchableOpacity>
       </View>
       {loading ? (
-        <> 
-        {history &&
-          history.map(
-            ({sender, receiver, fullname, photo, amount, type, id, notes, created_at}) => {
-              return (
-                <CardHome
-                  key={id}
-                  id={id}
-                  name={fullname}
-                  navigation={navigation}
-                  receiver={receiver}
-                  photo={photo}
-                  notes={notes}
-                  amount={toPrice(amount)}
-                  type={type}
-                  sender={sender}
-                  date={created_at}
-                />
-              );
-            },
-          )}
+        <>
+          {history &&
+            history.map(
+              ({
+                sender,
+                receiver,
+                fullname,
+                photo,
+                amount,
+                type,
+                id,
+                notes,
+                created_at,
+              }) => {
+                return (
+                  <CardHome
+                    key={id}
+                    id={id}
+                    name={fullname}
+                    navigation={navigation}
+                    receiver={receiver}
+                    photo={photo}
+                    notes={notes}
+                    amount={toPrice(amount)}
+                    type={type}
+                    sender={sender}
+                    date={created_at}
+                  />
+                );
+              },
+            )}
         </>
       ) : (
-        <View style={{justifyContent: 'center', alignItems: 'center', height: 300}}>
-            <ActivityIndicator size="large" color="#0000ff" />
+        <View
+          style={{justifyContent: 'center', alignItems: 'center', height: 300}}>
+          <ActivityIndicator size="large" color="#0000ff" />
         </View>
       )}
     </ScrollView>
