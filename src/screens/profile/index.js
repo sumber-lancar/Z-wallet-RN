@@ -89,7 +89,7 @@ const Profile = ({ navigation, logoutRedux }) => {
   const uploadPicture = () => {
     const pictureData = new FormData()
     for (let i = 0; i < photo.length; i++) {
-      pictureData.append('image',
+      pictureData.append('photo',
         {
           name: photo[i].path.split('/').pop(),
           type: photo[i].mime,
