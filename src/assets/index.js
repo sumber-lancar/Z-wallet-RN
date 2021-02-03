@@ -15,6 +15,8 @@ import Pencil from './icons/pencil.png'
 import IconNext from './icons/iconNext.png'
 import IconBackWhite from './icons/back-white.png'
 import Checklist from './icons/checklist.png'
+import Gallery from './icons/gallery.png'
+import Camera from './icons/camera.png'
 
 
 
@@ -32,5 +34,7 @@ export {
     IconNext,
     IconBackWhite,
     Checklist,
-    Michi
+    Michi,
+    Gallery,
+    Camera
 }
