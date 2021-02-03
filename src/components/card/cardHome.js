@@ -6,6 +6,7 @@ import {API_URL} from '@env';
 
 const CardHome = ({
   id,
+  name,
   navigation,
   receiver,
   photo,
@@ -15,7 +16,7 @@ const CardHome = ({
   sender,
   date,
 }) => {
-  const name = useSelector((state) => state.auth.name_user);
+  const username = useSelector((state) => state.auth.name_user);
   //console.log(date);
   var months = [
     'January',
@@ -58,7 +59,7 @@ const CardHome = ({
         </View>
         <View style={styles.txtContainer}>
           <Text style={styles.txtName}>
-            {receiver === name ? sender : receiver}
+            {name}
           </Text>
           <Text style={styles.status}>
             {type == 'in' ? 'Income' : 'Expense'}
