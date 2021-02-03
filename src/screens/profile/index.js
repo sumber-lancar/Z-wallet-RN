@@ -30,6 +30,16 @@ import ImagePicker from 'react-native-image-crop-picker';
 import axios from 'axios';
 
 const Profile = ({navigation, logoutRedux, updatePhoto}) => {
+  const isLogin = useSelector((state) => state.auth.isLogin);
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      if (!isLogin) {
+        navigation.navigate('Login');
+      }
+    });
+
+    return unsubscribe;
+  }, [navigation]);
   const channel = 'notif';
   PushNotification.createChannel(
     {
@@ -54,7 +64,7 @@ const Profile = ({navigation, logoutRedux, updatePhoto}) => {
   const photoProfile = useSelector((state) => state.auth.photo_user);
   let images = {uri: API_URL + photoProfile};
   const [isEnabled, setIsEnabled] = useState(false);
-  const toggleSwitch = (isEnabled) => setIsEnabled(!isEnabled);
+  const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
   const [modalVisible, setModalVisible] = useState(false);
   const [editVisible, setEditVisible] = useState(false);
   const config = {
@@ -117,7 +127,7 @@ const Profile = ({navigation, logoutRedux, updatePhoto}) => {
   };
 
   const handleLogout = () => {
-    navigation.replace('Login');
+    navigation.navigate('Login');
     logoutRedux();
   };
 
@@ -277,7 +287,7 @@ const Profile = ({navigation, logoutRedux, updatePhoto}) => {
               style={{
                 flexDirection: 'row',
                 width: 250,
-                justifyContent: 'space-between',
+                justifyContent: 'center',
               }}>
               <Button
                 style={{
@@ -290,7 +300,7 @@ const Profile = ({navigation, logoutRedux, updatePhoto}) => {
                 <Image source={Gallery} />
                 <Text style={{fontSize: 18, fontWeight: 'bold'}}>Gallery</Text>
               </Button>
-              <Button
+              {/* <Button
                 style={{
                   ...styles.closeButton,
                   backgroundColor: 'white',
@@ -300,7 +310,7 @@ const Profile = ({navigation, logoutRedux, updatePhoto}) => {
                 onPress={takePicture}>
                 <Image source={Camera} />
                 <Text style={{fontSize: 18, fontWeight: 'bold'}}>Camera</Text>
-              </Button>
+              </Button> */}
             </View>
             <View style={styles.editWrapper}>
               <TouchableOpacity

@@ -51,13 +51,15 @@ const PersonalInformation = ({navigation, updateName}) => {
       .then((res) => {
         const stName = res.data.data.firstname;
         const ndName = res.data.data.lastname;
-        console.log("fullname", stName, ndName);
-        const fullname = stName.concat(ndName)
+        //console.log('fullname', stName, ndName);
+        const fullname = `${stName} ${ndName}`;
+        console.log(fullname);
+        updateName(fullname);
         // // console.log(phoneNum);
         // updateName(fullname);
         // setFirstName(stName);
         // setLastName(ndName);
-        // navigation.navigate('Profile');
+        navigation.navigate('Profile');
       })
       .catch((err) => {
         console.log(err);

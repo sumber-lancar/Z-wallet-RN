@@ -13,6 +13,8 @@ import axios from 'axios';
 
 import {API_URL} from '@env';
 
+const regexPwd = /^(?=.*[0-9])(?=.*[A-Z])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$/;
+
 const ResetPass = ({navigation, route}) => {
   //const [email, setEmail] = useState('');
   //route && route.params && setEmail(route.params.email);
@@ -30,6 +32,8 @@ const ResetPass = ({navigation, route}) => {
       return setErrorForm('errorpass');
     } else if (newpass !== confirm) {
       return setErrorForm('errorconfirm');
+    } else if (!regexPwd.test(newpass)) {
+      return setErrorForm('fail');
     }
     const data = {
       email: email,
@@ -52,13 +56,15 @@ const ResetPass = ({navigation, route}) => {
       </View>
       <View style={styles.mainInput}>
         <Text style={styles.login}>Reset Password</Text>
-        <Text style={{color: 'red'}}>
+        <Text style={{color: 'red', textAlign: 'center'}}>
           {errorFrom == 'kosong'
             ? 'Please enter new password'
             : errorFrom == 'errorpass'
             ? 'Enter Password Min 4 and Max 12'
             : errorFrom == 'errorconfirm'
             ? `Password didn't match`
+            : errorFrom == 'fail'
+            ? 'Password should at least have 1 LowCase (a-z), 1 UpperCase (A-Z), 1 Number (0-9)'
             : ''}
         </Text>
         <Text

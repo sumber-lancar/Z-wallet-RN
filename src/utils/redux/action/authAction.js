@@ -24,22 +24,22 @@ export const setPhone = (number) => {
   return {
     type: actionTypes.SET_PHONE,
     payload: {
-      number: number
-    }
-  }
-}
+      number: number,
+    },
+  };
+};
 export const updatePhoto = (data) => {
   return {
     type: actionTypes.SET_PHOTO,
-    payload: data
-  }
-}
+    payload: data,
+  };
+};
 
 export const updateName = (updateName) => {
   return {
     type: actionTypes.SET_PROFILE,
     payload: {
-      updateName: updateName
-    }
-  }
-}
+      updateName: updateName,
+    },
+  };
+};

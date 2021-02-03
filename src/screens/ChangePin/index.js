@@ -39,7 +39,7 @@ const ChangePin = ({navigation}) => {
         console.log('error in here');
         console.log(err);
       });
-    navigation.navigate('Home');
+    navigation.navigate('Profile');
   };
   return (
     <View style={{...style.mainContiner}}>
@@ -56,14 +56,12 @@ const ChangePin = ({navigation}) => {
       </View>
       <Text
         style={{
-          ...style.contentTextLoginDesc,
           color: '#3A3D42',
           paddingTop: 40,
+          textAlign: 'center',
+          alignSelf: 'center',
         }}>
-        Enter your current 6 digits Zwallet PIN beloew to
-      </Text>
-      <Text style={{...style.contentTextLoginDesc, color: '#3A3D42'}}>
-        continue to the next step
+        Enter new Pin Below
       </Text>
       <View style={style.formPin}>
         <SmoothPinCode
