@@ -16,10 +16,30 @@ import {IconBack, IconNext, ImgProfile, Pencil} from '../../assets';
 import {connect} from 'react-redux';
 import {logout} from '../../utils/redux/action/authAction';
 import { ScrollView } from 'react-native-gesture-handler';
+import PushNotification from 'react-native-push-notification';
+import { showNotification } from '../../notif';
 
 const Profile = ({navigation, logoutRedux}) => {
+  const channel = 'notif';
+  PushNotification.createChannel(
+    {
+        channelId: 'notif',
+        channelName: 'My Notification channel',
+        channelDescription: 'A channel to categories your notification',
+        soundName: 'default',
+        importance: 4,
+        vibrate: true,
+    },
+    (created) => console.log(`createchannel returned '${created}'`),
+);
+// code to run on component mount
+
+PushNotification.getChannels((channel_ids) => {
+    console.log(channel_ids);
+});
+
   const [isEnabled, setIsEnabled] = useState(false);
-  const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
+  const toggleSwitch = () => showNotification('Notification', 'Transfer Success', channel);;
   const [modalVisible, setModalVisible] = useState(false);
   const handleLogout = () => {
     navigation.navigate('Login');
