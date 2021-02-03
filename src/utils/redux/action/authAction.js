@@ -19,3 +19,12 @@ export const logout = () => {
     type: actionTypes.LOGOUT,
   };
 };
+
+export const setPhone = (number) => {
+  return {
+    type: actionTypes.SET_PHONE,
+    payload: {
+      number: number
+    }
+  }
+}

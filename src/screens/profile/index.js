@@ -1,5 +1,5 @@
 import {Button} from 'native-base';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -13,18 +13,35 @@ import {
 import {IconBack, IconNext, ImgProfile, Pencil} from '../../assets';
 
 //redux
-import {connect} from 'react-redux';
+import {connect, useSelector} from 'react-redux';
 import {logout} from '../../utils/redux/action/authAction';
-import { ScrollView } from 'react-native-gesture-handler';
+import {ScrollView} from 'react-native-gesture-handler';
 
 const Profile = ({navigation, logoutRedux}) => {
+  const [username, setUsername] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState();
+  // const user_name = useSelector((state) => state.auth.name_user).split(' ');
+  // const phone = useSelector((state) => state.auth.phone_user);
+
   const [isEnabled, setIsEnabled] = useState(false);
   const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
   const [modalVisible, setModalVisible] = useState(false);
+
   const handleLogout = () => {
     navigation.navigate('Login');
     logoutRedux();
   };
+
+  // const getUsername = () => {
+  //   setUsername(user_name);
+  // };
+  // const getPhone = () => {
+  //   setPhoneNumber(phone);
+  // };
+  // useEffect(() => {
+  //   getPhone();
+  //   getUsername();
+  // }, []);
   return (
     <ScrollView>
       <TouchableOpacity
@@ -60,7 +77,7 @@ const Profile = ({navigation, logoutRedux}) => {
           <Text style={{fontSize: 16, color: '#7A7886'}}>Edit</Text>
         </View>
         <Text style={{fontSize: 24, color: '#4D4B57', marginTop: 16}}>
-          Fachri Ghiffary
+          username
         </Text>
         <Text
           style={{
@@ -69,14 +86,17 @@ const Profile = ({navigation, logoutRedux}) => {
             marginTop: 10,
             marginBottom: 45,
           }}>
-          +62 813-9387-7946
+          No telp
         </Text>
       </View>
 
       {/* btn navigation */}
-      <TouchableOpacity activeOpacity={0.5} style={styles.btn} onPress={() => {
-        navigation.navigate("Personal Information")
-      }}>
+      <TouchableOpacity
+        activeOpacity={0.5}
+        style={styles.btn}
+        onPress={() => {
+          navigation.navigate('Personal Information');
+        }}>
         <Text style={styles.fontBtn}>Personal Information</Text>
         <Image source={IconNext} />
       </TouchableOpacity>

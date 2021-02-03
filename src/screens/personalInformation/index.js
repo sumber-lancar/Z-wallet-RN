@@ -9,11 +9,15 @@ const PersonalInformation = ({navigation}) => {
   const [email, setEmail] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
 
+
+
   const user_name = useSelector((state) => state.auth.name_user).split(' ');
   const email_user = useSelector((state) => state.auth.email_user);
   const phone = useSelector((state) => state.auth.phone_user);
 
-  console.log(phone);
+console.log("ini telepon", phoneNumber);
+
+
   const getFirstName = () => {
     setFirstName(user_name[0]);
   };
@@ -32,7 +36,6 @@ const PersonalInformation = ({navigation}) => {
     getEmail();
     getPhone();
   }, []);
-
   return (
     <View style={styles.container}>
       <Text style={styles.textInfo}>
@@ -52,7 +55,7 @@ const PersonalInformation = ({navigation}) => {
           <Text style={styles.label}>Verified E-mail</Text>
           <Text style={styles.dataInfo}>{email}</Text>
         </View>
-        {phoneNumber !== undefined ? (
+        {phoneNumber !== '' ? (
           <View style={styles.cardPhone}>
             <View>
               <Text style={styles.label}>Phone Number</Text>
@@ -69,29 +72,32 @@ const PersonalInformation = ({navigation}) => {
             </View>
           </View>
         ) : (
-          <View style={styles.cardPhone}>
-            <View>
-              <Text style={styles.label}>Phone Number</Text>
+          <View style={styles.card}>
+            <Text style={styles.label}>Phone Number</Text>
+
+            
               <TouchableOpacity
                 onPress={() => navigation.navigate('Add Phone Number')}>
-                <Text style={styles.addPhone}>Add Phone Number</Text>
+                <Text
+                  style={styles.addPhone}>
+                  Add Phone Number
+                </Text>
               </TouchableOpacity>
             </View>
-          </View>
+       
         )}
       </View>
     </View>
   );
 };
+// const mapDispatchToProps = (dispatch) => {
+//   return {
+//     login: (token, name_user, email_user, phone_user) =>
+//       dispatch(login(token, name_user, email_user, phone_user)),
+//   };
+// };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    login: (token, name_user, email_user) =>
-      dispatch(login(token, name_user, email_user)),
-  };
-};
-
-export default connect(null, mapDispatchToProps)(PersonalInformation);
+export default PersonalInformation;
 
 const styles = StyleSheet.create({
   container: {
@@ -138,6 +144,6 @@ const styles = StyleSheet.create({
   addPhone: {
     fontSize: 22,
     fontWeight: '700',
-    color: '#6379F4',
+    color: '#6379F4'
   },
 });
