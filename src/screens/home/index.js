@@ -22,12 +22,19 @@ import {connect} from 'react-redux';
 import {addBalance} from '../../../src/utils/redux/action/balanceAction';
 
 const Home = ({navigation, addBalance}) => {
+  useEffect(() => {
+    getData();
+    return () => {
+      getData();
+    };
+  }, [history]);
+
   const toPrice = (x) => {
-    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-  }
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+  };
   const socket = useSocket();
   const balance = useSelector((state) => state.balance.balance);
-  // console.log(typeof balance);
+  console.log(typeof balance);
   const phone = useSelector((state) => state.auth.phone_user);
   const token_user = useSelector((state) => state.auth.token);
   const name = useSelector((state) => state.auth.name_user);
@@ -49,7 +56,7 @@ const Home = ({navigation, addBalance}) => {
     socket.on('transfer in', (msg, amount) => {
       console.log('Transfer here: ', msg);
       const numAmount = Number(amount);
-      // console.log(typeof numAmount);
+      console.log(typeof numAmount);
       addBalance(numAmount);
       getData();
     });
@@ -74,10 +81,6 @@ const Home = ({navigation, addBalance}) => {
         console.log(err);
       });
   };
-
-  useEffect(() => {
-    getData();
-  }, [history]);
 
   return (
     <ScrollView>
@@ -152,21 +155,25 @@ const Home = ({navigation, addBalance}) => {
         </TouchableOpacity>
       </View>
       {history &&
-        history.map(({sender, receiver, photo, amount, type, id, notes}) => {
-          return (
-            <CardHome
-              key={id}
-              id={id}
-              navigation={navigation}
-              receiver={receiver}
-              photo={photo}
-              notes={notes}
-              amount={toPrice(amount)}
-              type={type}
-              sender={sender}
-            />
-          );
-        })}
+        history.map(
+          ({sender, receiver, fullname, photo, amount, type, id, notes, created_at}) => {
+            return (
+              <CardHome
+                key={id}
+                id={id}
+                name={fullname}
+                navigation={navigation}
+                receiver={receiver}
+                photo={photo}
+                notes={notes}
+                amount={toPrice(amount)}
+                type={type}
+                sender={sender}
+                date={created_at}
+              />
+            );
+          },
+        )}
     </ScrollView>
   );
 };
