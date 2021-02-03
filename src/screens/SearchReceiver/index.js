@@ -8,6 +8,7 @@ import {
   ScrollView,
   Image,
   StatusBar,
+  ActivityIndicator
 } from 'react-native';
 import Icon from 'react-native-vector-icons/EvilIcons';
 import {Michi, Card1, ImgProfile, IconBackWhite} from '../../assets';
@@ -21,6 +22,7 @@ const SearchReceiver = ({navigation}) => {
   const [receiver, setContact] = useState([]);
   const [searchName, setSearchName] = useState('');
   const token = useSelector((state) => state.auth.token);
+  const [loading, setLoading] = useState(false)
 
   const listContact = () => {
     const config = {
@@ -33,6 +35,7 @@ const SearchReceiver = ({navigation}) => {
       .then(({data}) => {
         console.log('sukses get data');
         setContact(data.data);
+        setLoading(true)
       })
       .catch((err) => {
         console.log(err.response.data);
@@ -48,6 +51,7 @@ const SearchReceiver = ({navigation}) => {
       .get(`${API_URL}/transfer/search?name=` + searchName, config)
       .then(({data}) => {
         setContact(data.data);
+        setLoading(true)
       })
       .catch((err) => {
         console.log(err.response.data);
@@ -85,7 +89,7 @@ const SearchReceiver = ({navigation}) => {
           </Text>
         </View>
         <View style={styles.formSearch}>
-          <TouchableOpacity onPress={handleSearch}>
+          <TouchableOpacity>
             <Icon
               name="search"
               size={30}
@@ -94,6 +98,10 @@ const SearchReceiver = ({navigation}) => {
             />
           </TouchableOpacity>
           <TextInput
+            onSubmitEditing={() => {
+              handleSearch();
+              setLoading(false)
+            }}
             style={{width: '100%'}}
             placeholder="Search receiver here"
             onChangeText={(text) => setSearchName(text)}
@@ -116,20 +124,28 @@ const SearchReceiver = ({navigation}) => {
             {receiver.length} Contacts Founds
           </Text>
         </View>
-        {receiver &&
-          receiver.map(({id, name, phone, photo}) => {
-            //  let httpImage = { uri : API_URL + photo}
-            return (
-              <CardSearchReceiver
-                key={id}
-                id={id}
-                navigation={navigation}
-                name={name}
-                photo={photo}
-                phone={phone}
-              />
-            );
-          })}
+        {loading ? (
+          <>
+            {receiver &&
+              receiver.map(({id, name, phone, photo}) => {
+                //  let httpImage = { uri : API_URL + photo}
+                return (
+                  <CardSearchReceiver
+                    key={id}
+                    id={id}
+                    navigation={navigation}
+                    name={name}
+                    photo={photo}
+                    phone={phone}
+                  />
+                );
+              })}
+          </>
+        ):( 
+          <View style={{justifyContent: 'center', alignItems: 'center', height: 500}}>
+              <ActivityIndicator size="large" color="#0000ff" />
+          </View>
+        )}
         {/* <CardSearchReceiver
           navigation={navigation}
           iconImg={Michi}

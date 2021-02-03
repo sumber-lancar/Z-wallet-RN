@@ -117,7 +117,7 @@ const Profile = ({navigation, logoutRedux, updatePhoto}) => {
   };
 
   const handleLogout = () => {
-    navigation.navigate('Login');
+    navigation.replace('Login');
     logoutRedux();
   };
   return (

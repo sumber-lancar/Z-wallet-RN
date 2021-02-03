@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import axios from 'axios';
-import {View, Text, StyleSheet, Image} from 'react-native';
+import {View, Text, StyleSheet, Image, ActivityIndicator} from 'react-native';
 import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
 import {
   ArrowUp,
@@ -62,6 +62,7 @@ const Home = ({navigation, addBalance}) => {
   const photo_user = useSelector((state) => state.auth.photo_user);
   let httpImage = {uri: API_URL + photo_user};
   const [history, setHistory] = useState([]);
+  const [loading, setLoading] = useState(false)
   useEffect(() => {
     socket.on('transfer out', (msg) => {
       console.log('Transfer here: ', msg);
@@ -98,6 +99,7 @@ const Home = ({navigation, addBalance}) => {
     axios
       .get(API_URL + '/transaction/getAllInvoice', config)
       .then((res) => {
+        setLoading(true)
         setHistory(res.data.data);
       })
       .catch((err) => {
@@ -177,26 +179,34 @@ const Home = ({navigation, addBalance}) => {
           <Text style={{color: '#6379F4', fontWeight: '600'}}>See all</Text>
         </TouchableOpacity>
       </View>
-      {history &&
-        history.map(
-          ({sender, receiver, fullname, photo, amount, type, id, notes, created_at}) => {
-            return (
-              <CardHome
-                key={id}
-                id={id}
-                name={fullname}
-                navigation={navigation}
-                receiver={receiver}
-                photo={photo}
-                notes={notes}
-                amount={toPrice(amount)}
-                type={type}
-                sender={sender}
-                date={created_at}
-              />
-            );
-          },
-        )}
+      {loading ? (
+        <> 
+        {history &&
+          history.map(
+            ({sender, receiver, fullname, photo, amount, type, id, notes, created_at}) => {
+              return (
+                <CardHome
+                  key={id}
+                  id={id}
+                  name={fullname}
+                  navigation={navigation}
+                  receiver={receiver}
+                  photo={photo}
+                  notes={notes}
+                  amount={toPrice(amount)}
+                  type={type}
+                  sender={sender}
+                  date={created_at}
+                />
+              );
+            },
+          )}
+        </>
+      ) : (
+        <View style={{justifyContent: 'center', alignItems: 'center', height: 300}}>
+            <ActivityIndicator size="large" color="#0000ff" />
+        </View>
+      )}
     </ScrollView>
   );
 };

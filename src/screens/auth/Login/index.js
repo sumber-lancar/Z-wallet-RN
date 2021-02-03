@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Dimensions, StyleSheet, Text, View} from 'react-native';
+import {ActivityIndicator, Dimensions, StyleSheet, Text, View} from 'react-native';
 import {TextInput, TouchableOpacity} from 'react-native-gesture-handler';
 import {
   IconEyeOpen,
@@ -32,14 +32,21 @@ const Login = ({navigation, loginRedux, setBalance}) => {
   const [errorFrom, setErrorForm] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false)
   const user_name = useSelector((state) => state.auth.name_user);
   const login = () => {
     setErrorForm('');
     setFail(false);
     if (email === '' || password === '') {
-      return setErrorForm('kosong');
+      return (
+        setErrorForm('kosong'),
+        setLoading(false)
+        );
     } else if (!regexEmail.test(email)) {
-      return setErrorForm('errormail');
+      return (
+        setErrorForm('errormail'),
+        setLoading(false)
+        );
     }
     const data = {
       email: email,
@@ -62,11 +69,13 @@ const Login = ({navigation, loginRedux, setBalance}) => {
         //console.log(token, id, name, email, photo);
         loginRedux(token, id, name, email, photo, phone);
         setBalance(balance);
+        setLoading(true)
         navigation.replace('Home');
       })
       .catch((err) => {
         console.log(err);
         setFail(true);
+        setLoading(false)
       });
   };
   return (
@@ -148,10 +157,18 @@ const Login = ({navigation, loginRedux, setBalance}) => {
           }}>
           {fail ? 'Email or Password Invalid' : ''}
         </Text>
-
-        <TouchableOpacity style={styles.btnLogin} onPress={login}>
-          <Text style={{color: '#fff', fontSize: 18}}>Login</Text>
-        </TouchableOpacity>
+        {!loading ? (
+           <TouchableOpacity style={styles.btnLogin} onPress={() => {
+            setLoading(true)
+            login()
+            }}>
+            <Text style={{color: '#fff', fontSize: 18}}>Login</Text>
+          </TouchableOpacity>
+       ):(
+        <View style={styles.btnLogin}>
+              <ActivityIndicator size="large" color="white" />
+          </View>
+        )}
         <View style={{flexDirection: 'row'}}>
           <Text>Don’t have an account? Let’s </Text>
           <TouchableOpacity onPress={() => navigation.navigate('Register')}>

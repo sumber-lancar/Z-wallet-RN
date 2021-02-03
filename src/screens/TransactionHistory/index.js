@@ -5,7 +5,7 @@ import {
   View,
   ScrollView,
   TouchableOpacity,
-  Image,
+  ActivityIndicator,
 } from 'react-native';
 import {
   ArrowUp,
@@ -50,6 +50,7 @@ const TransactionHistory = ({navigation}) => {
   const token_user = useSelector((state) => state.auth.token);
   const [getDatebyDate, setGetDatebyDate] = useState(false);
   const [historyDate, setHistoryDate] = useState([]);
+  const [loading, setLoading] = useState(false)
 
   const getHistoryToday = () => {
     const config = {
@@ -61,8 +62,8 @@ const TransactionHistory = ({navigation}) => {
       .get(API_URL + urlToday, config)
       .then((res) => {
         console.log('this day', res.data.data);
-        console.log(res.data.data[0].fullname);
         setHistoryToday(res.data.data);
+        setLoading(true)
       })
       .catch((err) => {
         console.log(err);
@@ -80,6 +81,7 @@ const TransactionHistory = ({navigation}) => {
       .then((res) => {
         console.log('this week', res.data.data);
         setHistoryWeek(res.data.data);
+        setLoading(true)
       })
       .catch((err) => {
         console.log(err);
@@ -117,7 +119,8 @@ const TransactionHistory = ({navigation}) => {
         config,
       )
       .then((res) => {
-        console.log('ini filter date', res);
+        console.log('ini filter date', res.data.data);
+        setLoading(true)
         setHistoryDate(res.data.data);
       })
       .catch((err) => {
@@ -262,9 +265,13 @@ const TransactionHistory = ({navigation}) => {
   return (
     <View style={styles.container}>
       <ScrollView>
-        {gethistoryByDate}
-        {historyTodays}
-        {historyWeeks}
+        {loading ? (
+          historyTodays && historyWeeks ||  gethistoryByDate
+        ) : (
+        <View style={{justifyContent: 'center', alignItems: 'center', height: 500}}>
+            <ActivityIndicator size="large" color="#0000ff" />
+        </View>
+        )}
       </ScrollView>
       <View style={styles.filter}>
         <View style={{flexDirection: 'row'}}>
@@ -274,6 +281,7 @@ const TransactionHistory = ({navigation}) => {
               setUrlToday('/transaction/getInvoice?today=true&flow=out');
               setUrlWeek('/transaction/getInvoice?flow=out&thisWeek=true');
               setGetDatebyDate(false);
+              setLoading(false)
               refresh();
             }}>
             <Icon
@@ -290,6 +298,7 @@ const TransactionHistory = ({navigation}) => {
               setUrlToday('/transaction/getInvoice?today=true&flow=in');
               setUrlWeek('/transaction/getInvoice?flow=in&thisWeek=true');
               setGetDatebyDate(false);
+              setLoading(false)
               refresh();
             }}>
             <Icon
@@ -338,6 +347,7 @@ const TransactionHistory = ({navigation}) => {
             onPress={() => {
               handleFilter();
               setGetDatebyDate(true);
+              setLoading(false)
               actionSheetRef.current?.hide();
             }}>
             <Text style={{color: 'white', fontSize: 16}}>Apply</Text>
