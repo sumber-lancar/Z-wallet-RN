@@ -8,6 +8,8 @@ const INITIAL_STATE = {
   email_user: null,
   photo_user: null,
   phone_user: null,
+  firstName_user: null,
+  lastName_user: null
 };
 
 const authReducer = (state = INITIAL_STATE, action) => {
@@ -34,10 +36,20 @@ const authReducer = (state = INITIAL_STATE, action) => {
         photo_user: null,
         phone_user: null,
       };
+    case actionTypes.SET_PHONE:
+      return {
+        ...state,
+        phone_user: action.payload.number,
+      };
     case actionTypes.SET_PHOTO:
       return {
         ...state,
         photo_user: action.payload
+      };
+    case actionTypes.SET_PROFILE:
+      return {
+        ...state,
+        name_user: action.payload.updateFullname
       }
     default:
       return state;

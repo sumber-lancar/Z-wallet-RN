@@ -1,6 +1,8 @@
 //Auth
 export const LOGIN = 'LOGIN';
 export const LOGOUT = 'LOGOUT';
+export const SET_PHONE = 'SET_PHONE';
+export const SET_PROFILE = 'SET_PROFILE';
 
 //Balance
 export const GET_BALANCE = 'GET_BALANCE';

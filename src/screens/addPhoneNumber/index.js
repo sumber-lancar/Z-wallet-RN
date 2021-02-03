@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   StyleSheet,
   Text,
@@ -7,10 +7,48 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView,
 } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
+import {ScrollView} from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/Feather';
+import {useSelector, connect} from 'react-redux';
+import {setPhone} from '../../utils/redux/action/authAction';
+import axios from 'axios';
+import {API_URL} from '@env';
 
-const AddPhoneNumber = () => {
+const AddPhoneNumber = ({navigation, setPhone}) => {
+  const [phoneNumber, setPhoneNumber] = useState('+62');
+  const [errMsg, setErrMsg] = useState('');
+  const token = useSelector((state) => state.auth.token);
+
+  const addPhone = () => {
+    if (phoneNumber == '+62') {
+      setErrMsg('Phone number must be fill');
+    } else if (phoneNumber == '+6') {
+      setErrMsg('Phone number must be fill');
+    } else if (phoneNumber == '+') {
+      setErrMsg('Phone number must be fill');
+    } else if (phoneNumber == '') {
+      setErrMsg('Phone number must be fill');
+    } else {
+      const data = {
+        phone: phoneNumber,
+      };
+      axios
+        .patch(`${API_URL}/user/changeInfo`, data, {
+          headers: {
+            'x-access-token': 'Bearer ' + token,
+          },
+        })
+        .then((res) => {
+          const phoneNum = res.data.data.phone;
+          // setPhoneNumber(phoneNum);
+          setPhone(phoneNum);
+          navigation.navigate('Profile');
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  };
   return (
     <>
       <View style={styles.container}>
@@ -18,6 +56,9 @@ const AddPhoneNumber = () => {
           <Text style={styles.textInfo}>
             Add at least one phone number for the transfer ID so you can start
             transfering your money to another user.
+          </Text>
+          <Text style={{color: 'red', fontSize: 14, marginHorizontal: 10}}>
+            {errMsg}
           </Text>
           <View
             style={{
@@ -32,15 +73,18 @@ const AddPhoneNumber = () => {
               size={20}
               color="#A9A9A9"
             />
-            <Text style={{marginHorizontal: 5}}>+62</Text>
+            {/* <Text style={{marginHorizontal: 5}}>+62</Text> */}
             <TextInput
               style={{marginHorizontal: 5}}
+              label="phone"
               keyboardType={'phone-pad'}
               placeholder="Enter your phone number"
+              value={phoneNumber}
+              onChangeText={(phoneNumber) => setPhoneNumber(phoneNumber)}
             />
           </View>
         </ScrollView>
-  
+
         <TouchableOpacity
           style={{
             width: '100%',
@@ -51,7 +95,8 @@ const AddPhoneNumber = () => {
             backgroundColor: '#6379F4',
             borderRadius: 10,
             bottom: 0,
-          }}>
+          }}
+          onPress={() => addPhone()}>
           <Text style={{fontSize: 18, fontWeight: '700', color: 'white'}}>
             Submit
           </Text>
@@ -61,7 +106,12 @@ const AddPhoneNumber = () => {
   );
 };
 
-export default AddPhoneNumber;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setPhone: (phone_user) => dispatch(setPhone(phone_user)),
+  };
+};
+export default connect(null, mapDispatchToProps)(AddPhoneNumber);
 
 const styles = StyleSheet.create({
   container: {

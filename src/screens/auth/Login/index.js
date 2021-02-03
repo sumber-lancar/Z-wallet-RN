@@ -66,7 +66,7 @@ const Login = ({navigation, loginRedux, setBalance}) => {
         const photo = res.data.data.photo;
         const phone = res.data.data.phone;
         const balance = res.data.data.balance;
-        //console.log(token, id, name, email, photo);
+        console.log(token, id, name, email, photo,"ini telepon", phone);
         loginRedux(token, id, name, email, photo, phone);
         setBalance(balance);
         setLoading(true)

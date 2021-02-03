@@ -1,5 +1,5 @@
 import {Button} from 'native-base';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -120,6 +120,17 @@ const Profile = ({navigation, logoutRedux, updatePhoto}) => {
     navigation.replace('Login');
     logoutRedux();
   };
+
+  // const getUsername = () => {
+  //   setUsername(user_name);
+  // };
+  // const getPhone = () => {
+  //   setPhoneNumber(phone);
+  // };
+  // useEffect(() => {
+  //   getPhone();
+  //   getUsername();
+  // }, []);
   return (
     <ScrollView>
       <TouchableOpacity
