@@ -16,7 +16,7 @@ const CardHome = ({
   sender,
   date,
 }) => {
-  const username = useSelector((state) => state.auth.name_user);
+  //const username = useSelector((state) => state.auth.name_user);
   //console.log(date);
   var months = [
     'Jan',
@@ -41,7 +41,7 @@ const CardHome = ({
   const fulldate = `${months[month]} ${
     setdate < 10 ? `0${setdate}` : setdate
   }, ${year} - ${hour}:${minute < 10 ? `0${minute}` : minute}`;
-  console.log(fulldate);
+  //console.log(fulldate);
   return (
     <TouchableOpacity
       style={styles.container}
@@ -52,7 +52,7 @@ const CardHome = ({
           receiver,
           photo,
           type,
-          sender,
+          name,
           fulldate,
         });
       }}>
@@ -64,9 +64,7 @@ const CardHome = ({
           />
         </View>
         <View style={styles.txtContainer}>
-          <Text style={styles.txtName}>
-            {name}
-          </Text>
+          <Text style={styles.txtName}>{name}</Text>
           <Text style={styles.status}>
             {type == 'in' ? 'Income' : 'Expense'}
           </Text>
