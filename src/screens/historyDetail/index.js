@@ -7,14 +7,23 @@ import {API_URL} from '@env';
 //redux
 import {useSelector} from 'react-redux';
 
-const Success = ({navigation, route}) => {
-  const {amount, notes} = route.params;
+const HistoryDetail = ({navigation, route}) => {
+  const {
+    amount,
+    notes,
+    type,
+    receiver,
+    sender,
+    photo,
+    fulldate,
+    name,
+  } = route.params;
   const balance = useSelector((state) => state.balance.balance);
-  const receiver = useSelector((state) => state.receiver);
   const date = Date().split(' ');
   const toPrice = (x) => {
-    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-  }
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+  };
+
   return (
     <ScrollView>
       <View style={{marginTop: 50}}>
@@ -32,15 +41,9 @@ const Success = ({navigation, route}) => {
           </Text>
         </View>
         <View style={styles.card}>
-          <Text style={{fontSize: 16, color: '#7A7886'}}>Balance Left</Text>
-          <Text style={{fontSize: 22, fontWeight: 'bold', color: '#514F5B'}}>
-            Rp.{toPrice(balance - amount)}
-          </Text>
-        </View>
-        <View style={styles.card}>
           <Text style={{fontSize: 16, color: '#7A7886'}}>Date & Time</Text>
           <Text style={{fontSize: 22, fontWeight: 'bold', color: '#514F5B'}}>
-            {date[1]} {date[2]}, {date[3]} - {date[4].substring(0, 5)}
+            {fulldate}
           </Text>
         </View>
         <View style={styles.card}>
@@ -57,19 +60,18 @@ const Success = ({navigation, route}) => {
           fontSize: 18,
           fontWeight: 'bold',
         }}>
-        Transfer to
+        {type == 'in' ? 'Transfer From' : 'Transfer to'}
       </Text>
       <View style={styles.card1}>
         <View style={{flexDirection: 'row'}}>
           <Image
             style={styles.img}
-            source={{uri: API_URL + receiver.photo, width: 50, height: 50}}
+            source={{uri: API_URL + photo, width: 50, height: 50}}
           />
           <View style={styles.nameNumber}>
             <Text style={{fontSize: 16, fontWeight: '700', color: '#4D4B57'}}>
-              {receiver.name_user}
+              {name}
             </Text>
-            <Text style={{color: '#7A7886'}}>{receiver.phone}</Text>
           </View>
         </View>
       </View>
@@ -161,4 +163,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Success;
+export default HistoryDetail;

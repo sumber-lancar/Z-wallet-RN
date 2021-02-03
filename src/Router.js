@@ -30,6 +30,7 @@ import Otp from './screens/auth/Otp';
 
 //cotext
 import {SocketProvider} from '../src/utils/Context/SocketProvider';
+import HistoryDetail from './screens/historyDetail';
 
 const Stack = createStackNavigator();
 
@@ -202,6 +203,14 @@ const Router = () => {
             component={ManagePhoneNumber}
             options={{
               title: 'Manage Phone Number',
+            }}
+          />
+
+          <Stack.Screen
+            name="History Detail"
+            component={HistoryDetail}
+            options={{
+              title: 'History Detail',
             }}
           />
         </Stack.Navigator>

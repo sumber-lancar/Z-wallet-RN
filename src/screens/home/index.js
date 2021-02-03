@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import axios from 'axios';
-import {View, Text, StyleSheet, Image} from 'react-native';
+import {View, Text, StyleSheet, Image, ActivityIndicator} from 'react-native';
 import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
 import {
   ArrowUp,
@@ -16,24 +16,78 @@ import CardHome from '../../components/card/cardHome';
 import {useSelector} from 'react-redux';
 import {API_URL} from '@env';
 
+//notif
+import PushNotification from 'react-native-push-notification';
+import {showNotification} from '../../notif';
+
 //context
 import {useSocket} from '../../utils/Context/SocketProvider';
+import {connect} from 'react-redux';
+import {addBalance} from '../../../src/utils/redux/action/balanceAction';
 
-const Home = ({navigation}) => {
+const Home = ({navigation, addBalance}) => {
+  const channel = 'notif';
+  PushNotification.createChannel(
+    {
+      channelId: 'notif',
+      channelName: 'My Notification channel',
+      channelDescription: 'A channel to categories your notification',
+      soundName: 'default',
+      importance: 4,
+      vibrate: true,
+    },
+    (created) => console.log(`createchannel returned '${created}'`),
+  );
+  // code to run on component mount
+
+  PushNotification.getChannels((channel_ids) => {
+    console.log(channel_ids);
+  });
+  useEffect(() => {
+    getData();
+    return () => {
+      getData();
+    };
+  }, [history]);
+
+  const toPrice = (x) => {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+  };
   const socket = useSocket();
   const balance = useSelector((state) => state.balance.balance);
-  const phone = useSelector((state) => state.auth.phone);
+  console.log(typeof balance);
+  const phone = useSelector((state) => state.auth.phone_user);
   const token_user = useSelector((state) => state.auth.token);
   const name = useSelector((state) => state.auth.name_user);
   const photo_user = useSelector((state) => state.auth.photo_user);
   let httpImage = {uri: API_URL + photo_user};
   const [history, setHistory] = useState([]);
+  const [loading, setLoading] = useState(false)
   useEffect(() => {
-    socket.on('transfer', (msg) => {
-      console.log('hai ', msg);
+    socket.on('transfer out', (msg) => {
+      console.log('BARUUUUUUUUUUUUUUUUU');
+      console.log('Transfer here: ', msg);
+      showNotification('Notification', msg, channel);
+      getData();
     });
     return () => {
-      socket.off('transfer');
+      socket.off('transfer out');
+      getData();
+    };
+  }, []);
+
+  useEffect(() => {
+    socket.on('transfer in', (msg, amount) => {
+      console.log('Transfer here: ', msg);
+      showNotification('Notification', msg, channel);
+      const numAmount = Number(amount);
+      //console.log(typeof numAmount);
+      addBalance(numAmount);
+      getData();
+    });
+    return () => {
+      socket.off('transfer in');
+      getData();
     };
   }, []);
 
@@ -46,16 +100,13 @@ const Home = ({navigation}) => {
     axios
       .get(API_URL + '/transaction/getAllInvoice', config)
       .then((res) => {
+        setLoading(true)
         setHistory(res.data.data);
       })
       .catch((err) => {
         console.log(err);
       });
   };
-
-  useEffect(() => {
-    getData();
-  }, []);
 
   return (
     <ScrollView>
@@ -90,7 +141,7 @@ const Home = ({navigation}) => {
       <View style={styles.containerBalance}>
         <View style={styles.balanceSection}>
           <Text style={styles.txtBalance}>Balance</Text>
-          <Text style={styles.txtmoney}>{balance}</Text>
+          <Text style={styles.txtmoney}>Rp. {toPrice(balance)}</Text>
           <Text style={styles.txtBalance}>{phone}</Text>
         </View>
       </View>
@@ -129,22 +180,34 @@ const Home = ({navigation}) => {
           <Text style={{color: '#6379F4', fontWeight: '600'}}>See all</Text>
         </TouchableOpacity>
       </View>
-      {history &&
-        history.map(({sender, receiver, photo, amount, type, id, notes}) => {
-          return (
-            <CardHome
-              key={id}
-              id={id}
-              navigation={navigation}
-              receiver={receiver}
-              photo={photo}
-              notes={notes}
-              amount={amount}
-              type={type}
-              sender={sender}
-            />
-          );
-        })}
+      {loading ? (
+        <> 
+        {history &&
+          history.map(
+            ({sender, receiver, fullname, photo, amount, type, id, notes, created_at}) => {
+              return (
+                <CardHome
+                  key={id}
+                  id={id}
+                  name={fullname}
+                  navigation={navigation}
+                  receiver={receiver}
+                  photo={photo}
+                  notes={notes}
+                  amount={toPrice(amount)}
+                  type={type}
+                  sender={sender}
+                  date={created_at}
+                />
+              );
+            },
+          )}
+        </>
+      ) : (
+        <View style={{justifyContent: 'center', alignItems: 'center', height: 300}}>
+            <ActivityIndicator size="large" color="#0000ff" />
+        </View>
+      )}
     </ScrollView>
   );
 };
@@ -177,7 +240,7 @@ const styles = StyleSheet.create({
   },
   balanceSection: {
     height: 91,
-    width: 134,
+    width: 200,
     justifyContent: 'space-between',
   },
   txtBalance: {
@@ -222,4 +285,10 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Home;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    addBalance: (amount) => dispatch(addBalance(amount)),
+  };
+};
+
+export default connect(null, mapDispatchToProps)(Home);

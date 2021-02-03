@@ -3,9 +3,11 @@ import React, {useState} from 'react';
 import {View, Text, StyleSheet, Image, Modal} from 'react-native';
 import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
 import {IconBackWhite, ImgProfile, Pencil, Plus} from '../../assets';
+import * as color from '../../utils/colors'
 
 const TopUp = ({navigation}) => {
   const [isEnabled, setIsEnabled] = useState(false);
+  const [isSelected , setIsSelected] = useState(false);
   const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
   const [modalVisible, setModalVisible] = useState(false);
 
@@ -20,7 +22,7 @@ const TopUp = ({navigation}) => {
             <Image source={IconBackWhite} />
           </TouchableOpacity>
           <Text style={{fontSize: 20, color: 'white', fontWeight: '700'}}>
-            Transfer
+            Top UP
           </Text>
         </View>
 
@@ -111,7 +113,75 @@ const TopUp = ({navigation}) => {
       </View>
       <Modal animationType="fade" transparent={true} visible={modalVisible}>
         <View style={styles.centeredView}>
-          <Text>Bca</Text>
+          <View style={styles.modalView}>
+            <View style={styles.modalContainer}>
+              <Text style={styles.modalText}>Bank BCA : </Text>
+              <Button style={styles.buton} >
+                <Text style={styles.modalText}>014 </Text>
+              </Button>
+            </View>
+            <View style={styles.modalContainer}>
+              <Text style={styles.modalText}>Bank Mandiri : </Text>
+              <Button style={styles.buton}>
+                <Text style={styles.modalText}>008 </Text>
+              </Button>
+            </View>
+            <View style={styles.modalContainer}>
+              <Text style={styles.modalText}>Bank BNI : </Text>
+              <Button style={styles.buton}>
+                <Text style={styles.modalText}>009 </Text>
+              </Button>
+            </View>
+            <View style={styles.modalContainer}>
+              <Text style={styles.modalText}>Bank BNI Syariah : </Text>
+              <Button style={styles.buton}>
+                <Text style={styles.modalText}>427 </Text>
+              </Button>
+            </View>
+            <View style={styles.modalContainer}>
+              <Text style={styles.modalText}>Bank BRI : </Text>
+              <Button style={styles.buton}>
+                <Text style={styles.modalText}>002 </Text>
+              </Button>
+            </View>
+            <View style={styles.modalContainer}>
+              <Text style={styles.modalText}>Bank Syariah Mandiri : </Text>
+              <Button style={styles.buton}>
+                <Text style={styles.modalText}>451 </Text>
+              </Button>
+            </View>
+            <View style={styles.modalContainer}>
+              <Text style={styles.modalText}>Bank CIMB Niaga : </Text>
+              <Button style={styles.buton}>
+                <Text style={styles.modalText}>022 </Text>
+              </Button>
+            </View>
+            <View style={styles.modalContainer}>
+              <Text style={styles.modalText}>Bank CIMB Niaga Syariah : </Text>
+              <Button style={styles.buton}>
+                <Text style={styles.modalText}>022 </Text>
+              </Button>
+            </View>
+            <View style={styles.modalContainer}>
+              <Text style={styles.modalText}>Bank Muamalat : </Text>
+              <Button style={styles.buton}>
+                <Text style={styles.modalText}>147 </Text>
+              </Button>
+            </View>
+            <View style={styles.modalContainer}>
+              <Text style={styles.modalText}>Bank DANAMON : </Text>
+              <Button style={styles.buton}>
+                <Text style={styles.modalText}>011 </Text>
+              </Button>
+            </View>
+            <Button
+                style={{...styles.closeButton, backgroundColor: 'lightgrey'}}
+                onPress={() => {
+                  setModalVisible(!modalVisible);
+                }}>
+                <Text style={{...styles.textStyle, color: 'black'}}>Close</Text>
+              </Button>
+          </View>
         </View>
       </Modal>
     </ScrollView>
@@ -175,13 +245,12 @@ const styles = StyleSheet.create({
     marginTop: 22,
   },
   modalView: {
-    height: 200,
+    height: 'auto',
     width: 300,
     margin: 20,
     backgroundColor: 'white',
     borderRadius: 20,
     padding: 35,
-    alignItems: 'center',
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -194,7 +263,7 @@ const styles = StyleSheet.create({
   closeButton: {
     backgroundColor: '#6379F4',
     height: 40,
-    width: 100,
+    width: 'auto',
     borderRadius: 20,
     padding: 10,
     elevation: 2,
@@ -207,10 +276,18 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   modalText: {
-    marginBottom: 15,
-    textAlign: 'center',
-    fontSize: 25,
+    marginBottom: 10,
+    fontSize: 15,
   },
+  modalContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  buton: {
+    backgroundColor: color.white,
+    padding: 5,
+  },
+
   number: {fontSize: 18, color: '#6379F4', fontWeight: 'bold'},
   detail: {lineHeight: 27, fontSize: 16, color: '#7A7886'},
 });

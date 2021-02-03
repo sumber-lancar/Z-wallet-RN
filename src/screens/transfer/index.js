@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -9,15 +9,28 @@ import {
 } from 'react-native';
 import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
 import {IconBackWhite, ImgProfile, Pencil} from '../../assets';
+import {API_URL} from '@env';
 
 //context
 import {useSocket} from '../../utils/Context/SocketProvider';
 
+//redux
+import {useSelector} from 'react-redux';
+
 const Transfer = ({navigation}) => {
-  const socket = useSocket();
+  const toPrice = (x) => {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  }
+  const [amount, setAmount] = useState('');
+  const [notes, setNotes] = useState('');
+  //const socket = useSocket();
   const postTransfer = () => {
-    socket.emit('transfer', 500, 27, 39);
+    //socket.emit('transfer', 500, 27, 39);
+    navigation.navigate('Confirmation', {amount, notes});
   };
+  const receiver = useSelector((state) => state.receiver);
+  const balance = useSelector((state) => state.balance.balance);
+  //console.log(receiver);
   return (
     <ScrollView>
       <View style={styles.header}>
@@ -34,12 +47,15 @@ const Transfer = ({navigation}) => {
         </View>
         <View style={styles.card}>
           <View style={{flexDirection: 'row'}}>
-            <Image style={styles.img} source={ImgProfile} />
+            <Image
+              style={styles.img}
+              source={{uri: API_URL + receiver.photo, width: 50, height: 50}}
+            />
             <View style={styles.nameNumber}>
               <Text style={{fontSize: 16, fontWeight: '700', color: '#4D4B57'}}>
-                Samuel Suhi
+                {receiver.name_user}
               </Text>
-              <Text style={{color: '#7A7886'}}>+62 813-8492-9994</Text>
+              <Text style={{color: '#7A7886'}}>{receiver.phone}</Text>
             </View>
           </View>
         </View>
@@ -47,17 +63,24 @@ const Transfer = ({navigation}) => {
       <View style={styles.inputSection}>
         <TextInput
           keyboardType="number-pad"
-          style={{fontSize: 42, fontWeight: 'bold', color: '#6379F4'}}
+          style={{ textAlign: 'center',fontSize: 42, width: 230, fontWeight: 'bold', color: '#6379F4'}}
           placeholder="0.00"
+          defaultValue={amount}
+          onChangeText={(amount) => setAmount(amount)}
         />
         <Text style={{fontSize: 16, color: '#7C7895', marginTop: 20}}>
-          Rp.120.000 Available
+          Rp.{toPrice(balance)} Available
         </Text>
       </View>
       <View style={styles.noteSection}>
         <View style={{flexDirection: 'row', height: 50, alignItems: 'center'}}>
           <Image source={Pencil} />
-          <TextInput style={{marginLeft: 17}} placeholder="Add some notes" />
+          <TextInput
+            style={{marginLeft: 17}}
+            placeholder="Add some notes"
+            defaultValue={notes}
+            onChangeText={(notes) => setNotes(notes)}
+          />
         </View>
         <View style={{height: 1, width: 343, backgroundColor: '#A9A9A9'}} />
       </View>
