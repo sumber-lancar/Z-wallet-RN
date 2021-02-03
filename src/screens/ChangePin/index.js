@@ -1,3 +1,4 @@
+// import Button from 'native-elements'
 import React, {useState, useEffect} from 'react';
 import {
   View,
@@ -5,6 +6,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   KeyboardAvoidingView,
+  ToastAndroid
 } from 'react-native';
 import SmoothPinCode from 'react-native-smooth-pincode-input';
 import {useNavigation, useRoute} from '@react-navigation/native';
@@ -21,10 +23,22 @@ const ChangePin = ({navigation}) => {
   const [pin, setPin] = useState('');
   // const [msg, setMsg] = useState(null);
   // const navigation = useNavigation();
+
+  const showToast = () => {
+    ToastAndroid.showWithGravityAndOffset(
+      "PIN Success Changed!",
+      ToastAndroid.LONG,
+      ToastAndroid.BOTTOM,
+      25,
+      50
+    )
+  }
+
   const updatePin = () => {
     const data = {
       pin,
     };
+    
     const config = {
       headers: {
         'x-access-token': 'Bearer ' + token,
@@ -34,12 +48,13 @@ const ChangePin = ({navigation}) => {
       .patch(`${API_URL}/user/changeInfo`, data, config)
       .then((res) => {
         console.log(res.msg);
+        showToast();
+        navigation.navigate("Profile");
       })
       .catch((err) => {
         console.log('error in here');
         console.log(err);
       });
-    navigation.navigate('Home');
   };
   return (
     <View style={{...style.mainContiner}}>
@@ -50,6 +65,7 @@ const ChangePin = ({navigation}) => {
           onPress={() => {
             // dispatch(cancelTransferCreator())
             navigation.goBack();
+            
           }}
         />
         <Text style={{marginLeft: 15, fontSize: 20}}>Change Pin</Text>
@@ -84,7 +100,9 @@ const ChangePin = ({navigation}) => {
           position: 'absolute',
           top: '29%',
         }}
-        onPress={updatePin}>
+        onPress={() => {
+          updatePin();
+        }}>
         <Text style={{color: 'white', fontSize: 20}}>Continue</Text>
       </TouchableOpacity>
 

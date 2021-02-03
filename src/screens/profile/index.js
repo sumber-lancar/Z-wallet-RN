@@ -1,5 +1,5 @@
 import {Button} from 'native-base';
-import React, {useState} from 'react';
+import React, {useState , useEffect} from 'react';
 import {
   View,
   Text,
@@ -18,7 +18,7 @@ import {connect} from 'react-redux';
 import {logout} from '../../utils/redux/action/authAction';
 import { ScrollView } from 'react-native-gesture-handler';
 
-const Profile = ({navigation, logoutRedux}) => {
+const Profile = ({navigation, logoutRedux , isLogin}) => {
   const phone = useSelector(state => state.auth.phone)
   const userName = useSelector(state => state.auth.name_user);
   const photo = useSelector(state => state.auth.photo_user);
@@ -27,6 +27,15 @@ const Profile = ({navigation, logoutRedux}) => {
   const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
   const [modalVisible, setModalVisible] = useState(false);
   const [editVisible, setEditVisible] = useState(false);
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus' , ()=> {
+      if(!isLogin){
+        navigation.navigate('Login');
+      }
+    });
+
+    return unsubscribe;
+  }, [navigation]);
   const handleLogout = () => {
     navigation.navigate('Login');
     logoutRedux();
@@ -255,6 +264,11 @@ const styles = StyleSheet.create({
     fontSize: 25,
   },
 });
+const mapStateToProps = (state) => {
+  return {
+    isLogin: state.auth.isLogin,
+  }
+}
 
 const mapDispatchToProps = (dispatch) => {
   return {
@@ -262,4 +276,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(null, mapDispatchToProps)(Profile);
+export default connect(mapStateToProps, mapDispatchToProps)(Profile);

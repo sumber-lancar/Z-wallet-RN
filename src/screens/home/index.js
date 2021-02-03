@@ -16,10 +16,14 @@ import CardHome from '../../components/card/cardHome';
 import {useSelector} from 'react-redux';
 import {API_URL} from '@env';
 
+// import Toast from 'react-native-toast-message'
 //context
 import {useSocket} from '../../utils/Context/SocketProvider';
 import {connect} from 'react-redux';
 import {addBalance} from '../../../src/utils/redux/action/balanceAction';
+
+
+
 
 const Home = ({navigation, addBalance}) => {
   const toPrice = (x) => {
@@ -28,12 +32,15 @@ const Home = ({navigation, addBalance}) => {
   const socket = useSocket();
   const balance = useSelector((state) => state.balance.balance);
   // console.log(typeof balance);
+  
   const phone = useSelector((state) => state.auth.phone_user);
   const token_user = useSelector((state) => state.auth.token);
   const name = useSelector((state) => state.auth.name_user);
   const photo_user = useSelector((state) => state.auth.photo_user);
   let httpImage = {uri: API_URL + photo_user};
   const [history, setHistory] = useState([]);
+
+  
   useEffect(() => {
     socket.on('transfer out', (msg) => {
       console.log('Transfer here: ', msg);
@@ -68,6 +75,7 @@ const Home = ({navigation, addBalance}) => {
     axios
       .get(API_URL + '/transaction/getAllInvoice', config)
       .then((res) => {
+        
         setHistory(res.data.data);
       })
       .catch((err) => {
@@ -170,6 +178,11 @@ const Home = ({navigation, addBalance}) => {
     </ScrollView>
   );
 };
+const mapStateToProps = (state) => {
+  return {
+    isLogin: state.auth.isLogin,
+  }
+}
 
 const styles = StyleSheet.create({
   containerHeader: {
@@ -250,4 +263,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(null, mapDispatchToProps)(Home);
+export default connect(mapStateToProps, mapDispatchToProps)(Home);

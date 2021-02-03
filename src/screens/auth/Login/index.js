@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Dimensions, StyleSheet, Text, View} from 'react-native';
+import {Dimensions, StyleSheet, Text, View , ToastAndroid} from 'react-native';
 import {TextInput, TouchableOpacity} from 'react-native-gesture-handler';
 import {
   IconEyeOpen,
@@ -26,6 +26,7 @@ import {login} from '../../../utils/redux/action/authAction';
 import {setBalance} from '../../../utils/redux/action/balanceAction';
 import {useSelector} from 'react-redux';
 
+
 const Login = ({navigation, loginRedux, setBalance}) => {
   const [secureText, setSecureText] = useState(true);
   const [fail, setFail] = useState(false);
@@ -33,6 +34,15 @@ const Login = ({navigation, loginRedux, setBalance}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const user_name = useSelector((state) => state.auth.name_user);
+  const showToast = () => {
+    ToastAndroid.showWithGravityAndOffset(
+      `Login  Success!`,
+      ToastAndroid.LONG,
+      ToastAndroid.TOP,
+      25,
+      50
+    )
+  }
   const login = () => {
     setErrorForm('');
     setFail(false);
@@ -50,6 +60,7 @@ const Login = ({navigation, loginRedux, setBalance}) => {
       .then((res) => {
         //console.log(res.data.data);
         const token = res.data.data.token;
+        showToast();
         if (res.data.status == 206) {
           return navigation.replace('Pin', {token});
         }
