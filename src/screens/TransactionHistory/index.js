@@ -209,8 +209,6 @@ const TransactionHistory = ({navigation}) => {
         {gethistoryByDate}
         {historyTodays}
         {historyWeeks}
-
-        
       </ScrollView>
       <View style={styles.filter}>
         <View style={{flexDirection: 'row'}}>
@@ -293,13 +291,15 @@ export default TransactionHistory;
 
 const styles = StyleSheet.create({
   container: {
-    height: '100%',
-    width: '100%',
-    // paddingHorizontal: 15,
+    flex:1,
     paddingVertical: 15,
   },
   textThis: {
-    marginVertical: 10,
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#7A7886',
+    marginTop: 25,
+    marginBottom: 25,
     marginHorizontal: 10,
   },
   card: {
