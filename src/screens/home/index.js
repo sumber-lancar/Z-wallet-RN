@@ -18,22 +18,44 @@ import {API_URL} from '@env';
 
 //context
 import {useSocket} from '../../utils/Context/SocketProvider';
+import {connect} from 'react-redux';
+import {addBalance} from '../../../src/utils/redux/action/balanceAction';
 
-const Home = ({navigation}) => {
+const Home = ({navigation, addBalance}) => {
+  const toPrice = (x) => {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  }
   const socket = useSocket();
   const balance = useSelector((state) => state.balance.balance);
-  const phone = useSelector((state) => state.auth.phone);
+  // console.log(typeof balance);
+  const phone = useSelector((state) => state.auth.phone_user);
   const token_user = useSelector((state) => state.auth.token);
   const name = useSelector((state) => state.auth.name_user);
   const photo_user = useSelector((state) => state.auth.photo_user);
   let httpImage = {uri: API_URL + photo_user};
   const [history, setHistory] = useState([]);
   useEffect(() => {
-    socket.on('transfer', (msg) => {
-      console.log('hai ', msg);
+    socket.on('transfer out', (msg) => {
+      console.log('Transfer here: ', msg);
+      getData();
     });
     return () => {
-      socket.off('transfer');
+      socket.off('transfer out');
+      getData();
+    };
+  }, []);
+
+  useEffect(() => {
+    socket.on('transfer in', (msg, amount) => {
+      console.log('Transfer here: ', msg);
+      const numAmount = Number(amount);
+      // console.log(typeof numAmount);
+      addBalance(numAmount);
+      getData();
+    });
+    return () => {
+      socket.off('transfer in');
+      getData();
     };
   }, []);
 
@@ -55,7 +77,7 @@ const Home = ({navigation}) => {
 
   useEffect(() => {
     getData();
-  }, []);
+  }, [history]);
 
   return (
     <ScrollView>
@@ -90,7 +112,7 @@ const Home = ({navigation}) => {
       <View style={styles.containerBalance}>
         <View style={styles.balanceSection}>
           <Text style={styles.txtBalance}>Balance</Text>
-          <Text style={styles.txtmoney}>{balance}</Text>
+          <Text style={styles.txtmoney}>Rp. {toPrice(balance)}</Text>
           <Text style={styles.txtBalance}>{phone}</Text>
         </View>
       </View>
@@ -139,7 +161,7 @@ const Home = ({navigation}) => {
               receiver={receiver}
               photo={photo}
               notes={notes}
-              amount={amount}
+              amount={toPrice(amount)}
               type={type}
               sender={sender}
             />
@@ -177,7 +199,7 @@ const styles = StyleSheet.create({
   },
   balanceSection: {
     height: 91,
-    width: 134,
+    width: 200,
     justifyContent: 'space-between',
   },
   txtBalance: {
@@ -222,4 +244,10 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Home;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    addBalance: (amount) => dispatch(addBalance(amount)),
+  };
+};
+
+export default connect(null, mapDispatchToProps)(Home);
