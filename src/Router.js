@@ -31,6 +31,7 @@ import Otp from './screens/auth/Otp';
 //cotext
 import {SocketProvider} from '../src/utils/Context/SocketProvider';
 import HistoryDetail from './screens/historyDetail';
+import PinConfirmChange from './screens/PinConfirmChange';
 
 const Stack = createStackNavigator();
 
@@ -211,6 +212,14 @@ const Router = () => {
             component={HistoryDetail}
             options={{
               title: 'History Detail',
+            }}
+          />
+
+          <Stack.Screen
+            name="Change Pin Confirm"
+            component={PinConfirmChange}
+            options={{
+              headerShown: false,
             }}
           />
         </Stack.Navigator>

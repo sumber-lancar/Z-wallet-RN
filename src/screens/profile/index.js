@@ -218,7 +218,7 @@ const Profile = ({navigation, logoutRedux, updatePhoto}) => {
       <TouchableOpacity
         activeOpacity={0.5}
         style={styles.btn}
-        onPress={() => navigation.navigate('ChangePin')}>
+        onPress={() => navigation.navigate('Change Pin Confirm')}>
         <Text style={styles.fontBtn}>Change PIN</Text>
         <Image source={IconNext} />
       </TouchableOpacity>

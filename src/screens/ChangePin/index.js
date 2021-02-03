@@ -61,7 +61,7 @@ const ChangePin = ({navigation}) => {
           textAlign: 'center',
           alignSelf: 'center',
         }}>
-        Enter new Pin Below
+        Type your new 6 digits security PIN to use in Zwallet.
       </Text>
       <View style={style.formPin}>
         <SmoothPinCode
