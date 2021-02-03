@@ -10,7 +10,7 @@ import {
   Modal,
   Alert,
 } from 'react-native';
-import {IconBack, IconNext, ImgProfile, Pencil} from '../../assets';
+import {Camera, Gallery, IconBack, IconNext, ImgProfile, Pencil} from '../../assets';
 import {API_URL} from '@env'
 //redux
 import {useSelector} from 'react-redux'
@@ -60,7 +60,9 @@ const Profile = ({navigation, logoutRedux}) => {
             width: 49,
             justifyContent: 'space-between',
           }}>
-          <TouchableOpacity style={{flexDirection: 'row', alignItems: 'center'}} onPress={() => {
+          <TouchableOpacity 
+          style={{flexDirection: 'row', alignItems: 'center', width: 50, justifyContent: 'space-between'}} 
+          onPress={() => {
             setEditVisible(true)
           }}>
             <Image source={Pencil} />
@@ -154,28 +156,29 @@ const Profile = ({navigation, logoutRedux}) => {
       </Modal>
       <Modal animationType="fade" transparent={true} visible={editVisible}>
         <View style={styles.centeredView}>
-          <View style={{...styles.modalView, width:'100%', marginTop: -200}}>
-            <Text style={styles.modalText}>Are you sure want to logout?</Text>
+          <View style={{...styles.modalView,height: 230, width:'100%', marginTop: -200, borderRadius: 0}}>
+            <Text style={styles.modalText}>Select Picture From</Text>
             <View
               style={{
-                marginTop: 20,
                 flexDirection: 'row',
                 width: 250,
                 justifyContent: 'space-between',
               }}>
               <Button
-                style={{...styles.closeButton, backgroundColor: 'lightgrey'}}
+                style={{...styles.closeButton, backgroundColor: 'white', height: 100,  width: 100}}
                 onPress={() => {
                   setEditVisible(!editVisible);
                 }}>
-                <Text style={{...styles.textStyle, color: 'black'}}>No</Text>
+               <Image source={Gallery} />
+               <Text style={{fontSize: 18, fontWeight: 'bold'}}>Galery</Text>
               </Button>
               <Button
-                style={styles.closeButton}
+                style={{...styles.closeButton, backgroundColor: 'white', height: 100, width: 100}}
                 onPress={() => {
                   setEditVisible(!editVisible);
                 }}>
-                <Text style={styles.textStyle}>Yes</Text>
+                <Image source={Camera} />
+                <Text style={{fontSize: 18, fontWeight: 'bold'}}>Camera</Text>
               </Button>
             </View>
           </View>
@@ -239,6 +242,7 @@ const styles = StyleSheet.create({
     elevation: 2,
     justifyContent: 'center',
     alignItems: 'center',
+    flexDirection: 'column'
   },
   textStyle: {
     color: 'white',
