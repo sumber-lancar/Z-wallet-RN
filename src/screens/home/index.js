@@ -64,6 +64,7 @@ const Home = ({navigation, addBalance}) => {
   const [history, setHistory] = useState([]);
   useEffect(() => {
     socket.on('transfer out', (msg) => {
+      console.log('BARUUUUUUUUUUUUUUUUU');
       console.log('Transfer here: ', msg);
       showNotification('Notification', msg, channel);
       getData();
@@ -179,7 +180,17 @@ const Home = ({navigation, addBalance}) => {
       </View>
       {history &&
         history.map(
-          ({sender, receiver, fullname, photo, amount, type, id, notes, created_at}) => {
+          ({
+            sender,
+            receiver,
+            fullname,
+            photo,
+            amount,
+            type,
+            id,
+            notes,
+            created_at,
+          }) => {
             return (
               <CardHome
                 key={id}
