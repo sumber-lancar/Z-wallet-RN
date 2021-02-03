@@ -83,6 +83,7 @@ const pinConfirm = ({navigation, route, adjustBalance}) => {
         postTransfer();
       })
       .catch((err) => {
+        setLoading(false)
         console.log(err);
         setMsg('false');
       });
