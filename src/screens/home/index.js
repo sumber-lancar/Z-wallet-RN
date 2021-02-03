@@ -18,22 +18,41 @@ import {API_URL} from '@env';
 
 //context
 import {useSocket} from '../../utils/Context/SocketProvider';
+import {connect} from 'react-redux';
+import {addBalance} from '../../../src/utils/redux/action/balanceAction';
 
-const Home = ({navigation}) => {
+const Home = ({navigation, addBalance}) => {
   const socket = useSocket();
   const balance = useSelector((state) => state.balance.balance);
-  const phone = useSelector((state) => state.auth.phone);
+  console.log(typeof balance);
+  const phone = useSelector((state) => state.auth.phone_user);
   const token_user = useSelector((state) => state.auth.token);
   const name = useSelector((state) => state.auth.name_user);
   const photo_user = useSelector((state) => state.auth.photo_user);
   let httpImage = {uri: API_URL + photo_user};
   const [history, setHistory] = useState([]);
   useEffect(() => {
-    socket.on('transfer', (msg) => {
-      console.log('hai ', msg);
+    socket.on('transfer out', (msg) => {
+      console.log('Transfer here: ', msg);
+      getData();
     });
     return () => {
-      socket.off('transfer');
+      socket.off('transfer out');
+      getData();
+    };
+  }, []);
+
+  useEffect(() => {
+    socket.on('transfer in', (msg, amount) => {
+      console.log('Transfer here: ', msg);
+      const numAmount = Number(amount);
+      console.log(typeof numAmount);
+      addBalance(numAmount);
+      getData();
+    });
+    return () => {
+      socket.off('transfer in');
+      getData();
     };
   }, []);
 
@@ -222,4 +241,10 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Home;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    addBalance: (amount) => dispatch(addBalance(amount)),
+  };
+};
+
+export default connect(null, mapDispatchToProps)(Home);

@@ -11,6 +11,16 @@ const balanceReducer = (state = INITIAL_STATE, action) => {
         ...state,
         balance: action.payload.balance,
       };
+    case actionTypes.ADJUST_BALANCE:
+      return {
+        ...state,
+        balance: state.balance - action.payload.amount,
+      };
+    case actionTypes.ADD_BALANCE:
+      return {
+        ...state,
+        balance: state.balance + action.payload.amount,
+      };
     default:
       return state;
   }
