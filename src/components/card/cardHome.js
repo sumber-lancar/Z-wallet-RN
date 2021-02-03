@@ -18,24 +18,29 @@ const CardHome = ({
   const name = useSelector((state) => state.auth.name_user);
   //console.log(date);
   var months = [
-    'January',
-    'February',
+    'Jan',
+    'Feb',
     'March',
     'April',
     'May',
     'June',
     'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December',
+    'Aug',
+    'Sept',
+    'Oct',
+    'Nov',
+    'Dec',
   ];
   const year = new Date(date).getFullYear();
   const month = new Date(date).getMonth();
   const setdate = new Date(date).getDate();
-  console.log(months[month], setdate, year);
-
+  const hour = new Date(date).getHours();
+  const minute = new Date(date).getMinutes();
+  //console.log(months[month], setdate, year, hour, minute);
+  const fulldate = `${months[month]} ${
+    setdate < 10 ? `0${setdate}` : setdate
+  }, ${year} - ${hour}:${minute < 10 ? `0${minute}` : minute}`;
+  console.log(fulldate);
   return (
     <TouchableOpacity
       style={styles.container}
@@ -47,6 +52,7 @@ const CardHome = ({
           photo,
           type,
           sender,
+          fulldate,
         });
       }}>
       <View style={{flexDirection: 'row'}}>
