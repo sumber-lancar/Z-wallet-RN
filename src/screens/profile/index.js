@@ -26,6 +26,7 @@ const Profile = ({navigation, logoutRedux}) => {
   const [isEnabled, setIsEnabled] = useState(false);
   const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
   const [modalVisible, setModalVisible] = useState(false);
+  const [editVisible, setEditVisible] = useState(false);
   const handleLogout = () => {
     navigation.navigate('Login');
     logoutRedux();
@@ -59,10 +60,12 @@ const Profile = ({navigation, logoutRedux}) => {
             width: 49,
             justifyContent: 'space-between',
           }}>
-          <TouchableOpacity>
+          <TouchableOpacity style={{flexDirection: 'row', alignItems: 'center'}} onPress={() => {
+            setEditVisible(true)
+          }}>
             <Image source={Pencil} />
+            <Text style={{fontSize: 16, color: '#7A7886'}}>Edit</Text>
           </TouchableOpacity>
-          <Text style={{fontSize: 16, color: '#7A7886'}}>Edit</Text>
         </View>
         <Text style={{fontSize: 24, color: '#4D4B57', marginTop: 16}}>
           {userName}
@@ -149,6 +152,39 @@ const Profile = ({navigation, logoutRedux}) => {
           </View>
         </View>
       </Modal>
+      <Modal animationType="fade" transparent={true} visible={editVisible}>
+        <View style={styles.centeredView}>
+          <View style={{...styles.modalView, width:'100%', marginTop: -200}}>
+            <Text style={styles.modalText}>Are you sure want to logout?</Text>
+            <View
+              style={{
+                marginTop: 20,
+                flexDirection: 'row',
+                width: 250,
+                justifyContent: 'space-between',
+              }}>
+              <Button
+                style={{...styles.closeButton, backgroundColor: 'lightgrey'}}
+                onPress={() => {
+                  setEditVisible(!editVisible);
+                }}>
+                <Text style={{...styles.textStyle, color: 'black'}}>No</Text>
+              </Button>
+              <Button
+                style={styles.closeButton}
+                onPress={() => {
+                  setEditVisible(!editVisible);
+                }}>
+                <Text style={styles.textStyle}>Yes</Text>
+              </Button>
+            </View>
+          </View>
+        </View>
+      </Modal>
+       
+
+
+
     </ScrollView>
   );
 };
