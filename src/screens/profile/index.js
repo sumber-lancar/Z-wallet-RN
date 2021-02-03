@@ -292,8 +292,13 @@ const Profile = ({navigation, logoutRedux, updatePhoto}) => {
               </Button>
             </View>
             <View style={styles.editWrapper}>
+<<<<<<< HEAD
               <TouchableOpacity style={{marginRight: 10}}>
                 <Text style={{fontSize: 18, fontWeight: 'bold'}}>Cancel</Text>
+=======
+              <TouchableOpacity style={{marginRight:10}} onPress={() => {setEditVisible(!editVisible)}}>
+                <Text style={{ fontSize: 18, fontWeight: 'bold' }}>Cancel</Text>
+>>>>>>> a5daa23faf8725f1e36ba315b25938fee8707291
               </TouchableOpacity>
               <TouchableOpacity
                 style={{marginLeft: 10}}
