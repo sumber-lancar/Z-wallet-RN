@@ -179,11 +179,12 @@ const Home = ({navigation, addBalance}) => {
       </View>
       {history &&
         history.map(
-          ({sender, receiver, photo, amount, type, id, notes, created_at}) => {
+          ({sender, receiver, fullname, photo, amount, type, id, notes, created_at}) => {
             return (
               <CardHome
                 key={id}
                 id={id}
+                name={fullname}
                 navigation={navigation}
                 receiver={receiver}
                 photo={photo}

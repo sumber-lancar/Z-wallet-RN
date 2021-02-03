@@ -22,12 +22,14 @@ import {API_URL} from '@env';
 //redux
 import {useSelector} from 'react-redux';
 import {connect} from 'react-redux';
-import {logout} from '../../utils/redux/action/authAction';
+import {logout, updatePhoto} from '../../utils/redux/action/authAction';
 import {ScrollView} from 'react-native-gesture-handler';
 import PushNotification from 'react-native-push-notification';
 import {showNotification} from '../../notif';
+import ImagePicker from 'react-native-image-crop-picker';
+import axios from 'axios';
 
-const Profile = ({navigation, logoutRedux}) => {
+const Profile = ({navigation, logoutRedux, updatePhoto}) => {
   const channel = 'notif';
   PushNotification.createChannel(
     {
@@ -41,19 +43,79 @@ const Profile = ({navigation, logoutRedux}) => {
     (created) => console.log(`createchannel returned '${created}'`),
   );
   // code to run on component mount
-
   PushNotification.getChannels((channel_ids) => {
     console.log(channel_ids);
   });
 
+  const token = useSelector((state) => state.auth.token);
+  const [photo, setPhoto] = useState([]);
   const phone = useSelector((state) => state.auth.phone);
   const userName = useSelector((state) => state.auth.name_user);
-  const photo = useSelector((state) => state.auth.photo_user);
-  let images = {uri: API_URL + photo};
+  const photoProfile = useSelector((state) => state.auth.photo_user);
+  let images = {uri: API_URL + photoProfile};
   const [isEnabled, setIsEnabled] = useState(false);
   const toggleSwitch = (isEnabled) => setIsEnabled(!isEnabled);
   const [modalVisible, setModalVisible] = useState(false);
   const [editVisible, setEditVisible] = useState(false);
+  const config = {
+    headers: {
+      'x-access-token': 'bearer ' + token,
+    },
+  };
+
+  const chooseFile = () => {
+    ImagePicker.openPicker({
+      multiple: true,
+      mediaType: 'photo',
+    })
+      .then((images) => {
+        console.log(images);
+        setPhoto(images);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const takePicture = () => {
+    ImagePicker.openCamera({
+      width: 300,
+      height: 400,
+      cropping: true,
+      mediaType: 'photo',
+    })
+      .then((images) => {
+        console.log(images.length);
+        setPhoto(images);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const uploadPicture = () => {
+    const pictureData = new FormData();
+    for (let i = 0; i < photo.length; i++) {
+      pictureData.append('photo', {
+        name: photo[i].path.split('/').pop(),
+        type: photo[i].mime,
+        uri:
+          Platform.OS === 'android'
+            ? photo[i].path
+            : photo[i].path.replace('file://', ''),
+      });
+    }
+    axios
+      .patch(API_URL + `/user/changePhoto`, pictureData, config)
+      .then(({data}) => {
+        updatePhoto(data.data.image);
+        navigation.replace('Home');
+      })
+      .catch(({response}) => {
+        console.log(response.data);
+      });
+  };
+
   const handleLogout = () => {
     navigation.navigate('Login');
     logoutRedux();
@@ -213,11 +275,9 @@ const Profile = ({navigation, logoutRedux}) => {
                   height: 100,
                   width: 100,
                 }}
-                onPress={() => {
-                  setEditVisible(!editVisible);
-                }}>
+                onPress={chooseFile}>
                 <Image source={Gallery} />
-                <Text style={{fontSize: 18, fontWeight: 'bold'}}>Galery</Text>
+                <Text style={{fontSize: 18, fontWeight: 'bold'}}>Gallery</Text>
               </Button>
               <Button
                 style={{
@@ -226,12 +286,20 @@ const Profile = ({navigation, logoutRedux}) => {
                   height: 100,
                   width: 100,
                 }}
-                onPress={() => {
-                  setEditVisible(!editVisible);
-                }}>
+                onPress={takePicture}>
                 <Image source={Camera} />
                 <Text style={{fontSize: 18, fontWeight: 'bold'}}>Camera</Text>
               </Button>
+            </View>
+            <View style={styles.editWrapper}>
+              <TouchableOpacity style={{marginRight: 10}}>
+                <Text style={{fontSize: 18, fontWeight: 'bold'}}>Cancel</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={{marginLeft: 10}}
+                onPress={uploadPicture}>
+                <Text style={{fontSize: 18, fontWeight: 'bold'}}>Save</Text>
+              </TouchableOpacity>
             </View>
           </View>
         </View>
@@ -302,11 +370,17 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 25,
   },
+  editWrapper: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginVertical: 10,
+  },
 });
 
 const mapDispatchToProps = (dispatch) => {
   return {
     logoutRedux: () => dispatch(logout()),
+    updatePhoto: (data) => dispatch(updatePhoto(data)),
   };
 };
 
