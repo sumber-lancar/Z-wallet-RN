@@ -12,10 +12,74 @@ import SmoothPinCode from 'react-native-smooth-pincode-input';
 import Icon from 'react-native-vector-icons/AntDesign';
 import style from './pinStyle';
 
-const pinConfirm = ({navigation}) => {
-  const [pin, setPin] = useState('');
-  // const [msg, setMsg] = useState(null);
+//context
+import {useSocket} from '../../utils/Context/SocketProvider';
 
+import {API_URL} from '@env';
+import axios from 'axios';
+import {useSelector} from 'react-redux';
+import {connect} from 'react-redux';
+import {adjustBalance} from '../../../src/utils/redux/action/balanceAction';
+
+const pinConfirm = ({navigation, route, adjustBalance}) => {
+  const {amount, notes} = route.params;
+  const [pin, setPin] = useState('');
+  const [msg, setMsg] = useState('');
+  const token = useSelector((state) => state.auth.token);
+  const user_id = useSelector((state) => state.auth.id);
+  const user_name = useSelector((state) => state.auth.name_user);
+  const receiver = useSelector((state) => state.receiver);
+  const socket = useSocket();
+  //console.log(receiver.id);
+  const postTransfer = () => {
+    const config = {
+      headers: {
+        'x-access-token': 'bearer ' + token,
+        'x-access-PIN': pin,
+      },
+    };
+    const data = {
+      receiver: receiver.id,
+      amount: amount,
+      notes: notes,
+    };
+    axios
+      .post(`${API_URL}/transfer/newTransfer`, data, config)
+      .then((res) => {
+        console.log(res);
+        console.log('transfer succes db');
+        adjustBalance(amount);
+        socket.emit('transfer', amount, user_id, user_name, receiver.id);
+        navigation.navigate('Success', {amount, notes});
+      })
+      .catch((err) => {
+        console.log(err);
+        console.log('false transfer');
+      });
+  };
+  const postPinConfirmation = () => {
+    setMsg('');
+    console.log('pressed', pin);
+    if (pin.length !== 6) {
+      return setMsg('kosong');
+    }
+    const config = {
+      headers: {
+        'x-access-token': 'bearer ' + token,
+      },
+    };
+    axios
+      .get(`${API_URL}/auth/check-pin/${pin}`, config)
+      .then((res) => {
+        console.log(res);
+        console.log('success');
+        postTransfer();
+      })
+      .catch((err) => {
+        console.log(err);
+        setMsg('false');
+      });
+  };
 
   return (
     <View style={{...style.mainContiner}}>
@@ -32,40 +96,51 @@ const pinConfirm = ({navigation}) => {
       </View>
       <Text
         style={{
-          ...style.contentTextLoginDesc,
           color: '#3A3D42',
           paddingTop: 40,
+          textAlign: 'center',
         }}>
-        Enter your current 6 digits PIN to confirmation to continue transfering money
+        Enter your current 6 digits PIN to confirmation to continue transfering
+        money
       </Text>
-      <Text style={{...style.contentTextLoginDesc, color: '#3A3D42'}}>
+      <Text
+        style={{
+          color: '#3A3D42',
+          textAlign: 'center',
+          marginTop: 10,
+        }}>
         continue to the next step
       </Text>
-        <View style={style.formPin}>
-          <SmoothPinCode
-            autoFocus={true}
-            codeLength={6}
-            value={pin.toString()}
-            cellStyle={style.cellPin}
-            onTextChange={(pin) => setPin(pin)}
-          />
-        </View>
-        {/* {msg !== null ? <Text style={errorStyle.error}>{msg}</Text> : null} */}
-        {/* </View> */}
-      
-        <TouchableOpacity
-          style={{
-            ...style.loginBtn,
-            backgroundColor: '#6379F4',
-            alignSelf: 'center',
-            position: 'absolute',
-            top: '29%',
-            
-          }}
-          onPress={() => navigation.navigate('Success')}
-          >
-          <Text style={{color: 'white', fontSize: 20}}>Transfer Now</Text>
-        </TouchableOpacity>
+      <Text style={{color: 'red', textAlign: 'center', marginTop: 10}}>
+        {msg == 'kosong'
+          ? 'Please Enter Your Pin'
+          : msg == 'false'
+          ? 'Please Enter Your Pin Correctly'
+          : ''}
+      </Text>
+      <View style={style.formPin}>
+        <SmoothPinCode
+          password
+          mask="﹡"
+          autoFocus={true}
+          codeLength={6}
+          value={pin.toString()}
+          cellStyle={style.cellPin}
+          onTextChange={(pin) => setPin(pin)}
+        />
+      </View>
+
+      <TouchableOpacity
+        style={{
+          ...style.loginBtn,
+          backgroundColor: '#6379F4',
+          alignSelf: 'center',
+          position: 'absolute',
+          top: '29%',
+        }}
+        onPress={postPinConfirmation}>
+        <Text style={{color: 'white', fontSize: 20}}>Transfer Now</Text>
+      </TouchableOpacity>
       {/* <View style={{ alignItems: 'center', backgroundColor: 'white' }}>
                 
             </View> */}
@@ -73,7 +148,13 @@ const pinConfirm = ({navigation}) => {
   );
 };
 
-export default pinConfirm;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    adjustBalance: (amount) => dispatch(adjustBalance(amount)),
+  };
+};
+
+export default connect(null, mapDispatchToProps)(pinConfirm);
 
 const styles = StyleSheet.create({
   error: {
@@ -83,6 +164,6 @@ const styles = StyleSheet.create({
     top: 175,
   },
   container: {
-      flex:1,
-  }
+    flex: 1,
+  },
 });
