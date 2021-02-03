@@ -11,13 +11,18 @@ import {
   Alert,
 } from 'react-native';
 import {IconBack, IconNext, ImgProfile, Pencil} from '../../assets';
-
+import {API_URL} from '@env'
 //redux
+import {useSelector} from 'react-redux'
 import {connect} from 'react-redux';
 import {logout} from '../../utils/redux/action/authAction';
 import { ScrollView } from 'react-native-gesture-handler';
 
 const Profile = ({navigation, logoutRedux}) => {
+  const phone = useSelector(state => state.auth.phone)
+  const userName = useSelector(state => state.auth.name_user);
+  const photo = useSelector(state => state.auth.photo_user);
+  let images = { uri : API_URL + photo}
   const [isEnabled, setIsEnabled] = useState(false);
   const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
   const [modalVisible, setModalVisible] = useState(false);
@@ -43,7 +48,7 @@ const Profile = ({navigation, logoutRedux}) => {
         }}>
         <Image
           style={{height: 80, width: 80, borderRadius: 10}}
-          source={ImgProfile}
+          source={images}
         />
         <View
           style={{
@@ -60,7 +65,7 @@ const Profile = ({navigation, logoutRedux}) => {
           <Text style={{fontSize: 16, color: '#7A7886'}}>Edit</Text>
         </View>
         <Text style={{fontSize: 24, color: '#4D4B57', marginTop: 16}}>
-          Fachri Ghiffary
+          {userName}
         </Text>
         <Text
           style={{
@@ -69,7 +74,7 @@ const Profile = ({navigation, logoutRedux}) => {
             marginTop: 10,
             marginBottom: 45,
           }}>
-          +62 813-9387-7946
+          {phone}
         </Text>
       </View>
 
