@@ -34,6 +34,11 @@ const authReducer = (state = INITIAL_STATE, action) => {
         photo_user: null,
         phone_user: null,
       };
+    case actionTypes.SET_PHOTO:
+      return {
+        ...state,
+        photo_user: action.payload
+      }
     default:
       return state;
   }

@@ -9,3 +9,5 @@ export const ADD_BALANCE = 'ADD_BALANCE';
 
 //Receiver
 export const SET_RECEIVER = 'SET_RECEIVER';
+
+export const SET_PHOTO = 'SET_PHOTO'

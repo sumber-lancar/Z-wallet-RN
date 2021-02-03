@@ -15,14 +15,14 @@ import { API_URL } from '@env'
 //redux
 import { useSelector } from 'react-redux'
 import { connect } from 'react-redux';
-import { logout } from '../../utils/redux/action/authAction';
+import { logout, updatePhoto } from '../../utils/redux/action/authAction';
 import { ScrollView } from 'react-native-gesture-handler';
 import PushNotification from 'react-native-push-notification';
 import { showNotification } from '../../notif';
 import ImagePicker from 'react-native-image-crop-picker'
 import axios from 'axios'
 
-const Profile = ({ navigation, logoutRedux }) => {
+const Profile = ({ navigation, logoutRedux, updatePhoto }) => {
   const channel = 'notif';
   PushNotification.createChannel(
     {
@@ -102,6 +102,7 @@ const Profile = ({ navigation, logoutRedux }) => {
     }
     axios.patch(API_URL + `/user/changePhoto`, pictureData, config)
       .then(({ data }) => {
+        updatePhoto(data.data.image)
         navigation.replace('Home')
       }).catch(({ response }) => {
         console.log(response.data)
@@ -349,6 +350,7 @@ const styles = StyleSheet.create({
 const mapDispatchToProps = (dispatch) => {
   return {
     logoutRedux: () => dispatch(logout()),
+    updatePhoto: (data) => dispatch(updatePhoto(data))
   };
 };
 
