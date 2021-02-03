@@ -40,7 +40,7 @@ const CardHome = ({
   const fulldate = `${months[month]} ${
     setdate < 10 ? `0${setdate}` : setdate
   }, ${year} - ${hour}:${minute < 10 ? `0${minute}` : minute}`;
-  console.log(fulldate);
+  //console.log(fulldate);
   return (
     <TouchableOpacity
       style={styles.container}

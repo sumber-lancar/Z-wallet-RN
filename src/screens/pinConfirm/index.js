@@ -27,6 +27,7 @@ const pinConfirm = ({navigation, route, adjustBalance}) => {
   const [msg, setMsg] = useState('');
   const token = useSelector((state) => state.auth.token);
   const user_id = useSelector((state) => state.auth.id);
+  const user_name = useSelector((state) => state.auth.name_user);
   const receiver = useSelector((state) => state.receiver);
   const socket = useSocket();
   //console.log(receiver.id);
@@ -48,7 +49,7 @@ const pinConfirm = ({navigation, route, adjustBalance}) => {
         console.log(res);
         console.log('transfer succes db');
         adjustBalance(amount);
-        socket.emit('transfer', amount, user_id, receiver.id);
+        socket.emit('transfer', amount, user_id, user_name, receiver.id);
         navigation.navigate('Success', {amount, notes});
       })
       .catch((err) => {

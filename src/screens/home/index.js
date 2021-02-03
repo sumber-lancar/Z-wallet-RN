@@ -16,12 +16,33 @@ import CardHome from '../../components/card/cardHome';
 import {useSelector} from 'react-redux';
 import {API_URL} from '@env';
 
+//notif
+import PushNotification from 'react-native-push-notification';
+import {showNotification} from '../../notif';
+
 //context
 import {useSocket} from '../../utils/Context/SocketProvider';
 import {connect} from 'react-redux';
 import {addBalance} from '../../../src/utils/redux/action/balanceAction';
 
 const Home = ({navigation, addBalance}) => {
+  const channel = 'notif';
+  PushNotification.createChannel(
+    {
+      channelId: 'notif',
+      channelName: 'My Notification channel',
+      channelDescription: 'A channel to categories your notification',
+      soundName: 'default',
+      importance: 4,
+      vibrate: true,
+    },
+    (created) => console.log(`createchannel returned '${created}'`),
+  );
+  // code to run on component mount
+
+  PushNotification.getChannels((channel_ids) => {
+    console.log(channel_ids);
+  });
   useEffect(() => {
     getData();
     return () => {
@@ -44,6 +65,7 @@ const Home = ({navigation, addBalance}) => {
   useEffect(() => {
     socket.on('transfer out', (msg) => {
       console.log('Transfer here: ', msg);
+      showNotification('Notification', msg, channel);
       getData();
     });
     return () => {
@@ -55,8 +77,9 @@ const Home = ({navigation, addBalance}) => {
   useEffect(() => {
     socket.on('transfer in', (msg, amount) => {
       console.log('Transfer here: ', msg);
+      showNotification('Notification', msg, channel);
       const numAmount = Number(amount);
-      console.log(typeof numAmount);
+      //console.log(typeof numAmount);
       addBalance(numAmount);
       getData();
     });

@@ -1,5 +1,5 @@
-import { Button } from 'native-base';
-import React, { useState } from 'react';
+import {Button} from 'native-base';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -10,17 +10,24 @@ import {
   Modal,
   Alert,
 } from 'react-native';
-import { Camera, Gallery, IconBack, IconNext, ImgProfile, Pencil } from '../../assets';
-import { API_URL } from '@env'
+import {
+  Camera,
+  Gallery,
+  IconBack,
+  IconNext,
+  ImgProfile,
+  Pencil,
+} from '../../assets';
+import {API_URL} from '@env';
 //redux
-import { useSelector } from 'react-redux'
-import { connect } from 'react-redux';
-import { logout } from '../../utils/redux/action/authAction';
-import { ScrollView } from 'react-native-gesture-handler';
+import {useSelector} from 'react-redux';
+import {connect} from 'react-redux';
+import {logout} from '../../utils/redux/action/authAction';
+import {ScrollView} from 'react-native-gesture-handler';
 import PushNotification from 'react-native-push-notification';
-import { showNotification } from '../../notif';
+import {showNotification} from '../../notif';
 
-const Profile = ({ navigation, logoutRedux }) => {
+const Profile = ({navigation, logoutRedux}) => {
   const channel = 'notif';
   PushNotification.createChannel(
     {
@@ -39,12 +46,12 @@ const Profile = ({ navigation, logoutRedux }) => {
     console.log(channel_ids);
   });
 
-  const phone = useSelector(state => state.auth.phone)
-  const userName = useSelector(state => state.auth.name_user);
-  const photo = useSelector(state => state.auth.photo_user);
-  let images = { uri: API_URL + photo }
+  const phone = useSelector((state) => state.auth.phone);
+  const userName = useSelector((state) => state.auth.name_user);
+  const photo = useSelector((state) => state.auth.photo_user);
+  let images = {uri: API_URL + photo};
   const [isEnabled, setIsEnabled] = useState(false);
-  const toggleSwitch = () => showNotification('Notification', 'Transfer Success', channel);;
+  const toggleSwitch = (isEnabled) => setIsEnabled(!isEnabled);
   const [modalVisible, setModalVisible] = useState(false);
   const [editVisible, setEditVisible] = useState(false);
   const handleLogout = () => {
@@ -54,7 +61,7 @@ const Profile = ({ navigation, logoutRedux }) => {
   return (
     <ScrollView>
       <TouchableOpacity
-        style={{ width: 40, marginTop: 30, marginLeft: 20 }}
+        style={{width: 40, marginTop: 30, marginLeft: 20}}
         onPress={() => {
           navigation.goBack();
         }}>
@@ -68,7 +75,7 @@ const Profile = ({ navigation, logoutRedux }) => {
           alignItems: 'center',
         }}>
         <Image
-          style={{ height: 80, width: 80, borderRadius: 10 }}
+          style={{height: 80, width: 80, borderRadius: 10}}
           source={images}
         />
         <View
@@ -81,15 +88,20 @@ const Profile = ({ navigation, logoutRedux }) => {
             justifyContent: 'space-between',
           }}>
           <TouchableOpacity
-            style={{ flexDirection: 'row', alignItems: 'center', width: 50, justifyContent: 'space-between' }}
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              width: 50,
+              justifyContent: 'space-between',
+            }}
             onPress={() => {
-              setEditVisible(true)
+              setEditVisible(true);
             }}>
             <Image source={Pencil} />
-            <Text style={{ fontSize: 16, color: '#7A7886' }}>Edit</Text>
+            <Text style={{fontSize: 16, color: '#7A7886'}}>Edit</Text>
           </TouchableOpacity>
         </View>
-        <Text style={{ fontSize: 24, color: '#4D4B57', marginTop: 16 }}>
+        <Text style={{fontSize: 24, color: '#4D4B57', marginTop: 16}}>
           {userName}
         </Text>
         <Text
@@ -104,9 +116,12 @@ const Profile = ({ navigation, logoutRedux }) => {
       </View>
 
       {/* btn navigation */}
-      <TouchableOpacity activeOpacity={0.5} style={styles.btn} onPress={() => {
-        navigation.navigate("Personal Information")
-      }}>
+      <TouchableOpacity
+        activeOpacity={0.5}
+        style={styles.btn}
+        onPress={() => {
+          navigation.navigate('Personal Information');
+        }}>
         <Text style={styles.fontBtn}>Personal Information</Text>
         <Image source={IconNext} />
       </TouchableOpacity>
@@ -127,7 +142,7 @@ const Profile = ({ navigation, logoutRedux }) => {
       <TouchableOpacity activeOpacity={0.5} style={styles.btn}>
         <Text style={styles.fontBtn}>Notification</Text>
         <Switch
-          trackColor={{ false: '#grey', true: '#6379F4' }}
+          trackColor={{false: '#grey', true: '#6379F4'}}
           thumbColor={isEnabled ? '#white' : 'white'}
           ios_backgroundColor="#3e3e3e"
           onValueChange={toggleSwitch}
@@ -156,11 +171,11 @@ const Profile = ({ navigation, logoutRedux }) => {
                 justifyContent: 'space-between',
               }}>
               <Button
-                style={{ ...styles.closeButton, backgroundColor: 'lightgrey' }}
+                style={{...styles.closeButton, backgroundColor: 'lightgrey'}}
                 onPress={() => {
                   setModalVisible(!modalVisible);
                 }}>
-                <Text style={{ ...styles.textStyle, color: 'black' }}>No</Text>
+                <Text style={{...styles.textStyle, color: 'black'}}>No</Text>
               </Button>
               <Button
                 style={styles.closeButton}
@@ -176,7 +191,14 @@ const Profile = ({ navigation, logoutRedux }) => {
       </Modal>
       <Modal animationType="fade" transparent={true} visible={editVisible}>
         <View style={styles.centeredView}>
-          <View style={{ ...styles.modalView, height: 230, width: '100%', marginTop: -200, borderRadius: 0 }}>
+          <View
+            style={{
+              ...styles.modalView,
+              height: 230,
+              width: '100%',
+              marginTop: -200,
+              borderRadius: 0,
+            }}>
             <Text style={styles.modalText}>Select Picture From</Text>
             <View
               style={{
@@ -185,29 +207,35 @@ const Profile = ({ navigation, logoutRedux }) => {
                 justifyContent: 'space-between',
               }}>
               <Button
-                style={{ ...styles.closeButton, backgroundColor: 'white', height: 100, width: 100 }}
+                style={{
+                  ...styles.closeButton,
+                  backgroundColor: 'white',
+                  height: 100,
+                  width: 100,
+                }}
                 onPress={() => {
                   setEditVisible(!editVisible);
                 }}>
                 <Image source={Gallery} />
-                <Text style={{ fontSize: 18, fontWeight: 'bold' }}>Galery</Text>
+                <Text style={{fontSize: 18, fontWeight: 'bold'}}>Galery</Text>
               </Button>
               <Button
-                style={{ ...styles.closeButton, backgroundColor: 'white', height: 100, width: 100 }}
+                style={{
+                  ...styles.closeButton,
+                  backgroundColor: 'white',
+                  height: 100,
+                  width: 100,
+                }}
                 onPress={() => {
                   setEditVisible(!editVisible);
                 }}>
                 <Image source={Camera} />
-                <Text style={{ fontSize: 18, fontWeight: 'bold' }}>Camera</Text>
+                <Text style={{fontSize: 18, fontWeight: 'bold'}}>Camera</Text>
               </Button>
             </View>
           </View>
         </View>
       </Modal>
-
-
-
-
     </ScrollView>
   );
 };
@@ -262,7 +290,7 @@ const styles = StyleSheet.create({
     elevation: 2,
     justifyContent: 'center',
     alignItems: 'center',
-    flexDirection: 'column'
+    flexDirection: 'column',
   },
   textStyle: {
     color: 'white',
