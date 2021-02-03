@@ -21,8 +21,8 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import ActionSheet from 'react-native-actions-sheet';
 import CalendarPicker from 'react-native-calendar-picker';
 import CardHome from '../../components/card/cardHome';
-import axios from 'axios'
-import {API_URL} from "@env"
+import axios from 'axios';
+import {API_URL} from '@env';
 import {useSelector} from 'react-redux';
 
 const actionSheetRef = createRef();
@@ -31,25 +31,25 @@ const TransactionHistory = ({navigation}) => {
   useEffect(() => {
     getHistoryToday();
     getHistoryWeek();
-  }, [historyToday, historyWeek])
+  }, [historyToday, historyWeek]);
 
   const toPrice = (x) => {
-    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-  }
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+  };
 
   const [startDate, setStartDate] = useState();
   const [endDate, setEndDate] = useState();
-  const [historyToday, setHistoryToday] = useState([])
-  const [historyWeek, setHistoryWeek] = useState([])
-  const [urlToday, setUrlToday] = useState('/transaction/getAllInvoice?today=true')
-  const [urlWeek, setUrlWeek] = useState('/transaction/getAllInvoice?thisWeek=true')
+  const [historyToday, setHistoryToday] = useState([]);
+  const [historyWeek, setHistoryWeek] = useState([]);
+  const [urlToday, setUrlToday] = useState(
+    '/transaction/getAllInvoice?today=true',
+  );
+  const [urlWeek, setUrlWeek] = useState(
+    '/transaction/getAllInvoice?thisWeek=true',
+  );
   const token_user = useSelector((state) => state.auth.token);
-  const [getDatebyDate, setGetDatebyDate] = useState(false)
-  const [historyDate, setHistoryDate] = useState([])
-
-
- 
- 
+  const [getDatebyDate, setGetDatebyDate] = useState(false);
+  const [historyDate, setHistoryDate] = useState([]);
 
   const getHistoryToday = () => {
     const config = {
@@ -57,15 +57,17 @@ const TransactionHistory = ({navigation}) => {
         'x-access-token': 'Bearer ' + token_user,
       },
     };
-    axios.get(API_URL + urlToday , config)
-    .then((res) => {
-      console.log('this day',res.data.data)
-      setHistoryToday(res.data.data)
-    })
-    .catch((err) => {
-      console.log(err)
-    })
-  }
+    axios
+      .get(API_URL + urlToday, config)
+      .then((res) => {
+        console.log('this day', res.data.data);
+        console.log(res.data.data[0].fullname);
+        setHistoryToday(res.data.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   const getHistoryWeek = () => {
     const config = {
@@ -73,20 +75,21 @@ const TransactionHistory = ({navigation}) => {
         'x-access-token': 'Bearer ' + token_user,
       },
     };
-    axios.get(API_URL + urlWeek , config)
-    .then((res) => {
-      console.log('this week', res.data.data)
-      setHistoryWeek(res.data.data)
-    })
-    .catch((err) => {
-      console.log(err)
-    })
-  }
+    axios
+      .get(API_URL + urlWeek, config)
+      .then((res) => {
+        console.log('this week', res.data.data);
+        setHistoryWeek(res.data.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   const refresh = () => {
     getHistoryToday();
     getHistoryWeek();
-  }
+  };
 
   const handleFilter = () => {
     const config = {
@@ -95,30 +98,32 @@ const TransactionHistory = ({navigation}) => {
       },
     };
     // Start date
-    const startday = startDate ?  '0' + startDate._i.day : ''
-    const startMonth = startDate ?  '0' + (startDate._i.month + 1) : ''
-    const startYear = startDate ? startDate._i.year : ''
+    const startday = startDate ? '0' + startDate._i.day : '';
+    const startMonth = startDate ? '0' + (startDate._i.month + 1) : '';
+    const startYear = startDate ? startDate._i.year : '';
     // End date
-    const endDay = endDate ? '0' + endDate._i.day : ''
-    const endMonth = endDate ? '0' + (endDate._i.month + 1) : ''
-    const endYear = endDate ? endDate._i.year : ''
-  
-    const strtDate = `${startYear}-${startMonth}-${startday}`
-    const endDatee = `${endYear}-${endMonth}-${endDay}`
-    console.log('ini start date', strtDate)
-    console.log('Ini end Date', endDatee)
+    const endDay = endDate ? '0' + endDate._i.day : '';
+    const endMonth = endDate ? '0' + (endDate._i.month + 1) : '';
+    const endYear = endDate ? endDate._i.year : '';
 
-    axios.get(API_URL + `/transaction/getAllInvoice?from=${strtDate}&to=${endDatee}`, config)
-    .then((res) => {
-      console.log('ini filter date',res)
-      setHistoryDate(res.data.data)
-    })
-    .catch((err) => {
-      console.log(err)
-    })
+    const strtDate = `${startYear}-${startMonth}-${startday}`;
+    const endDatee = `${endYear}-${endMonth}-${endDay}`;
+    console.log('ini start date', strtDate);
+    console.log('Ini end Date', endDatee);
 
-  }
-
+    axios
+      .get(
+        API_URL + `/transaction/getAllInvoice?from=${strtDate}&to=${endDatee}`,
+        config,
+      )
+      .then((res) => {
+        console.log('ini filter date', res);
+        setHistoryDate(res.data.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   const selectDate = (date, type) => {
     if (type === 'END_DATE') {
@@ -128,80 +133,131 @@ const TransactionHistory = ({navigation}) => {
     }
   };
 
+  const startDatePick = startDate
+    ? startDate.toString().split(' ').slice(1, 4).join(' - ')
+    : '';
+  const endDatePick = endDate
+    ? endDate.toString().split(' ').slice(1, 4).join(' - ')
+    : '';
 
-  const startDatePick = startDate ? startDate.toString().split(' ').slice(1,4).join(' - ') : '';
-  const endDatePick = endDate ? endDate.toString().split(' ').slice(1,4).join(' - ') : '';
-
-  let historyTodays
-  let historyWeeks
-  let gethistoryByDate
- if(getDatebyDate){
-  gethistoryByDate = 
-  <>
-    {historyDate && historyDate.map(({sender, receiver, photo, amount, notes, type, id}) => {
-        return(
-            <CardHome
-              key={id}
-              id={id}
-              navigation={navigation}
-              receiver={receiver}
-              photo={photo}
-              notes={notes}
-              amount={toPrice(amount)}
-              type={type}
-              sender={sender}
-            />
-        )
-      })}
-  </>
- }else{
-  if(historyToday.length > 0){
-    historyTodays = 
-    <>
-    <Text style={styles.textThis}>Today</Text>
-        {historyToday && historyToday.map(({sender, receiver, photo, amount, notes, type, id}) => {
-          return(
-              <CardHome
-                key={id}
-                id={id}
-                navigation={navigation}
-                receiver={receiver}
-                photo={photo}
-                notes={notes}
-                amount={toPrice(amount)}
-                type={type}
-                sender={sender}
-              />
-          )
-        })}
-    </>
-  }else{
-    historyTodays = <></>
+  let historyTodays;
+  let historyWeeks;
+  let gethistoryByDate;
+  if (getDatebyDate) {
+    gethistoryByDate = (
+      <>
+        {historyDate &&
+          historyDate.map(
+            ({
+              sender,
+              receiver,
+              photo,
+              amount,
+              notes,
+              type,
+              id,
+              fullname,
+              created_at,
+            }) => {
+              return (
+                <CardHome
+                  key={id}
+                  id={id}
+                  navigation={navigation}
+                  receiver={receiver}
+                  photo={photo}
+                  notes={notes}
+                  amount={toPrice(amount)}
+                  type={type}
+                  sender={sender}
+                  name={fullname}
+                  date={created_at}
+                />
+              );
+            },
+          )}
+      </>
+    );
+  } else {
+    if (historyToday.length > 0) {
+      historyTodays = (
+        <>
+          <Text style={styles.textThis}>Today</Text>
+          {historyToday &&
+            historyToday.map(
+              ({
+                sender,
+                receiver,
+                photo,
+                amount,
+                notes,
+                type,
+                id,
+                fullname,
+                created_at,
+              }) => {
+                return (
+                  <CardHome
+                    key={id}
+                    id={id}
+                    navigation={navigation}
+                    receiver={receiver}
+                    photo={photo}
+                    notes={notes}
+                    amount={toPrice(amount)}
+                    type={type}
+                    sender={sender}
+                    name={fullname}
+                    date={created_at}
+                  />
+                );
+              },
+            )}
+        </>
+      );
+    } else {
+      historyTodays = <></>;
+    }
+    if (historyWeek.length > 0) {
+      historyWeeks = (
+        <>
+          <Text style={styles.textThis}>This Week</Text>
+          {historyWeek &&
+            historyWeek.map(
+              ({
+                sender,
+                receiver,
+                photo,
+                amount,
+                notes,
+                type,
+                id,
+                fullname,
+                created_at,
+              }) => {
+                return (
+                  <CardHome
+                    key={id}
+                    id={id}
+                    navigation={navigation}
+                    receiver={receiver}
+                    photo={photo}
+                    notes={notes}
+                    amount={toPrice(amount)}
+                    type={type}
+                    sender={sender}
+                    name={fullname}
+                    date={created_at}
+                  />
+                );
+              },
+            )}
+        </>
+      );
+    } else {
+      <></>;
+    }
   }
-  if(historyWeek.length > 0){
-    historyWeeks = 
-    <>
-    <Text style={styles.textThis}>This Week</Text>
-        {historyWeek && historyWeek.map(({sender, receiver, photo, amount, notes, type,id}) => {
-          return(
-              <CardHome
-                key={id}
-                id={id}
-                navigation={navigation}
-                receiver={receiver}
-                photo={photo}
-                notes={notes}
-                amount={toPrice(amount)}
-                type={type}
-                sender={sender}
-              />
-          )
-        })}
-    </>
-  }else{
-    <></>
-  }
- }
 
   return (
     <View style={styles.container}>
@@ -212,12 +268,14 @@ const TransactionHistory = ({navigation}) => {
       </ScrollView>
       <View style={styles.filter}>
         <View style={{flexDirection: 'row'}}>
-          <TouchableOpacity style={styles.btn} onPress={() => {
-            setUrlToday('/transaction/getInvoice?today=true&flow=out')
-            setUrlWeek('/transaction/getInvoice?flow=out&thisWeek=true')
-            setGetDatebyDate(false)
-            refresh()
-          }}>
+          <TouchableOpacity
+            style={styles.btn}
+            onPress={() => {
+              setUrlToday('/transaction/getInvoice?today=true&flow=out');
+              setUrlWeek('/transaction/getInvoice?flow=out&thisWeek=true');
+              setGetDatebyDate(false);
+              refresh();
+            }}>
             <Icon
               name="arrow-up"
               size={30}
@@ -225,12 +283,15 @@ const TransactionHistory = ({navigation}) => {
               style={{marginHorizontal: 5}}
             />
           </TouchableOpacity>
-          <TouchableOpacity underlayColor="#6379F4" style={styles.btn} onPress={() => {
-             setUrlToday('/transaction/getInvoice?today=true&flow=in')
-             setUrlWeek('/transaction/getInvoice?flow=in&thisWeek=true')
-             setGetDatebyDate(false)
-             refresh()
-          }}>
+          <TouchableOpacity
+            underlayColor="#6379F4"
+            style={styles.btn}
+            onPress={() => {
+              setUrlToday('/transaction/getInvoice?today=true&flow=in');
+              setUrlWeek('/transaction/getInvoice?flow=in&thisWeek=true');
+              setGetDatebyDate(false);
+              refresh();
+            }}>
             <Icon
               name="arrow-down"
               size={30}
@@ -275,10 +336,10 @@ const TransactionHistory = ({navigation}) => {
           <TouchableOpacity
             style={styles.applyBtn}
             onPress={() => {
-              handleFilter()
-              setGetDatebyDate(true)
-              actionSheetRef.current?.hide()
-              }}>
+              handleFilter();
+              setGetDatebyDate(true);
+              actionSheetRef.current?.hide();
+            }}>
             <Text style={{color: 'white', fontSize: 16}}>Apply</Text>
           </TouchableOpacity>
         </View>
@@ -291,7 +352,7 @@ export default TransactionHistory;
 
 const styles = StyleSheet.create({
   container: {
-    flex:1,
+    flex: 1,
     paddingVertical: 15,
   },
   textThis: {
@@ -316,7 +377,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     alignItems: 'center',
     bottom: 0,
-    marginTop: 10
+    marginTop: 10,
   },
   filterByDate: {
     paddingVertical: 20,

@@ -16,7 +16,7 @@ const CardHome = ({
   sender,
   date,
 }) => {
-  const username = useSelector((state) => state.auth.name_user);
+  //const username = useSelector((state) => state.auth.name_user);
   //console.log(date);
   var months = [
     'Jan',
@@ -52,7 +52,7 @@ const CardHome = ({
           receiver,
           photo,
           type,
-          sender,
+          name,
           fulldate,
         });
       }}>

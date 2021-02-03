@@ -8,9 +8,17 @@ import {API_URL} from '@env';
 import {useSelector} from 'react-redux';
 
 const HistoryDetail = ({navigation, route}) => {
-  const {amount, notes, type, receiver, sender, photo, fulldate} = route.params;
+  const {
+    amount,
+    notes,
+    type,
+    receiver,
+    sender,
+    photo,
+    fulldate,
+    name,
+  } = route.params;
   const balance = useSelector((state) => state.balance.balance);
-  const name = useSelector((state) => state.auth.name_user);
   const date = Date().split(' ');
   const toPrice = (x) => {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
@@ -62,7 +70,7 @@ const HistoryDetail = ({navigation, route}) => {
           />
           <View style={styles.nameNumber}>
             <Text style={{fontSize: 16, fontWeight: '700', color: '#4D4B57'}}>
-              {type == 'in' ? sender : receiver}
+              {name}
             </Text>
           </View>
         </View>
