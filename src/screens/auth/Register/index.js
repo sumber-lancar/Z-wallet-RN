@@ -29,7 +29,7 @@ const Register = ({navigation}) => {
     setErrorForm('');
     if (firstName === '' || email === '' || password === '') {
       return setErrorForm('kosong');
-    } else if (firstName.length < 3 || firstName.length > 10) {
+    } else if (firstName.length < 3 || firstName.length > 15) {
       return setErrorForm('errorname');
     } else if (!regexEmail.test(email)) {
       return setErrorForm('errormail');
@@ -71,7 +71,7 @@ const Register = ({navigation}) => {
             : errorFrom == 'errormail'
             ? 'Please enter email correctly'
             : errorFrom == 'errorpass'
-            ? 'Enter Password Min 4 and Max 12'
+            ? 'Enter Password Min 4 and Max 15'
             : errorFrom == 'strongpass'
             ? 'Password should at least have 1 LowCase (a-z), 1 UpperCase (A-Z), 1 Number (0-9)'
             : ''}

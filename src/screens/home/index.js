@@ -65,6 +65,7 @@ const Home = ({navigation, addBalance}) => {
   const [loading, setLoading] = useState(false)
   useEffect(() => {
     socket.on('transfer out', (msg) => {
+      console.log('BARUUUUUUUUUUUUUUUUU');
       console.log('Transfer here: ', msg);
       showNotification('Notification', msg, channel);
       getData();
